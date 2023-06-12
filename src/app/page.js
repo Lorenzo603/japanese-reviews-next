@@ -10,7 +10,7 @@ import { SelectSettings } from '../components/SelectSettingsComponent';
 import { QuestionAnswerComponent } from '../components/QuestionAnswerComponent';
 import { GuessMode } from './GuessMode'
 import { QuizSet } from './QuizSet'
-import { useLocalStorage } from "./useLocalStorage";
+// import { useLocalStorage } from "./useLocalStorage";
 import Image from 'next/image'
 import styles from './page.module.css'
 
@@ -27,7 +27,23 @@ export default function Home() {
   const [kanjiSet, setKanjiSet] = useState([]);
   const [guessMode, setGuessMode] = useState(GuessMode.GUESS_MEANING);
   const [quizSet, setQuizSet] = useState(QuizSet.KANJI);
-  const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
+  // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
+  const [selectedLevel, _setSelectedLevel] = useState(1);
+  const setSelectedLevel = (newLevel) => {
+    _setSelectedLevel(newLevel);
+    console.log('Updating...', newLevel);
+    fetch('/api/accounts', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({newLevel: newLevel})
+    })
+      .then((res) => {
+        console.log('fetching POST result:', res.status);
+        res.json();
+      })
+  }
 
 
   useEffect(() => {
@@ -39,6 +55,14 @@ export default function Home() {
       fullVocabularyDictionary.push(...loadDictionary(vocabularyRaw));
       console.log('Loaded', fullVocabularyDictionary.length, 'vocabs in the dictionary');
     }
+
+    fetch('/api/accounts')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('fetching GET result:', data);
+        setSelectedLevel(Number(data[0].lastSelectedLevel));
+      })
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
