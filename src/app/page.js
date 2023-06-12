@@ -10,7 +10,7 @@ import { SelectSettings } from '../components/SelectSettingsComponent';
 import { QuestionAnswerComponent } from '../components/QuestionAnswerComponent';
 import { GuessMode } from './GuessMode'
 import { QuizSet } from './QuizSet'
-// import { useLocalStorage } from "./useLocalStorage";
+import { useLocalStorage } from "./useLocalStorage";
 import Image from 'next/image'
 import styles from './page.module.css'
 
@@ -27,7 +27,8 @@ export default function Home() {
   const [kanjiSet, setKanjiSet] = useState([]);
   const [guessMode, setGuessMode] = useState(GuessMode.GUESS_MEANING);
   const [quizSet, setQuizSet] = useState(QuizSet.KANJI);
-  const [selectedLevel, setSelectedLevel] = [1, function doNothing() { }];//useLocalStorage("selectedLevel", 1);
+  const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
+
 
   useEffect(() => {
     if (fullKanjiDictionary.length === 0) {
