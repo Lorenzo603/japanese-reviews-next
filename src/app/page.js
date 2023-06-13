@@ -31,7 +31,6 @@ export default function Home() {
   const [selectedLevel, _setSelectedLevel] = useState(1);
   const setSelectedLevel = (newLastSelectedLevel) => {
     _setSelectedLevel(newLastSelectedLevel);
-    console.log('Updating...', newLastSelectedLevel);
     fetch('/api/accounts', {
       method: 'POST',
       headers: {
@@ -40,7 +39,7 @@ export default function Home() {
       body: JSON.stringify({newLastSelectedLevel: newLastSelectedLevel})
     })
       .then((res) => {
-        console.log('fetching POST result:', res.status);
+        console.log('POST last selected level response status:', res.status);
         res.json();
       })
   }
@@ -59,7 +58,7 @@ export default function Home() {
     fetch('/api/accounts')
       .then((res) => res.json())
       .then((data) => {
-        console.log('fetching GET result:', data);
+        console.log('GET last selected level:', data);
         setSelectedLevel(Number(data[0].last_selected_level));
       })
 

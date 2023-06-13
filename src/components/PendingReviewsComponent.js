@@ -3,20 +3,18 @@ import { useEffect, useState } from 'react';
 
 export const PendingReviewsComponent = () => {
 
-    const [pendingReviews, setPendingReviews] = useState(0);
+    const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
     const [nextUnlock, setNextUnlock] = useState(null);
-    const [upcomingReviews, setUpcomingReviews] = useState(0);
+    const [upcomingReviewsCount, setUpcomingReviewsCount] = useState(0);
 
-    function findClosestNextDate(arr) {
-        let closestNextDate = arr[0].unlock_date;
 
-        for (let i = 1; i < arr.length; i++) {
-            if (arr[i].unlock_date < closestNextDate) {
-                closestNextDate = arr[i].unlock_date;
-            }
-        }
+    function convertDateStringToDate(array) {
+        const convertedArray = array.map(obj => {
+            const unlock_date = new Date(obj.unlock_date);
+            return { ...obj, unlock_date };
+        });
 
-        return closestNextDate;
+        return convertedArray;
     }
 
     function formatDate(dateString) {
@@ -36,22 +34,34 @@ export const PendingReviewsComponent = () => {
         return `${formattedDate} - ${formattedTime}h`;
     }
 
-    function getPendingReviewsCount(arr) {
-        const today = new Date();
-        const filteredArray = arr.filter((obj) => obj.unlock_date < today);
-        return filteredArray.length;
+    function findClosestNextDate(arr) {
+        if (arr.length === 0) {
+            return "None!";
+        }
+        let closestNextDate = arr[0].unlock_date;
+
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i].unlock_date < closestNextDate) {
+                closestNextDate = arr[i].unlock_date;
+            }
+        }
+
+        return formatDate(closestNextDate);
     }
 
     useEffect(() => {
         fetch('/api/accounts')
             .then((res) => res.json())
             .then((data) => {
-                console.log('fetching GET review result:', data);
-                const reviews = data[0].reviews;
+                console.log('GET pending reviews:', data);
+                const reviews = convertDateStringToDate(data[0].reviews);
 
-                setPendingReviews(getPendingReviewsCount(reviews));
-                setNextUnlock(formatDate(findClosestNextDate(reviews)));
-                setUpcomingReviews(reviews.length);
+                const now = new Date();
+                const pendingReviews = reviews.filter((review) => review.unlock_date < now);
+                const upcomingReviews = reviews.filter((review) => review.unlock_date > now);
+                setPendingReviewsCount(pendingReviews.length);
+                setNextUnlock(findClosestNextDate(upcomingReviews));
+                setUpcomingReviewsCount(upcomingReviews.length);
 
             })
 
@@ -62,13 +72,13 @@ export const PendingReviewsComponent = () => {
     return (
         <Row className="justify-content-center">
             <Col className="col-4">
-                <Button type='submit'>Pending reviews: {pendingReviews}</Button>
+                <Button type='submit'>Pending reviews: {pendingReviewsCount}</Button>
             </Col>
             <Col className="col-4">
                 Next Unlock: {nextUnlock}
             </Col>
             <Col className="col-4">
-                Upcoming reviews: {upcomingReviews}
+                Upcoming reviews: {upcomingReviewsCount}
             </Col>
         </Row>
     );
