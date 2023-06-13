@@ -72,7 +72,9 @@ export const PendingReviewsComponent = () => {
     return (
         <Row className="justify-content-center">
             <Col className="col-4">
-                <Button type='submit'>Pending reviews: {pendingReviewsCount}</Button>
+                <Button className="pending-reviews-button" disabled={pendingReviewsCount == 0}>
+                    Pending reviews: {pendingReviewsCount}
+                </Button>
             </Col>
             <Col className="col-4">
                 Next Unlock: {nextUnlock}

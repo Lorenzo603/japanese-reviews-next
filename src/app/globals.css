@@ -172,6 +172,16 @@ button.start-quiz-button {
 }
 
 /**********/
+/* Reviews
+/**********/
+button.pending-reviews-button:disabled {
+  background-color: gray;
+  border: none;
+  outline: 0 none;
+}
+
+
+/**********/
 /* Level Select
 /**********/
 
