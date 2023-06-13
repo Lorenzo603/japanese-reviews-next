@@ -1,4 +1,5 @@
 import { Col, Row, Form, Button, Popover, OverlayTrigger, Tab, Tabs } from 'react-bootstrap';
+import { PendingReviewsComponent } from './PendingReviewsComponent';
 import { RadioSelectModeComponent } from './RadioSelectModeComponent';
 import { SelectionOption } from './SelectionOptionComponent';
 import { GuessMode } from '../app/GuessMode'
@@ -70,6 +71,7 @@ export const SelectSettings = (props) => {
     return (
         <Row>
             <Col className='AppBody'>
+                <PendingReviewsComponent />
                 <RadioSelectModeComponent config={selectModeOptions} />
                 <Row className='select-title'>
                     <Col>
