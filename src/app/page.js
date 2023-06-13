@@ -87,11 +87,12 @@ export default function Home() {
         }
         break;
       case "review":
-        const elementIds = event.target.getAttribute('data-review-set');
+        const elementIds = event.target.getAttribute('data-review-set').split(',').map(elementId => Number(elementId));
         console.log("element ids:", elementIds);
         const selectedKanji = fullKanjiDictionary.filter(kanji => elementIds.includes(kanji['id']));
         const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
         selectedSet = selectedKanji.concat(selectedVocabulary);
+        console.log("selectedSet:", selectedSet);
         setReviewMode(true);
         break;
       default:
