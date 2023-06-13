@@ -18,7 +18,7 @@ export async function POST(request) {
         .updateOne(
             { "name": "Lorenzo" }, {
             $set: {
-                "lastSelectedLevel": reqJson["newLevel"]
+                "last_selected_level": reqJson["newLastSelectedLevel"]
             }
         });
     return NextResponse.json(response);

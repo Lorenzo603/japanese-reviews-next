@@ -9,7 +9,7 @@ export const MongoDbTestComponent = () => {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
-                setLastSelectedLevel(Number(data[0].lastSelectedLevel));
+                setLastSelectedLevel(Number(data[0].last_selected_level));
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

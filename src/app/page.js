@@ -29,15 +29,15 @@ export default function Home() {
   const [quizSet, setQuizSet] = useState(QuizSet.KANJI);
   // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
   const [selectedLevel, _setSelectedLevel] = useState(1);
-  const setSelectedLevel = (newLevel) => {
-    _setSelectedLevel(newLevel);
-    console.log('Updating...', newLevel);
+  const setSelectedLevel = (newLastSelectedLevel) => {
+    _setSelectedLevel(newLastSelectedLevel);
+    console.log('Updating...', newLastSelectedLevel);
     fetch('/api/accounts', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({newLevel: newLevel})
+      body: JSON.stringify({newLastSelectedLevel: newLastSelectedLevel})
     })
       .then((res) => {
         console.log('fetching POST result:', res.status);
@@ -60,7 +60,7 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         console.log('fetching GET result:', data);
-        setSelectedLevel(Number(data[0].lastSelectedLevel));
+        setSelectedLevel(Number(data[0].last_selected_level));
       })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
