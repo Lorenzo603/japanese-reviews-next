@@ -71,7 +71,7 @@ export const SelectSettings = (props) => {
     return (
         <Row>
             <Col className='AppBody'>
-                <PendingReviewsComponent />
+                <PendingReviewsComponent handleSetSelection={props.handleSetSelection}/>
                 <RadioSelectModeComponent config={selectModeOptions} />
                 <Row className='select-title'>
                     <Col>

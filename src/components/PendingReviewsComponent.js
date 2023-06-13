@@ -1,12 +1,12 @@
 import { Col, Row, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 
-export const PendingReviewsComponent = () => {
+export const PendingReviewsComponent = (props) => {
 
     const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
     const [nextUnlock, setNextUnlock] = useState(null);
     const [upcomingReviewsCount, setUpcomingReviewsCount] = useState(0);
-
+    const [reviewSet, setReviewSet] = useState([]);
 
     function convertDateStringToDate(array) {
         const convertedArray = array.map(obj => {
@@ -63,6 +63,7 @@ export const PendingReviewsComponent = () => {
                 setNextUnlock(findClosestNextDate(upcomingReviews));
                 setUpcomingReviewsCount(upcomingReviews.length);
 
+                setReviewSet(pendingReviews.map(review => review.element_id));
             })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +73,9 @@ export const PendingReviewsComponent = () => {
     return (
         <Row className="justify-content-center">
             <Col className="col-4">
-                <Button className="pending-reviews-button" disabled={pendingReviewsCount == 0}>
+                <Button className="pending-reviews-button" disabled={pendingReviewsCount == 0}
+                    data-option='review' data-review-set={reviewSet}
+                    onClick={props.handleSetSelection}>
                     Pending reviews: {pendingReviewsCount}
                 </Button>
             </Col>

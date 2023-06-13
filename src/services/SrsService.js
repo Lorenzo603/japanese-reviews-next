@@ -11,7 +11,45 @@ const srsLevelToWaitingTimeMap = {
     9: (100 * 12 * 4 * 7 * 24 * 60 * 60 * 1000), // Forever
 };
 
-export const calculateUnlockDate = (srsLevel) => {
+function calculateUnlockDate(srsLevel) {
     const now = new Date();
     return new Date(now.getTime() + srsLevelToWaitingTimeMap[srsLevel]);
+}
+
+export const updateSrsWrongAnswer = async (elementId) => {
+    const accountInfo = await (await fetch('/api/accounts')).json();
+    const currentReviewArr = accountInfo[0].reviews.filter((review) => review.element_id === elementId)
+    const isReviewExisting = currentReviewArr.length > 0;
+    if (isReviewExisting) {
+        const currentReview = currentReviewArr[0];
+        sendPost('/api/accounts/reviews/update', elementId, Math.max(1, currentReview.current_srs_stage - 2));
+    } else {
+        sendPost('/api/accounts/reviews', elementId, 1);
+    }
+
+}
+
+export const updateSrsCorrectAnswer = async (elementId) => {
+    const accountInfo = await (await fetch('/api/accounts')).json();
+    const currentReviewArr = accountInfo[0].reviews.filter((review) => review.element_id === elementId)
+    const currentReview = currentReviewArr[0];
+    sendPost('/api/accounts/reviews/update', elementId, Math.min(9, currentReview.current_srs_stage + 1));
+}
+
+function sendPost(url, elementId, currentSrsStage) {
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            element_id: elementId,
+            current_srs_stage: currentSrsStage,
+            unlock_date: calculateUnlockDate(currentSrsStage)
+        })
+    })
+        .then((res) => {
+            console.log('Adding/updating element to reviews result:', res.status);
+            res.json();
+        })
 }

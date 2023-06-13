@@ -36,13 +36,14 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({newLastSelectedLevel: newLastSelectedLevel})
+      body: JSON.stringify({ newLastSelectedLevel: newLastSelectedLevel })
     })
       .then((res) => {
         console.log('POST last selected level response status:', res.status);
         res.json();
       })
   }
+  const [reviewMode, setReviewMode] = useState(false);
 
 
   useEffect(() => {
@@ -66,6 +67,7 @@ export default function Home() {
   }, []);
 
   function handleSetSelection(event) {
+    setReviewMode(false);
     const dataOption = event.target.getAttribute('data-option');
     let selectedSet = [];
     switch (dataOption) {
@@ -83,6 +85,14 @@ export default function Home() {
           selectedSet = fullVocabularyDictionary
             .filter(vocab => vocab['data']['level'] === Number(selectedLevel));
         }
+        break;
+      case "review":
+        const elementIds = event.target.getAttribute('data-review-set');
+        console.log("element ids:", elementIds);
+        const selectedKanji = fullKanjiDictionary.filter(kanji => elementIds.includes(kanji['id']));
+        const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
+        selectedSet = selectedKanji.concat(selectedVocabulary);
+        setReviewMode(true);
         break;
       default:
         selectedSet = fullKanjiDictionary
@@ -125,7 +135,7 @@ export default function Home() {
               appState === AppState.SELECT_MODE
                 ? <SelectSettings handleGuessModeSelection={handleGuessModeSelection} handleQuizSetSelection={handleQuizSetSelection} handleSetSelection={handleSetSelection}
                   guessMode={guessMode} quizSet={quizSet} selectedLevel={selectedLevel} setSelectedLevel={setSelectedLevel} />
-                : <QuestionAnswerComponent kanjis={kanjiSet} resetHandler={handleResetEvent} guessMode={guessMode} quizSet={quizSet} />
+                : <QuestionAnswerComponent kanjis={kanjiSet} resetHandler={handleResetEvent} guessMode={guessMode} quizSet={quizSet} reviewMode={reviewMode} />
             }
           </Col>
         </Row>

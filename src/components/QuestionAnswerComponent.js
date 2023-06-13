@@ -3,7 +3,7 @@ import { Col, Form, Row, Button } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
 import { GuessMode } from '../app/GuessMode';
 import Confetti from 'react-dom-confetti';
-import { calculateUnlockDate } from '../services/SrsService';
+import { updateSrsWrongAnswer, updateSrsCorrectAnswer } from '../services/SrsService';
 import styles from '../app/page.module.css'
 var wanakana = require('wanakana');
 var stringSimilarity = require("string-similarity");
@@ -106,6 +106,9 @@ export const QuestionAnswerComponent = (props) => {
                 setAnswerResult(Result.CORRECT);
                 setTotalCorrect(totalCorrect + 1);
                 updateAnswerCount();
+                if (props.reviewMode === true) {
+                    updateSrsCorrectAnswer(kanjiPrompt["id"]);
+                }
             } else {
                 const answerContainsRomaji = (props.guessMode === GuessMode.GUESS_READING || props.guessMode === GuessMode.GUESS_KANJI)
                     && userAnswer.length > 0
@@ -119,7 +122,7 @@ export const QuestionAnswerComponent = (props) => {
                     setAnswerResult(Result.WRONG);
                     wrongAnswers.push(kanjiPrompt);
                     updateAnswerCount();
-                    addElementToReviews(kanjiPrompt["id"]);
+                    updateSrsWrongAnswer(kanjiPrompt["id"]);
                 }
             }
         } else {
@@ -132,25 +135,6 @@ export const QuestionAnswerComponent = (props) => {
     function updateAnswerCount() {
         setAnswerState(AnswerState.ANSWERED);
         setTotalAnswers(totalAnswers + 1);
-    }
-
-    function addElementToReviews(elementId) {
-        fetch('/api/accounts/reviews', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ 
-                elementId: elementId,
-                num_incorrect_answers: 1,
-                current_srs_stage: 1,
-                unlock_date: calculateUnlockDate(1)
-            })
-        })
-            .then((res) => {
-                console.log('Adding element to reviews result:', res.status);
-                res.json();
-            })
     }
 
     function shakeInputField() {
