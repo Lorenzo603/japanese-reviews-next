@@ -18,7 +18,7 @@ export default function Home() {
 
   const fullKanjiDictionary = [];
   const fullVocabularyDictionary = [];
-  const {kanjiSet, setKanjiSet} = useQuizContext();
+  const {kanjiSet, setKanjiSet, guessMode, setGuessMode, reviewMode, setReviewMode} = useQuizContext();
 
   useEffect(() => {
     if (fullKanjiDictionary.length === 0) {
@@ -35,7 +35,8 @@ export default function Home() {
 
   function handleSetSelection(event) {
     event.preventDefault();
-    let reviewMode = false;
+    setGuessMode(event.target.getAttribute('data-guess-mode'));
+    setReviewMode(false);
     const dataOption = event.target.getAttribute('data-option');
     let selectedSet = [];
     switch (dataOption) {
@@ -62,8 +63,9 @@ export default function Home() {
         const selectedKanji = fullKanjiDictionary.filter(kanji => elementIds.includes(kanji['id']));
         const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
         selectedSet = selectedKanji.concat(selectedVocabulary);
-        console.log("selectedSet:", selectedSet);
-        reviewMode = true;
+        // console.log("selectedSet:", selectedSet);
+        // setGuessMode(); // TODO both guess mode.
+        setReviewMode(true);
         break;
       default:
         selectedSet = fullKanjiDictionary
@@ -72,6 +74,7 @@ export default function Home() {
         break;
     }
 
+    
     setKanjiSet(JSON.stringify(selectedSet));
     router.push('/quiz');
 

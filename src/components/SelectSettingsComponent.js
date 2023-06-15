@@ -133,7 +133,7 @@ export const SelectSettings = (props) => {
                                 <Row className='mt-4 justify-content-center'>
                                     <Col className="col-4">
                                         <Form onSubmit={props.handleSetSelection} data-option={'level'} 
-                                        data-selected-level={selectedLevel} data-quiz-set={quizSet}>
+                                        data-selected-level={selectedLevel} data-quiz-set={quizSet} data-guess-mode={guessMode}>
                                             <Row className='justify-content-center align-items-center'>
                                                 <Col className="level-label">
                                                     Level:
