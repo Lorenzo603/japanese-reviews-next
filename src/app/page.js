@@ -2,49 +2,23 @@
 
 import { SSRProvider } from 'react-bootstrap';
 import { Col, Container, Row } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
 import kanjiRaw from './kanji_full.json';
 import vocabularyRaw from './vocabulary_full.json';
 import { loadDictionary } from './DictionaryLoader';
 import { SelectSettings } from '../components/SelectSettingsComponent';
-import { QuestionAnswerComponent } from '../components/QuestionAnswerComponent';
-import { GuessMode } from './GuessMode'
-import { QuizSet } from './QuizSet'
-// import { useLocalStorage } from "./useLocalStorage";
-import Image from 'next/image'
 import styles from './page.module.css'
+import { useEffect } from 'react';
+import QuizSet from './QuizSet';
+import { useRouter } from 'next/navigation';
+import { useQuizContext } from './context/quizContext';
 
 export default function Home() {
 
-  const AppState = {
-    SELECT_MODE: 0,
-    QUESTION_ANSWER: 1,
-  };
+  const router = useRouter();
 
-  const [appState, setAppState] = useState(AppState.SELECT_MODE);
-  const [fullKanjiDictionary] = useState([]);
-  const [fullVocabularyDictionary] = useState([]);
-  const [kanjiSet, setKanjiSet] = useState([]);
-  const [guessMode, setGuessMode] = useState(GuessMode.GUESS_MEANING);
-  const [quizSet, setQuizSet] = useState(QuizSet.KANJI);
-  // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
-  const [selectedLevel, _setSelectedLevel] = useState(1);
-  const setSelectedLevel = (newLastSelectedLevel) => {
-    _setSelectedLevel(newLastSelectedLevel);
-    fetch('/api/accounts', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ newLastSelectedLevel: newLastSelectedLevel })
-    })
-      .then((res) => {
-        console.log('POST last selected level response status:', res.status);
-        res.json();
-      })
-  }
-  const [reviewMode, setReviewMode] = useState(false);
-
+  const fullKanjiDictionary = [];
+  const fullVocabularyDictionary = [];
+  const {kanjiSet, setKanjiSet} = useQuizContext();
 
   useEffect(() => {
     if (fullKanjiDictionary.length === 0) {
@@ -56,18 +30,12 @@ export default function Home() {
       console.log('Loaded', fullVocabularyDictionary.length, 'vocabs in the dictionary');
     }
 
-    fetch('/api/accounts')
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('GET last selected level:', data);
-        setSelectedLevel(Number(data[0].last_selected_level));
-      })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
   function handleSetSelection(event) {
-    setReviewMode(false);
+    event.preventDefault();
+    let reviewMode = false;
     const dataOption = event.target.getAttribute('data-option');
     let selectedSet = [];
     switch (dataOption) {
@@ -78,12 +46,14 @@ export default function Home() {
         selectedSet = fullKanjiDictionary;
         break;
       case "level":
+        const selectedLevel = Number(event.target.getAttribute('data-selected-level'));
+        const quizSet = Number(event.target.getAttribute('data-quiz-set'));
         if (quizSet === QuizSet.KANJI) {
           selectedSet = fullKanjiDictionary
-            .filter(kanji => kanji['data']['level'] === Number(selectedLevel));
+            .filter(kanji => kanji['data']['level'] === selectedLevel);
         } else {
           selectedSet = fullVocabularyDictionary
-            .filter(vocab => vocab['data']['level'] === Number(selectedLevel));
+            .filter(vocab => vocab['data']['level'] === selectedLevel);
         }
         break;
       case "review":
@@ -93,7 +63,7 @@ export default function Home() {
         const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
         selectedSet = selectedKanji.concat(selectedVocabulary);
         console.log("selectedSet:", selectedSet);
-        setReviewMode(true);
+        reviewMode = true;
         break;
       default:
         selectedSet = fullKanjiDictionary
@@ -102,45 +72,21 @@ export default function Home() {
         break;
     }
 
-    setKanjiSet(selectedSet);
-    setAppState(AppState.QUESTION_ANSWER);
-  }
+    setKanjiSet(JSON.stringify(selectedSet));
+    router.push('/quiz');
 
-  function handleResetEvent() {
-    setAppState(AppState.SELECT_MODE);
   }
-
-  const guessModeMap = {
-    "guess-meaning": GuessMode.GUESS_MEANING,
-    "guess-reading": GuessMode.GUESS_READING,
-    "guess-kanji": GuessMode.GUESS_KANJI,
-  }
-
-  const handleGuessModeSelection = (event) => {
-    const selectedId = event.target.getAttribute('id');
-    setGuessMode(guessModeMap[selectedId]);
-  }
-
-  const handleQuizSetSelection = (event) => {
-    const selectedId = event.target.getAttribute('id');
-    setQuizSet(selectedId === 'kanji-set' ? QuizSet.KANJI : QuizSet.VOCABULARY);
-  }
-
 
   return (
     <SSRProvider>
       <Container fluid className='App'>
         <Row>
           <Col className='AppBody'>
-            {
-              appState === AppState.SELECT_MODE
-                ? <SelectSettings handleGuessModeSelection={handleGuessModeSelection} handleQuizSetSelection={handleQuizSetSelection} handleSetSelection={handleSetSelection}
-                  guessMode={guessMode} quizSet={quizSet} selectedLevel={selectedLevel} setSelectedLevel={setSelectedLevel} />
-                : <QuestionAnswerComponent kanjis={kanjiSet} resetHandler={handleResetEvent} guessMode={guessMode} quizSet={quizSet} reviewMode={reviewMode} />
-            }
+            <SelectSettings handleSetSelection={handleSetSelection} />
           </Col>
         </Row>
       </Container>
     </SSRProvider>
+
   )
 }

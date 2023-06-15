@@ -1,3 +1,5 @@
+'use client'
+
 import { Col, Row, Form, Button, Popover, OverlayTrigger, Tab, Tabs } from 'react-bootstrap';
 import { PendingReviewsComponent } from './PendingReviewsComponent';
 import { RadioSelectModeComponent } from './RadioSelectModeComponent';
@@ -5,11 +7,47 @@ import { SelectionOption } from './SelectionOptionComponent';
 import { GuessMode } from '../app/GuessMode'
 import { QuizSet } from '../app/QuizSet'
 import styles from '../app/page.module.css'
+import { useEffect, useState } from 'react';
+// import { useLocalStorage } from "./useLocalStorage";
 
 export const SelectSettings = (props) => {
 
+    const [quizSet, setQuizSet] = useState(QuizSet.KANJI);
+    const [guessMode, setGuessMode] = useState(GuessMode.GUESS_MEANING);
+    const guessModeMap = {
+        "guess-meaning": GuessMode.GUESS_MEANING,
+        "guess-reading": GuessMode.GUESS_READING,
+        "guess-kanji": GuessMode.GUESS_KANJI,
+    }
+    // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
+    const [selectedLevel, _setSelectedLevel] = useState(1);
+    const setSelectedLevel = (newLastSelectedLevel) => {
+        _setSelectedLevel(newLastSelectedLevel);
+        fetch('/api/accounts', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ newLastSelectedLevel: newLastSelectedLevel })
+        })
+            .then((res) => {
+                console.log('POST last selected level response status:', res.status);
+                res.json();
+            })
+    }
+
+    const handleGuessModeSelection = (event) => {
+        const selectedId = event.target.getAttribute('id');
+        setGuessMode(guessModeMap[selectedId]);
+    }
+
+    const handleQuizSetSelection = (event) => {
+        const selectedId = event.target.getAttribute('id');
+        setQuizSet(selectedId === 'kanji-set' ? QuizSet.KANJI : QuizSet.VOCABULARY);
+    }
+
     function handleLevelNumberClick(index) {
-        props.setSelectedLevel(index);
+        setSelectedLevel(index);
         document.body.click();
     }
 
@@ -31,47 +69,56 @@ export const SelectSettings = (props) => {
 
     const selectModeOptions = {
         "title": "Select Mode:",
-        "onClickHandler": props.handleGuessModeSelection,
+        "onClickHandler": handleGuessModeSelection,
         "options": [
             {
                 "id": "guess-meaning",
                 "label": "Guess Meaning",
-                "isChecked": () => { return props.guessMode === GuessMode.GUESS_MEANING },
+                "isChecked": () => { return guessMode === GuessMode.GUESS_MEANING },
             },
             {
                 "id": "guess-reading",
                 "label": "Guess Reading",
-                "isChecked": () => { return props.guessMode === GuessMode.GUESS_READING },
+                "isChecked": () => { return guessMode === GuessMode.GUESS_READING },
             },
             {
                 "id": "guess-kanji",
                 "label": "Guess Kanji",
-                "isChecked": () => { return props.guessMode === GuessMode.GUESS_KANJI },
+                "isChecked": () => { return guessMode === GuessMode.GUESS_KANJI },
             },
         ],
     };
 
     const selectQuizSetOptions = {
         "title": "",
-        "onClickHandler": props.handleQuizSetSelection,
+        "onClickHandler": handleQuizSetSelection,
         "options": [
             {
                 "id": "kanji-set",
                 "label": "Kanjis",
-                "isChecked": () => { return props.quizSet === QuizSet.KANJI },
+                "isChecked": () => { return quizSet === QuizSet.KANJI },
             },
             {
                 "id": "vocabulary-set",
                 "label": "Vocab",
-                "isChecked": () => { return props.quizSet === QuizSet.VOCABULARY },
+                "isChecked": () => { return quizSet === QuizSet.VOCABULARY },
             },
         ],
     };
 
+    useEffect(() => {
+        fetch('/api/accounts')
+            .then((res) => res.json())
+            .then((data) => {
+                console.log('GET last selected level:', data);
+                setSelectedLevel(Number(data[0].last_selected_level));
+            })
+    }, []);
+
     return (
         <Row>
             <Col className='AppBody'>
-                <PendingReviewsComponent handleSetSelection={props.handleSetSelection}/>
+                <PendingReviewsComponent handleSetSelection={props.handleSetSelection} />
                 <RadioSelectModeComponent config={selectModeOptions} />
                 <Row className='select-title'>
                     <Col>
@@ -85,14 +132,15 @@ export const SelectSettings = (props) => {
                                 <RadioSelectModeComponent config={selectQuizSetOptions} />
                                 <Row className='mt-4 justify-content-center'>
                                     <Col className="col-4">
-                                        <Form onSubmit={props.handleSetSelection} data-option={'level'}>
+                                        <Form onSubmit={props.handleSetSelection} data-option={'level'} 
+                                        data-selected-level={selectedLevel} data-quiz-set={quizSet}>
                                             <Row className='justify-content-center align-items-center'>
                                                 <Col className="level-label">
                                                     Level:
                                                 </Col>
                                                 <Col>
                                                     <OverlayTrigger variant="dark" trigger="click" placement="right" rootClose="true" overlay={popover}>
-                                                        <Button className='selectedLevel'>{props.selectedLevel}</Button>
+                                                        <Button className='selectedLevel'>{selectedLevel}</Button>
                                                     </OverlayTrigger>
                                                 </Col>
                                             </Row>

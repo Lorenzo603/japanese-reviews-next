@@ -5,6 +5,7 @@ import { GuessMode } from '../app/GuessMode';
 import Confetti from 'react-dom-confetti';
 import { updateSrsWrongAnswer, updateSrsCorrectAnswer } from '../services/SrsService';
 import styles from '../app/page.module.css'
+import Link from 'next/link';
 var wanakana = require('wanakana');
 var stringSimilarity = require("string-similarity");
 
@@ -69,6 +70,7 @@ export const QuestionAnswerComponent = (props) => {
                 wanakana.bind(answerInputElement);
             }
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -213,8 +215,8 @@ export const QuestionAnswerComponent = (props) => {
                     </Row>
                     <Row>
                         <Col>
-                            <Button onClick={props.resetHandler}>
-                                Go back
+                            <Button>
+                                <Link href="/">Go back</Link>    
                             </Button>
                         </Col>
                     </Row>

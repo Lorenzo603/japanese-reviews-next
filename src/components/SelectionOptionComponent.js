@@ -1,3 +1,5 @@
+'use client'
+
 import { Col, Row, Button } from 'react-bootstrap';
 
 export const SelectionOption = (props) => {
