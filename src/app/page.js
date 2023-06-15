@@ -4,19 +4,18 @@ import { SSRProvider } from 'react-bootstrap';
 import { Col, Container, Row } from 'react-bootstrap';
 import { SelectSettings } from '../components/SelectSettingsComponent';
 import styles from './page.module.css'
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import QuizSet from './QuizSet';
 import { useRouter } from 'next/navigation';
 import { useQuizContext } from './context/quizContext';
+import { useDictionaryContext } from './context/dictionaryContext';
 
 
 export default function Home() {
 
   const router = useRouter();
 
-
-  let fullKanjiDictionary = []
-  let fullVocabularyDictionary = [];
+  const { fullKanjiDictionary, fullVocabularyDictionary } = useDictionaryContext();
 
   useEffect(() => {
     const loadDictionaries = (dictionaryId, callback) => {
@@ -27,14 +26,14 @@ export default function Home() {
 
     if (fullKanjiDictionary.length === 0) {
       loadDictionaries('kanji_full', (data) => {
-        fullKanjiDictionary = JSON.parse(data);
+        fullKanjiDictionary.push(...JSON.parse(data));
         console.log('Loaded', fullKanjiDictionary.length, 'kanjis in the dictionary');
       });
     }
   
     if (fullVocabularyDictionary.length === 0) {
       loadDictionaries('vocabulary_full', (data) => {
-        fullVocabularyDictionary = JSON.parse(data);
+        fullVocabularyDictionary.push(...JSON.parse(data));
         console.log('Loaded', fullVocabularyDictionary.length, 'vocabs in the dictionary');
       });
     }
