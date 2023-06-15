@@ -13,7 +13,7 @@ export default function QuizPage() {
             <Container fluid className='App'>
                 <Row>
                     <Col className='AppBody'>
-                        <QuestionAnswerComponent kanjis={JSON.parse(kanjiSet)} guessMode={guessMode} reviewMode={reviewMode} />
+                        <QuestionAnswerComponent kanjis={JSON.parse(kanjiSet)} guessMode={Number(guessMode)} reviewMode={reviewMode} />
                     </Col>
                 </Row>
             </Container>

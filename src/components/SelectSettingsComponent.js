@@ -1,13 +1,14 @@
 'use client'
 
-import { Col, Row, Form, Button, Popover, OverlayTrigger, Tab, Tabs } from 'react-bootstrap';
+import { Col, Row, Form, Button, Tab, Tabs } from 'react-bootstrap';
 import { PendingReviewsComponent } from './PendingReviewsComponent';
 import { RadioSelectModeComponent } from './RadioSelectModeComponent';
 import { SelectionOption } from './SelectionOptionComponent';
 import { GuessMode } from '../app/GuessMode'
 import { QuizSet } from '../app/QuizSet'
 import styles from '../app/page.module.css'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { SelectLevel } from './SelectLevelComponent';
 // import { useLocalStorage } from "./useLocalStorage";
 
 export const SelectSettings = (props) => {
@@ -20,21 +21,8 @@ export const SelectSettings = (props) => {
         "guess-kanji": GuessMode.GUESS_KANJI,
     }
     // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
-    const [selectedLevel, _setSelectedLevel] = useState(1);
-    const setSelectedLevel = (newLastSelectedLevel) => {
-        _setSelectedLevel(newLastSelectedLevel);
-        fetch('/api/accounts', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ newLastSelectedLevel: newLastSelectedLevel })
-        })
-            .then((res) => {
-                console.log('POST last selected level response status:', res.status);
-                res.json();
-            })
-    }
+    const [selectedLevel, setSelectedLevel] = useState(1);
+    
 
     const handleGuessModeSelection = (event) => {
         const selectedId = event.target.getAttribute('id');
@@ -46,26 +34,9 @@ export const SelectSettings = (props) => {
         setQuizSet(selectedId === 'kanji-set' ? QuizSet.KANJI : QuizSet.VOCABULARY);
     }
 
-    function handleLevelNumberClick(index) {
-        setSelectedLevel(index);
-        document.body.click();
+    const handleLevelSelect = (level) => {
+        setSelectedLevel(level);
     }
-
-    const popover = (
-        <Popover id="popover-basic">
-            <Popover.Body>
-                <Row>
-                    {Array.from({ length: 61 }, (_, i) => i + 1).map(index => {
-                        return (
-                            <Col key={'level-number-' + index} className='col-2 level-number'>
-                                <Button onClick={() => { handleLevelNumberClick(index); }}>{index}</Button>
-                            </Col>
-                        );
-                    })}
-                </Row>
-            </Popover.Body>
-        </Popover>
-    );
 
     const selectModeOptions = {
         "title": "Select Mode:",
@@ -106,15 +77,6 @@ export const SelectSettings = (props) => {
         ],
     };
 
-    useEffect(() => {
-        fetch('/api/accounts')
-            .then((res) => res.json())
-            .then((data) => {
-                console.log('GET last selected level:', data);
-                setSelectedLevel(Number(data[0].last_selected_level));
-            })
-    }, []);
-
     return (
         <Row>
             <Col className='AppBody'>
@@ -139,9 +101,7 @@ export const SelectSettings = (props) => {
                                                     Level:
                                                 </Col>
                                                 <Col>
-                                                    <OverlayTrigger variant="dark" trigger="click" placement="right" rootClose="true" overlay={popover}>
-                                                        <Button className='selectedLevel'>{selectedLevel}</Button>
-                                                    </OverlayTrigger>
+                                                    <SelectLevel handleLevelSelect={handleLevelSelect}/>
                                                 </Col>
                                             </Row>
                                             <Row>
