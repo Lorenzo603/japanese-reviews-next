@@ -18,20 +18,27 @@ export default function Home() {
   let fullKanjiDictionary = []
   let fullVocabularyDictionary = [];
 
-  const loadDictionaries = (dictionaryId, callback) => {
-    fetch('/api/dictionary/' + dictionaryId)
-      .then((res) => res.json())
-      .then(callback);
-  }
+  useEffect(() => {
+    const loadDictionaries = (dictionaryId, callback) => {
+      fetch('/api/dictionary/' + dictionaryId)
+        .then((res) => res.json())
+        .then(callback);
+    }
 
-  loadDictionaries('kanji_full', (data) => {
-    fullKanjiDictionary = JSON.parse(data);
-    console.log('Loaded', fullKanjiDictionary.length, 'kanjis in the dictionary');
-  });
-  loadDictionaries('vocabulary_full', (data) => {
-    fullVocabularyDictionary = JSON.parse(data);
-    console.log('Loaded', fullVocabularyDictionary.length, 'vocabs in the dictionary');
-  });
+    if (fullKanjiDictionary.length === 0) {
+      loadDictionaries('kanji_full', (data) => {
+        fullKanjiDictionary = JSON.parse(data);
+        console.log('Loaded', fullKanjiDictionary.length, 'kanjis in the dictionary');
+      });
+    }
+  
+    if (fullVocabularyDictionary.length === 0) {
+      loadDictionaries('vocabulary_full', (data) => {
+        fullVocabularyDictionary = JSON.parse(data);
+        console.log('Loaded', fullVocabularyDictionary.length, 'vocabs in the dictionary');
+      });
+    }
+  }, [])
 
 
   const { kanjiSet, setKanjiSet, guessMode, setGuessMode, reviewMode, setReviewMode } = useQuizContext();
