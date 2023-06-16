@@ -153,12 +153,14 @@ CUSTOM CSS
 button.btn-primary.select-mode-button {
   /* height: 5rem; */
   background-color: #282c34;
+  width: 100%;
 }
 
 button.btn-primary.select-mode-button-checked {
   /* height: 5rem; */
   background-color: #282c34;
   border-color: #0d6efd;
+  width: 100%;
 }
 
 button.start-quiz-button {
@@ -167,6 +169,11 @@ button.start-quiz-button {
 
 button.btn-primary.selected-set-button-checked {
   background-color: #0d6efd;
+  width: 100%;
+}
+
+button.btn-primary.selected-set-button {
+  width: 100%;
 }
 
 /**********/

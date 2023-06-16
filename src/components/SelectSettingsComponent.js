@@ -86,11 +86,11 @@ export const SelectSettings = (props) => {
                     Select Set:
                 </Col>
                 <Col className='col-2'>
-                    <Button className={selectedSet === 'select-level' ? 'selected-set-button-checked' : ''} 
+                    <Button className={selectedSet === 'select-level' ? 'selected-set-button-checked' : 'selected-set-button'} 
                         onClick={() => { setSelectedSet('select-level') }}>Select Level</Button>
                 </Col>
                 <Col className='col-2'>
-                    <Button className={selectedSet === 'preconfigured-sets' ? 'selected-set-button-checked' : ''} 
+                    <Button className={selectedSet === 'preconfigured-sets' ? 'selected-set-button-checked' : 'selected-set-button'} 
                         onClick={() => { setSelectedSet('preconfigured-sets') }}>Preconfigured sets</Button>
                 </Col>
             </Row>
