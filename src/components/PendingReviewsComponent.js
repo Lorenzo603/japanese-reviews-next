@@ -76,7 +76,7 @@ export const PendingReviewsComponent = (props) => {
         <>
             <Row className="justify-content-center p-3">
                 <Col>
-                    <Button className="pending-reviews-button" disabled={pendingReviewsCount == 0}
+                    <Button className="start-quiz-button" disabled={pendingReviewsCount == 0}
                         data-option='review' data-review-set={reviewSet}
                         onClick={props.handleSetSelection}>
                         Pending reviews: {pendingReviewsCount}

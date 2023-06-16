@@ -98,7 +98,7 @@ export const SelectSettings = (props) => {
             {selectedSet == 'select-level' ?
                 <>
                     <RadioSelectModeComponent config={selectQuizSetOptions} />
-                    <Row className='mt-4 '>
+                    <Row className='align-items-center p-3'>
                         <Col className="col-4">
                             <Form onSubmit={props.handleSetSelection} data-option={'level'}
                                 data-selected-level={selectedLevel} data-quiz-set={quizSet} data-guess-mode={guessMode}>
@@ -111,7 +111,7 @@ export const SelectSettings = (props) => {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col className='col-12 mt-4'>
+                                    <Col className='mt-4'>
                                         <Button type='submit' className='start-quiz-button'>Start Quiz</Button>
                                     </Col>
                                 </Row>
