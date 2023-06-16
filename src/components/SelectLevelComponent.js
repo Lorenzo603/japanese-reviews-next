@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from "react";
 import { Button, Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
 
@@ -19,9 +21,18 @@ export const SelectLevel = (props) => {
             })
     }
 
-    function handleLevelNumberClick(index) {
+    function updateLevelLocalOnly(index) {
+        _setLevel(index);
+        props.handleLevelSelect(index);
+    }
+
+    function updateLevelLocalAndRemote(index) {
         setLevel(index);
         props.handleLevelSelect(index);
+    }
+
+    function handleLevelNumberClick(index) {
+        updateLevelLocalAndRemote(index);
         document.body.click();
     }
 
@@ -46,7 +57,7 @@ export const SelectLevel = (props) => {
             .then((res) => res.json())
             .then((data) => {
                 console.log('GET last selected level:', data);
-                _setLevel(Number(data[0].last_selected_level));
+                updateLevelLocalOnly(Number(data[0].last_selected_level));
             })
     }, []);
 
