@@ -74,8 +74,8 @@ export const PendingReviewsComponent = (props) => {
 
     return (
         <>
-            <Row className="justify-content-center">
-                <Col className='p-3'>
+            <Row className="justify-content-center p-3">
+                <Col>
                     <Button className="pending-reviews-button" disabled={pendingReviewsCount == 0}
                         data-option='review' data-review-set={reviewSet}
                         onClick={props.handleSetSelection}>
@@ -83,13 +83,13 @@ export const PendingReviewsComponent = (props) => {
                     </Button>
                 </Col>
             </Row>
-            <Row className="justify-content-center">
-                <Col className='p-3'>
+            <Row className="justify-content-center p-3">
+                <Col>
                     Next Unlock: {nextUnlock}
                 </Col>
             </Row>
-            <Row className="justify-content-center">
-                <Col className='p-3'>
+            <Row className="justify-content-center p-3">
+                <Col>
                     Upcoming reviews: {upcomingReviewsCount}
                 </Col>
             </Row>

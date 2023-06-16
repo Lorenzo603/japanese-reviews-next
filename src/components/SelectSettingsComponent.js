@@ -81,7 +81,7 @@ export const SelectSettings = (props) => {
         <>
             <RadioSelectModeComponent config={selectModeOptions} />
 
-            <Row className='align-items-center'>
+            <Row className='align-items-center p-3'>
                 <Col className='col-2 select-title'>
                     Select Set:
                 </Col>
