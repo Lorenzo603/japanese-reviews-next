@@ -136,11 +136,6 @@ CUSTOM CSS
 
 .AppBody {
   min-height: 100vh;
-  /* display: flex; */
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
 }
 
 .hamburger-menu {
@@ -148,21 +143,20 @@ CUSTOM CSS
 }
 
 .select-title {
-  font-size: xx-large;
-  padding-top: 1.5rem;
-  padding-bottom: 1rem;
+  font-size: larger;
+  text-align: left;
 }
 
 /**********/
 /* Buttons
 /**********/
 button.btn-primary.select-mode-button {
-  height: 5rem;
+  /* height: 5rem; */
   background-color: #282c34;
 }
 
 button.btn-primary.select-mode-button-checked {
-  height: 5rem;
+  /* height: 5rem; */
   background-color: #282c34;
   border-color: #0d6efd;
 }
@@ -171,15 +165,21 @@ button.start-quiz-button {
   height: 4rem;
 }
 
+button.btn-primary.selected-set-button-checked {
+  background-color: #0d6efd;
+}
+
 /**********/
 /* Reviews
 /**********/
-button.pending-reviews-button:disabled {
+button.btn-primary.pending-reviews-button:disabled {
   background-color: gray;
-  border: none;
-  outline: 0 none;
+  border-radius: 0.5rem;
 }
-
+button.btn-primary.pending-reviews-button {
+  background-color: #0d6efd;
+  border-radius: 0.5rem;
+}
 
 /**********/
 /* Level Select

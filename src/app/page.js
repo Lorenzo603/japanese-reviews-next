@@ -9,6 +9,7 @@ import QuizSet from './QuizSet';
 import { useRouter } from 'next/navigation';
 import { useQuizContext } from './context/quizContext';
 import { useDictionaryContext } from './context/dictionaryContext';
+import PendingReviewsComponent from '@/components/PendingReviewsComponent';
 
 
 export default function Home() {
@@ -30,7 +31,7 @@ export default function Home() {
         console.log('Loaded', fullKanjiDictionary.length, 'kanjis in the dictionary');
       });
     }
-  
+
     if (fullVocabularyDictionary.length === 0) {
       loadDictionaries('vocabulary_full', (data) => {
         fullVocabularyDictionary.push(...JSON.parse(data));
@@ -94,7 +95,14 @@ export default function Home() {
       <Container fluid className='App'>
         <Row>
           <Col className='AppBody'>
-            <SelectSettings handleSetSelection={handleSetSelection} />
+            <Row className='justify-content-center'>
+              <Col className='col-8'>
+                <SelectSettings handleSetSelection={handleSetSelection} />
+              </Col>
+              <Col className='col-2'>
+                <PendingReviewsComponent handleSetSelection={handleSetSelection} />
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>

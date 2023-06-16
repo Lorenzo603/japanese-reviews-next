@@ -6,32 +6,29 @@ import { SelectModeButton } from './SelectModeButtonComponent';
 export const RadioSelectModeComponent = (props) => {
 
     return (
-        <Row>
-            <Col>
-                <Row className='select-title'>
-                    <Col>
-                        {props.config.title}
-                    </Col>
-                </Row>
-                <Row className='justify-content-center'>
-                    <Col className='col-4'>
-                        {
-                            props.config.options.map(
-                                option => {
-                                    return (
-                                        <SelectModeButton key={option.id}
-                                            id={option.id}
-                                            onClickHander={props.config.onClickHandler}
-                                            checked={option.isChecked()}>
-                                            {option.label}
-                                        </SelectModeButton>);
-                                }
-                            )
-                        }
-                    </Col>
-                </Row>
+
+        <Row className='align-items-center'>
+            <Col className='col-2 select-title'>
+                {props.config.title}
             </Col>
+            {
+                props.config.options.map(
+                    option => {
+                        return (
+                            <Col className='col-2'>
+                                <SelectModeButton key={option.id}
+                                    id={option.id}
+                                    onClickHander={props.config.onClickHandler}
+                                    checked={option.isChecked()}>
+                                    {option.label}
+                                </SelectModeButton>
+                            </Col>);
+                    }
+                )
+            }
+
         </Row>
+
     );
 }
 

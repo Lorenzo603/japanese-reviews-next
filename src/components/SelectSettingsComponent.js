@@ -1,7 +1,6 @@
 'use client'
 
 import { Col, Row, Form, Button, Tab, Tabs } from 'react-bootstrap';
-import { PendingReviewsComponent } from './PendingReviewsComponent';
 import { RadioSelectModeComponent } from './RadioSelectModeComponent';
 import { SelectionOption } from './SelectionOptionComponent';
 import { GuessMode } from '../app/GuessMode'
@@ -13,6 +12,7 @@ import { SelectLevel } from './SelectLevelComponent';
 
 export const SelectSettings = (props) => {
 
+    const [selectedSet, setSelectedSet] = useState('select-level');
     const [quizSet, setQuizSet] = useState(QuizSet.KANJI);
     const [guessMode, setGuessMode] = useState(GuessMode.GUESS_MEANING);
     const guessModeMap = {
@@ -22,7 +22,7 @@ export const SelectSettings = (props) => {
     }
     // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
     const [selectedLevel, setSelectedLevel] = useState(1);
-    
+
 
     const handleGuessModeSelection = (event) => {
         const selectedId = event.target.getAttribute('id');
@@ -61,7 +61,7 @@ export const SelectSettings = (props) => {
     };
 
     const selectQuizSetOptions = {
-        "title": "",
+        "title": "Select Quiz Set",
         "onClickHandler": handleQuizSetSelection,
         "options": [
             {
@@ -78,60 +78,62 @@ export const SelectSettings = (props) => {
     };
 
     return (
-        <Row>
-            <Col className='AppBody'>
-                <PendingReviewsComponent handleSetSelection={props.handleSetSelection} />
-                <RadioSelectModeComponent config={selectModeOptions} />
-                <Row className='select-title'>
-                    <Col>
-                        Select Set:
-                    </Col>
-                </Row>
-                <Row className='justify-content-center'>
-                    <Col className='col-4'>
-                        <Tabs variant="pills" justify>
-                            <Tab eventKey="level-select" title="Select Level">
-                                <RadioSelectModeComponent config={selectQuizSetOptions} />
-                                <Row className='mt-4 justify-content-center'>
-                                    <Col className="col-4">
-                                        <Form onSubmit={props.handleSetSelection} data-option={'level'} 
-                                        data-selected-level={selectedLevel} data-quiz-set={quizSet} data-guess-mode={guessMode}>
-                                            <Row className='justify-content-center align-items-center'>
-                                                <Col className="level-label">
-                                                    Level:
-                                                </Col>
-                                                <Col>
-                                                    <SelectLevel handleLevelSelect={handleLevelSelect}/>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col className='col-12 mt-4'>
-                                                    <Button type='submit' className='start-quiz-button'>Start Quiz</Button>
-                                                </Col>
-                                            </Row>
-                                        </Form>
-                                    </Col>
-                                </Row>
-                            </Tab>
-                            <Tab eventKey="preconfigured-set-select" title="Preconfigured sets">
-                                <Row className='mt-4'>
-                                    <Col>
-                                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt5'}>JLPT N5</SelectionOption>
-                                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt4'}>JLPT N4</SelectionOption>
-                                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt3'}>JLPT N3</SelectionOption>
-                                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt2'}>JLPT N2</SelectionOption>
-                                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full'}>Full Kanji Set</SelectionOption>
-                                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-vocab'}>Full Vocabulary Set</SelectionOption>
-                                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'test'}>Test</SelectionOption>
-                                    </Col>
-                                </Row>
-                            </Tab>
-                        </Tabs>
-                    </Col>
-                </Row>
+        <>
+            <RadioSelectModeComponent config={selectModeOptions} />
 
-            </Col>
-        </Row>
+            <Row className='align-items-center'>
+                <Col className='col-2 select-title'>
+                    Select Set:
+                </Col>
+                <Col className='col-2'>
+                    <Button className={selectedSet === 'select-level' ? 'selected-set-button-checked' : ''} 
+                        onClick={() => { setSelectedSet('select-level') }}>Select Level</Button>
+                </Col>
+                <Col className='col-2'>
+                    <Button className={selectedSet === 'preconfigured-sets' ? 'selected-set-button-checked' : ''} 
+                        onClick={() => { setSelectedSet('preconfigured-sets') }}>Preconfigured sets</Button>
+                </Col>
+            </Row>
+
+            {selectedSet == 'select-level' ?
+                <>
+                    <RadioSelectModeComponent config={selectQuizSetOptions} />
+                    <Row className='mt-4 '>
+                        <Col className="col-4">
+                            <Form onSubmit={props.handleSetSelection} data-option={'level'}
+                                data-selected-level={selectedLevel} data-quiz-set={quizSet} data-guess-mode={guessMode}>
+                                <Row className='align-items-center'>
+                                    <Col className="level-label">
+                                        Level:
+                                    </Col>
+                                    <Col>
+                                        <SelectLevel handleLevelSelect={handleLevelSelect} />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col className='col-12 mt-4'>
+                                        <Button type='submit' className='start-quiz-button'>Start Quiz</Button>
+                                    </Col>
+                                </Row>
+                            </Form>
+                        </Col>
+                    </Row>
+                </>
+                :
+                <Row className='mt-4'>
+                    <Col>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt5'}>JLPT N5</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt4'}>JLPT N4</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt3'}>JLPT N3</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt2'}>JLPT N2</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full'}>Full Kanji Set</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-vocab'}>Full Vocabulary Set</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'test'}>Test</SelectionOption>
+                    </Col>
+                </Row>
+            }
+
+        </>
     );
 }
 
