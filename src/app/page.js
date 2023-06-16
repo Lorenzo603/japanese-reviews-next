@@ -4,7 +4,7 @@ import { SSRProvider } from 'react-bootstrap';
 import { Col, Container, Row } from 'react-bootstrap';
 import { SelectSettings } from '../components/SelectSettingsComponent';
 import styles from './page.module.css'
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import QuizSet from './QuizSet';
 import { useRouter } from 'next/navigation';
 import { useQuizContext } from './context/quizContext';

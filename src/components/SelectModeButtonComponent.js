@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from 'react-bootstrap';
 export const SelectModeButton = (props) => {
 
