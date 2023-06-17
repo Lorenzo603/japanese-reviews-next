@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import { Col, Form, Row, Button } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
-import { updateSrsWrongAnswer, updateSrsCorrectAnswer } from '../services/SrsService';
+import { updateSrsWrongAnswer, updateSrsAfterReview } from '../services/SrsService';
 import styles from '../app/page.module.css'
 import Link from 'next/link';
+import { useQuizContext } from '@/app/context/quizContext';
 var wanakana = require('wanakana');
 var stringSimilarity = require("string-similarity");
 
@@ -31,6 +32,9 @@ export const QuestionAnswerComponent = (props) => {
     const [remainingPrompts] = useState([]);
     const [wrongAnswers] = useState([]);
     const [isExploding, setIsExploding] = useState(false);
+    const [scoreMap, setScoreMap] = useState(new Map());
+
+    const { promptSet, reviewMode, reviewSet } = useQuizContext();
 
     const ANSWER_INPUT_ID = 'answer-input';
 
@@ -45,6 +49,11 @@ export const QuestionAnswerComponent = (props) => {
             if (totalCorrect === totalAnswers) {
                 setIsExploding(true);
             }
+
+            if (reviewMode === true) {
+                updateSrsAfterReview(scoreMap, reviewSet);
+            }
+
         } else {
             setKanjiPrompt(getNextKanjiPrompt());
         }
@@ -63,7 +72,7 @@ export const QuestionAnswerComponent = (props) => {
 
     useEffect(() => {
         if (remainingPrompts.length === 0) {
-            remainingPrompts.push(...shuffle(props.prompts));
+            remainingPrompts.push(...shuffle(promptSet));
             updatePrompt();
             getAnswerInputElement().focus();
         }
@@ -122,9 +131,7 @@ export const QuestionAnswerComponent = (props) => {
                 setAnswerResult(Result.CORRECT);
                 setTotalCorrect(totalCorrect + 1);
                 updateAnswerCount();
-                if (props.reviewMode === true) {
-                    updateSrsCorrectAnswer(kanjiPrompt["id"]);
-                }
+                updateScoreMap(Result.CORRECT);
             } else {
                 const answerContainsRomaji = (kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
                     && userAnswer.length > 0
@@ -138,7 +145,10 @@ export const QuestionAnswerComponent = (props) => {
                     setAnswerResult(Result.WRONG);
                     wrongAnswers.push(kanjiPrompt);
                     updateAnswerCount();
-                    updateSrsWrongAnswer(kanjiPrompt["id"]);
+                    updateScoreMap(Result.WRONG);
+                    if (reviewMode === false) {
+                        updateSrsWrongAnswer(kanjiPrompt["id"]);
+                    }
                 }
             }
         } else {
@@ -151,6 +161,11 @@ export const QuestionAnswerComponent = (props) => {
     function updateAnswerCount() {
         setAnswerState(AnswerState.ANSWERED);
         setTotalAnswers(totalAnswers + 1);
+    }
+
+    function updateScoreMap(result) {
+        const currentScore = scoreMap.has(kanjiPrompt["id"]) ? scoreMap.get(kanjiPrompt["id"]) : 0;
+        setScoreMap(scoreMap.set(kanjiPrompt["id"], result === Result.CORRECT ? currentScore + 1 : currentScore - 2));
     }
 
     function shakeInputField() {
@@ -267,7 +282,7 @@ export const QuestionAnswerComponent = (props) => {
             <Col>
                 <HeaderMenu endSessionHandler={endSession}
                     totalAnswers={totalAnswers} totalCorrect={totalCorrect}
-                    totalReviews={props.prompts.length} />
+                    totalReviews={promptSet.length} />
                 <Row>
                     <Col className='AppBody'>
                         <Row>

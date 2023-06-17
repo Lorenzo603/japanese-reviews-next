@@ -2,13 +2,14 @@
 
 import { Col, Row, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
+import { useQuizContext } from '@/app/context/quizContext';
 
 export const PendingReviewsComponent = (props) => {
 
     const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
     const [nextUnlock, setNextUnlock] = useState(null);
     const [upcomingReviewsCount, setUpcomingReviewsCount] = useState(0);
-    const [reviewSet, setReviewSet] = useState([]);
+    const { setReviewSet } = useQuizContext();
 
     function convertDateStringToDate(array) {
         const convertedArray = array.map(obj => {
@@ -64,7 +65,7 @@ export const PendingReviewsComponent = (props) => {
                 setNextUnlock(findClosestNextDate(upcomingReviews));
                 setUpcomingReviewsCount(upcomingReviews.length);
 
-                setReviewSet(pendingReviews.map(review => review.element_id));
+                setReviewSet(pendingReviews);
             })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +77,7 @@ export const PendingReviewsComponent = (props) => {
             <Row className="justify-content-center p-3">
                 <Col>
                     <Button className="start-quiz-button" disabled={pendingReviewsCount == 0}
-                        data-option='review' data-review-set={reviewSet}
+                        data-option='review'
                         onClick={props.handleSetSelection}>
                         Pending reviews: {pendingReviewsCount}
                     </Button>

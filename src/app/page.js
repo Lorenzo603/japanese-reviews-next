@@ -40,7 +40,7 @@ export default function Home() {
   }, [])
 
 
-  const { setPromptSet, setReviewMode } = useQuizContext();
+  const { setPromptSet, setReviewMode, reviewSet } = useQuizContext();
 
   // TODO do this on backend:
   //
@@ -75,7 +75,7 @@ export default function Home() {
         }
         break;
       case "review":
-        const elementIds = event.target.getAttribute('data-review-set').split(',').map(elementId => Number(elementId));
+        const elementIds = reviewSet.map(review => review.element_id);
         console.log("Review element ids:", elementIds);
         const selectedKanji = fullKanjiDictionary.filter(kanji => elementIds.includes(kanji['id']));
         const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
@@ -114,7 +114,7 @@ export default function Home() {
       promptSet.push(...cloneSet);
     }
 
-    setPromptSet(JSON.stringify(promptSet));
+    setPromptSet(promptSet);
     router.push('/quiz');
 
   }

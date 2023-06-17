@@ -16,24 +16,42 @@ function calculateUnlockDate(srsLevel) {
     return new Date(now.getTime() + srsLevelToWaitingTimeMap[srsLevel]);
 }
 
+
+// C C // avoid double correct answer if I already responded correctly once
+// C W // this should still result in srs -2
+// W C // avoid adding correct answer if I already responded wrongly once
+// W W // -4
+export const updateSrsAfterReview = async (scoreMap, reviewSet) => {
+    scoreMap.forEach((value, key) => {
+        const currentSrsStage = reviewSet.filter(review => review.element_id === key)[0].current_srs_stage;
+        const newSrsStage = clampSrsStage(currentSrsStage + normalizeSrsScore(value));
+        sendPost('/api/accounts/reviews/update', key, newSrsStage);
+    });
+}
+
+// Adjust score at the end
+// +2 --> +1
+// -1 --> -2
+function normalizeSrsScore(score) {
+    return score === 2 ? 1 : score === -1 ? -2 : score;
+}
+
+function clampSrsStage(score) {
+    return Math.max(1, Math.min(9, score));
+}
+
+
 export const updateSrsWrongAnswer = async (elementId) => {
     const accountInfo = await (await fetch('/api/accounts')).json();
     const currentReviewArr = accountInfo[0].reviews.filter((review) => review.element_id === elementId)
     const isReviewExisting = currentReviewArr.length > 0;
     if (isReviewExisting) {
         const currentReview = currentReviewArr[0];
-        sendPost('/api/accounts/reviews/update', elementId, Math.max(1, currentReview.current_srs_stage - 2));
+        sendPost('/api/accounts/reviews/update', elementId, clampSrsStage(currentReview.current_srs_stage - 2));
     } else {
         sendPost('/api/accounts/reviews', elementId, 1);
     }
 
-}
-
-export const updateSrsCorrectAnswer = async (elementId) => {
-    const accountInfo = await (await fetch('/api/accounts')).json();
-    const currentReviewArr = accountInfo[0].reviews.filter((review) => review.element_id === elementId)
-    const currentReview = currentReviewArr[0];
-    sendPost('/api/accounts/reviews/update', elementId, Math.min(9, currentReview.current_srs_stage + 1));
 }
 
 function sendPost(url, elementId, newSrsStage) {
