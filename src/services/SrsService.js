@@ -25,7 +25,7 @@ export const updateSrsAfterReview = async (scoreMap, reviewSet) => {
     scoreMap.forEach((value, key) => {
         const currentSrsStage = reviewSet.filter(review => review.element_id === key)[0].current_srs_stage;
         const newSrsStage = clampSrsStage(currentSrsStage + normalizeSrsScore(value));
-        sendPost('/api/accounts/reviews/update', key, newSrsStage);
+        sendRequest('/api/accounts/reviews', 'PUT', key, newSrsStage);
     });
 }
 
@@ -47,16 +47,16 @@ export const updateSrsWrongAnswer = async (elementId) => {
     const isReviewExisting = currentReviewArr.length > 0;
     if (isReviewExisting) {
         const currentReview = currentReviewArr[0];
-        sendPost('/api/accounts/reviews/update', elementId, clampSrsStage(currentReview.current_srs_stage - 2));
+        sendRequest('/api/accounts/reviews', 'PUT', elementId, clampSrsStage(currentReview.current_srs_stage - 2));
     } else {
-        sendPost('/api/accounts/reviews', elementId, 1);
+        sendRequest('/api/accounts/reviews', 'POST', elementId, 1);
     }
 
 }
 
-function sendPost(url, elementId, newSrsStage) {
+function sendRequest(url, method, elementId, newSrsStage) {
     fetch(url, {
-        method: 'POST',
+        method: method,
         headers: {
             "Content-Type": "application/json",
         },
