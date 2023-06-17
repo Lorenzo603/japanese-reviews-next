@@ -36,7 +36,7 @@ export const updateSrsCorrectAnswer = async (elementId) => {
     sendPost('/api/accounts/reviews/update', elementId, Math.min(9, currentReview.current_srs_stage + 1));
 }
 
-function sendPost(url, elementId, currentSrsStage) {
+function sendPost(url, elementId, newSrsStage) {
     fetch(url, {
         method: 'POST',
         headers: {
@@ -44,8 +44,8 @@ function sendPost(url, elementId, currentSrsStage) {
         },
         body: JSON.stringify({
             element_id: elementId,
-            current_srs_stage: currentSrsStage,
-            unlock_date: calculateUnlockDate(currentSrsStage)
+            current_srs_stage: newSrsStage,
+            unlock_date: calculateUnlockDate(newSrsStage)
         })
     })
         .then((res) => {
