@@ -4,10 +4,8 @@ import { SSRProvider } from 'react-bootstrap';
 import { Col, Container, Row } from 'react-bootstrap';
 import { SelectSettings } from '../components/SelectSettingsComponent';
 import styles from './page.module.css'
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuizContext } from './context/quizContext';
-import { useDictionaryContext } from './context/dictionaryContext';
 import PendingReviewsComponent from '@/components/PendingReviewsComponent';
 
 
@@ -15,106 +13,39 @@ export default function Home() {
 
   const { setPromptSet, setReviewMode, reviewSet } = useQuizContext();
 
-  const { fullKanjiDictionary, fullVocabularyDictionary } = useDictionaryContext();
-
   const router = useRouter();
 
-  useEffect(() => {
-    const loadDictionaries = (dictionaryId, callback) => {
-      fetch('/api/dictionary/' + dictionaryId)
-        .then((res) => res.json())
-        .then(callback);
-    }
-
-    if (fullKanjiDictionary.length === 0) {
-      loadDictionaries('kanji_full', (data) => {
-        fullKanjiDictionary.push(...JSON.parse(data));
-        console.log('Loaded', fullKanjiDictionary.length, 'kanjis in the dictionary');
-      });
-    }
-
-    if (fullVocabularyDictionary.length === 0) {
-      loadDictionaries('vocabulary_full', (data) => {
-        fullVocabularyDictionary.push(...JSON.parse(data));
-        console.log('Loaded', fullVocabularyDictionary.length, 'vocabs in the dictionary');
-      });
-    }
-  }, [])
-
-
-  // TODO do this on backend:
-  //
-  function handleSetSelection(event) {
+  async function handleSetSelection(event) {
     event.preventDefault();
 
-    setReviewMode(false);
+    
     const dataOption = event.target.getAttribute('data-option');
-    let selectedSet = [];
-    switch (dataOption) {
-      case "full-vocab":
-        selectedSet = fullVocabularyDictionary;
-        break;
-      case "full":
-        selectedSet = fullKanjiDictionary;
-        break;
-      case "level":
-        const selectedLevel = Number(event.target.getAttribute('data-selected-level'));
-        const kanjiSetSelected = event.target.getAttribute('data-kanjiset-selected') === "true"
-        const vocabularySetSelected = event.target.getAttribute('data-vocabularyset-selected') === "true"
-        if (kanjiSetSelected) {
-          selectedSet.push(
-            ...fullKanjiDictionary
-              .filter(kanji => kanji['data']['level'] === selectedLevel)
-          );
-        }
-        if (vocabularySetSelected) {
-          selectedSet.push(
-            ...fullVocabularyDictionary
-              .filter(vocab => vocab['data']['level'] === selectedLevel)
-          );
-        }
-        break;
-      case "review":
-        const elementIds = reviewSet.map(review => review.element_id);
-        console.log("Review element ids:", elementIds);
-        const selectedKanji = fullKanjiDictionary.filter(kanji => elementIds.includes(kanji['id']));
-        const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
-        selectedSet = selectedKanji.concat(selectedVocabulary);
-        setReviewMode(true);
-        break;
-      default:
-        selectedSet = fullKanjiDictionary
-          .filter(kanji => kanji['data'].hasOwnProperty('categories'))
-          .filter(kanji => kanji['data']['categories'].includes(dataOption));
-        break;
-    }
-
+    const selectedLevel = Number(event.target.getAttribute('data-selected-level'));
+    const kanjiSetSelected = event.target.getAttribute('data-kanjiset-selected') === "true"
+    const vocabularySetSelected = event.target.getAttribute('data-vocabularyset-selected') === "true"
     const guessMeaningSelected = event.target.getAttribute('data-guess-meaning-selected') === "true";
     const guessReadingSelected = event.target.getAttribute('data-guess-reading-selected') === "true";
     const guessKanjiSelected = event.target.getAttribute('data-guess-kanji-selected') === "true";
 
-    const promptSet = []
-    if (guessMeaningSelected || dataOption === "review") {
-      const cloneSet = structuredClone(selectedSet);
-      cloneSet.forEach(prompt => { prompt.promptMode = "meaning" });
-      promptSet.push(...cloneSet);
-    }
+    let promptSetResponse = await (await fetch('/api/quiz/prompts', {
+      method: 'post',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        dataOption: dataOption,
+        selectedLevel: selectedLevel,
+        kanjiSetSelected: kanjiSetSelected,
+        vocabularySetSelected: vocabularySetSelected,
+        guessMeaningSelected: guessMeaningSelected,
+        guessReadingSelected: guessReadingSelected,
+        guessKanjiSelected: guessKanjiSelected,
+        reviewSetElementIds: reviewSet.map(review => review.element_id)
+      })
+    })).json();
 
-    if (guessReadingSelected || dataOption === "review") {
-      const cloneSet = structuredClone(selectedSet);
-      cloneSet
-        .filter(prompt => prompt.data.hasOwnProperty('readings'))
-        .forEach((prompt) => { prompt.promptMode = "reading" });
-      promptSet.push(...cloneSet);
-    }
-
-    if (guessKanjiSelected) {
-      const cloneSet = structuredClone(selectedSet);
-      cloneSet.forEach((prompt) => { prompt.promptMode = "kanji" });
-      promptSet.push(...cloneSet);
-    }
-
-    setPromptSet(promptSet);
+    setReviewMode(dataOption === "review");
+    setPromptSet(promptSetResponse);
     router.push('/quiz');
 
   }
