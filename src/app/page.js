@@ -13,9 +13,11 @@ import PendingReviewsComponent from '@/components/PendingReviewsComponent';
 
 export default function Home() {
 
-  const router = useRouter();
+  const { setPromptSet, setReviewMode, reviewSet } = useQuizContext();
 
   const { fullKanjiDictionary, fullVocabularyDictionary } = useDictionaryContext();
+
+  const router = useRouter();
 
   useEffect(() => {
     const loadDictionaries = (dictionaryId, callback) => {
@@ -39,8 +41,6 @@ export default function Home() {
     }
   }, [])
 
-
-  const { setPromptSet, setReviewMode, reviewSet } = useQuizContext();
 
   // TODO do this on backend:
   //
