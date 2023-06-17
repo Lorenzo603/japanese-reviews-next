@@ -92,23 +92,23 @@ export const QuestionAnswerComponent = (props) => {
         setAnswerState(AnswerState.FINISHED);
     }
 
-    function getCurrentMode() {
-        return kanjiPrompt["promptMode"] === "meaning" ? 'meanings' : 'readings';
+    function getCurrentMode(prompt) {
+        return prompt["promptMode"] === "meaning" ? 'meanings' : 'readings';
     }
 
-    function getCurrentModeSingle() {
-        return kanjiPrompt["promptMode"] === "meaning" ? 'meaning' : 'reading'
+    function getCurrentModeSingle(prompt) {
+        return prompt["promptMode"] === "meaning" ? 'meaning' : 'reading'
     }
 
-    function getAcceptedAnswers() {
-        return kanjiPrompt['data'][getCurrentMode()]
+    function getAcceptedAnswers(prompt) {
+        return prompt['data'][getCurrentMode(prompt)]
             .filter(potentialAnswer => potentialAnswer.accepted_answer)
     }
 
     function handleSubmit(event) {
         event.preventDefault();
         if (answerState === AnswerState.WAITING_RESPONSE) {
-            const acceptedAnswers = getAcceptedAnswers().map(answer => answer[getCurrentModeSingle()].toLowerCase());
+            const acceptedAnswers = getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle(kanjiPrompt)].toLowerCase());
             let userAnswer = getAnswerInputElement().value.toLowerCase();
 
             if ((kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
@@ -212,16 +212,16 @@ export const QuestionAnswerComponent = (props) => {
 
     function getIncorrectText() {
         return kanjiPrompt["promptMode"] === "kanji"
-            ? getAcceptedAnswers(kanjiPrompt).filter(answer => answer.primary)[0][getCurrentModeSingle()] + " - " + kanjiPrompt['data']['slug']
-            : getAcceptedAnswers(kanjiPrompt).filter(answer => answer.primary)[0][getCurrentModeSingle()]
+            ? getAcceptedAnswers(kanjiPrompt).filter(answer => answer.primary)[0][getCurrentModeSingle(kanjiPrompt)] + " - " + kanjiPrompt['data']['slug']
+            : getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle(kanjiPrompt)]).join(', ')
     }
 
     function WrongAnswersRecap() {
         return (
             <ul className='wrongAnswerRecap'>
                 {wrongAnswers.map(wrongAnswer =>
-                    <li key={wrongAnswer['id']}>{wrongAnswer['data']['slug']}&nbsp;:&nbsp;
-                        {getAcceptedAnswers(wrongAnswer).map(answer => answer[getCurrentModeSingle()]).join(', ')}</li>
+                    <li key={wrongAnswer['id'] + '-' + wrongAnswer['promptMode']}>{wrongAnswer['data']['slug']}&nbsp;:&nbsp;
+                        {getAcceptedAnswers(wrongAnswer).map(answer => answer[getCurrentModeSingle(wrongAnswer)]).join(', ')}</li>
                 )}
             </ul>
         );
