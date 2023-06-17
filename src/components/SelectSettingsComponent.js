@@ -7,18 +7,19 @@ import styles from '../app/page.module.css'
 import { useState } from 'react';
 import { SelectLevel } from './SelectLevelComponent';
 import SelectModeButton from './SelectModeButtonComponent';
+import { useQuizContext } from '@/app/context/quizContext';
 // import { useLocalStorage } from "./useLocalStorage";
 
 export const SelectSettings = (props) => {
 
     const [selectedSet, setSelectedSet] = useState('select-level');
 
-    const [guessMeaningSelected, setGuessMeaningSelected] = useState(true);
-    const [guessReadingSelected, setGuessReadingSelected] = useState(false);
-    const [guessKanjiSelected, setGuessKanjiSelected] = useState(false);
-
-    const [kanjiSetSelected, setKanjiSetSelected] = useState(true);
-    const [vocabularySetSelected, setVocabularySetSelected] = useState(false);
+    const {
+        guessMeaningSelected, setGuessMeaningSelected,
+        guessReadingSelected, setGuessReadingSelected,
+        guessKanjiSelected, setGuessKanjiSelected,
+        kanjiSetSelected, setKanjiSetSelected,
+        vocabularySetSelected, setVocabularySetSelected } = useQuizContext();
 
     // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
     const [selectedLevel, setSelectedLevel] = useState(1);
@@ -29,7 +30,7 @@ export const SelectSettings = (props) => {
 
     const isStartQuizButtonDisabled = () => {
         return (!guessMeaningSelected && !guessReadingSelected && !guessKanjiSelected)
-        || (!kanjiSetSelected && !vocabularySetSelected)
+            || (!kanjiSetSelected && !vocabularySetSelected)
     }
 
     return (
