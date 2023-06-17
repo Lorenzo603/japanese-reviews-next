@@ -5,7 +5,6 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { SelectSettings } from '../components/SelectSettingsComponent';
 import styles from './page.module.css'
 import { useEffect } from 'react';
-import QuizSet from './QuizSet';
 import { useRouter } from 'next/navigation';
 import { useQuizContext } from './context/quizContext';
 import { useDictionaryContext } from './context/dictionaryContext';
@@ -41,11 +40,13 @@ export default function Home() {
   }, [])
 
 
-  const { kanjiSet, setKanjiSet, guessMode, setGuessMode, reviewMode, setReviewMode } = useQuizContext();
+  const { setPromptSet, setReviewMode } = useQuizContext();
 
+  // TODO do this on backend:
+  //
   function handleSetSelection(event) {
     event.preventDefault();
-    setGuessMode(event.target.getAttribute('data-guess-mode'));
+
     setReviewMode(false);
     const dataOption = event.target.getAttribute('data-option');
     let selectedSet = [];
@@ -58,13 +59,19 @@ export default function Home() {
         break;
       case "level":
         const selectedLevel = Number(event.target.getAttribute('data-selected-level'));
-        const quizSet = Number(event.target.getAttribute('data-quiz-set'));
-        if (quizSet === QuizSet.KANJI) {
-          selectedSet = fullKanjiDictionary
-            .filter(kanji => kanji['data']['level'] === selectedLevel);
-        } else {
-          selectedSet = fullVocabularyDictionary
-            .filter(vocab => vocab['data']['level'] === selectedLevel);
+        const kanjiSetSelected = event.target.getAttribute('data-kanjiset-selected') === "true"
+        const vocabularySetSelected = event.target.getAttribute('data-vocabularyset-selected') === "true"
+        if (kanjiSetSelected) {
+          selectedSet.push(
+            ...fullKanjiDictionary
+              .filter(kanji => kanji['data']['level'] === selectedLevel)
+          );
+        }
+        if (vocabularySetSelected) {
+          selectedSet.push(
+            ...fullVocabularyDictionary
+              .filter(vocab => vocab['data']['level'] === selectedLevel)
+          );
         }
         break;
       case "review":
@@ -73,8 +80,6 @@ export default function Home() {
         const selectedKanji = fullKanjiDictionary.filter(kanji => elementIds.includes(kanji['id']));
         const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
         selectedSet = selectedKanji.concat(selectedVocabulary);
-        // console.log("selectedSet:", selectedSet);
-        // setGuessMode(); // TODO implement GUESS_BOTH mode.
         setReviewMode(true);
         break;
       default:
@@ -84,8 +89,32 @@ export default function Home() {
         break;
     }
 
+    const guessMeaningSelected = event.target.getAttribute('data-guess-meaning-selected') === "true";
+    const guessReadingSelected = event.target.getAttribute('data-guess-reading-selected') === "true";
+    const guessKanjiSelected = event.target.getAttribute('data-guess-kanji-selected') === "true";
 
-    setKanjiSet(JSON.stringify(selectedSet));
+    const promptSet = []
+    if (guessMeaningSelected) {
+      const cloneSet = structuredClone(selectedSet);
+      cloneSet.forEach(prompt => { prompt.promptMode = "meaning" });
+      promptSet.push(...cloneSet);
+    }
+
+    if (guessReadingSelected) {
+      const cloneSet = structuredClone(selectedSet);
+      cloneSet
+        .filter(prompt => prompt.data.hasOwnProperty('readings'))
+        .forEach((prompt) => { prompt.promptMode = "reading" });
+      promptSet.push(...cloneSet);
+    }
+
+    if (guessKanjiSelected) {
+      const cloneSet = structuredClone(selectedSet);
+      cloneSet.forEach((prompt) => { prompt.promptMode = "kanji" });
+      promptSet.push(...cloneSet);
+    }
+
+    setPromptSet(JSON.stringify(promptSet));
     router.push('/quiz');
 
   }

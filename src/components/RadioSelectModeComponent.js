@@ -1,7 +1,6 @@
 'use client'
 
 import { Col, Row } from 'react-bootstrap';
-import { SelectModeButton } from './SelectModeButtonComponent';
 
 export const RadioSelectModeComponent = (props) => {
 
@@ -9,23 +8,10 @@ export const RadioSelectModeComponent = (props) => {
 
         <Row className='align-items-center p-3'>
             <Col className='col-2 select-title'>
-                {props.config.title}
+                {props.title}
             </Col>
-            {
-                props.config.options.map(
-                    option => {
-                        return (
-                            <Col className='col-2'>
-                                <SelectModeButton key={option.id}
-                                    id={option.id}
-                                    onClickHander={props.config.onClickHandler}
-                                    checked={option.isChecked()}>
-                                    {option.label}
-                                </SelectModeButton>
-                            </Col>);
-                    }
-                )
-            }
+
+            {props.children}
 
         </Row>
 

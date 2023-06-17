@@ -6,14 +6,14 @@ import { useQuizContext } from '../context/quizContext';
 
 export default function QuizPage() {
 
-    const { kanjiSet, guessMode, reviewMode} = useQuizContext();
+    const { promptSet, reviewMode} = useQuizContext();
     
     return (
         <SSRProvider>
             <Container fluid className='App'>
                 <Row>
                     <Col className='AppBody'>
-                        <QuestionAnswerComponent kanjis={JSON.parse(kanjiSet)} guessMode={Number(guessMode)} reviewMode={reviewMode} />
+                        <QuestionAnswerComponent prompts={JSON.parse(promptSet)} reviewMode={reviewMode} />
                     </Col>
                 </Row>
             </Container>

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Col, Form, Row, Button } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
-import { GuessMode } from '../app/GuessMode';
 import Confetti from 'react-dom-confetti';
 import { updateSrsWrongAnswer, updateSrsCorrectAnswer } from '../services/SrsService';
 import styles from '../app/page.module.css'
@@ -39,8 +38,8 @@ export const QuestionAnswerComponent = (props) => {
         return remainingPrompts.pop();
     };
 
-    const updateKanjiPrompt = () => {
-        console.log("kanjis pool length:", remainingPrompts.length);
+    const updatePrompt = () => {
+        console.log("Prompts pool length:", remainingPrompts.length);
         if (remainingPrompts.length === 0) {
             setAnswerState(AnswerState.FINISHED);
             if (totalCorrect === totalAnswers) {
@@ -64,31 +63,44 @@ export const QuestionAnswerComponent = (props) => {
 
     useEffect(() => {
         if (remainingPrompts.length === 0) {
-            remainingPrompts.push(...shuffle(props.kanjis));
-            updateKanjiPrompt();
-            const answerInputElement = getAnswerInputElement();
-            answerInputElement.focus();
-            if (props.guessMode === GuessMode.GUESS_READING || props.guessMode === GuessMode.GUESS_KANJI) {
-                wanakana.bind(answerInputElement);
-            }
+            remainingPrompts.push(...shuffle(props.prompts));
+            updatePrompt();
+            getAnswerInputElement().focus();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (kanjiPrompt) {
+            if (kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji") {
+                const element = getAnswerInputElement();
+                if (!element.hasAttribute("data-wanakana-id")) {
+                    wanakana.bind(element);
+                }
+            } else {
+                const element = getAnswerInputElement();
+                if (element.hasAttribute("data-wanakana-id")) {
+                    wanakana.unbind(element);
+                }
+            }
+        }
+
+    }, [kanjiPrompt]);
 
     function endSession() {
         setAnswerState(AnswerState.FINISHED);
     }
 
     function getCurrentMode() {
-        return props.guessMode === GuessMode.GUESS_MEANING ? 'meanings' : 'readings';
+        return kanjiPrompt["promptMode"] === "meaning" ? 'meanings' : 'readings';
     }
 
     function getCurrentModeSingle() {
-        return props.guessMode === GuessMode.GUESS_MEANING ? 'meaning' : 'reading'
+        return kanjiPrompt["promptMode"] === "meaning" ? 'meaning' : 'reading'
     }
 
-    function getAcceptedAnswers(kanjiPrompt) {
+    function getAcceptedAnswers() {
         return kanjiPrompt['data'][getCurrentMode()]
             .filter(potentialAnswer => potentialAnswer.accepted_answer)
     }
@@ -96,10 +108,10 @@ export const QuestionAnswerComponent = (props) => {
     function handleSubmit(event) {
         event.preventDefault();
         if (answerState === AnswerState.WAITING_RESPONSE) {
-            const acceptedAnswers = getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle()].toLowerCase());
+            const acceptedAnswers = getAcceptedAnswers().map(answer => answer[getCurrentModeSingle()].toLowerCase());
             let userAnswer = getAnswerInputElement().value.toLowerCase();
 
-            if ((props.guessMode === GuessMode.GUESS_READING || props.guessMode === GuessMode.GUESS_KANJI)
+            if ((kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
                 && userAnswer.length > 0
                 && userAnswer.slice(-1) === 'n') {
                 userAnswer = userAnswer.substring(0, userAnswer.length - 1) + 'ん';
@@ -114,7 +126,7 @@ export const QuestionAnswerComponent = (props) => {
                     updateSrsCorrectAnswer(kanjiPrompt["id"]);
                 }
             } else {
-                const answerContainsRomaji = (props.guessMode === GuessMode.GUESS_READING || props.guessMode === GuessMode.GUESS_KANJI)
+                const answerContainsRomaji = (kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
                     && userAnswer.length > 0
                     && !wanakana.isKana(userAnswer);
                 const similarAnswerExists = acceptedAnswers.some((element) => {
@@ -132,7 +144,7 @@ export const QuestionAnswerComponent = (props) => {
         } else {
             setAnswerState(AnswerState.WAITING_RESPONSE);
             getAnswerInputElement().value = "";
-            updateKanjiPrompt();
+            updatePrompt();
         }
     }
 
@@ -148,12 +160,25 @@ export const QuestionAnswerComponent = (props) => {
         element.classList.add('shake-animation'); // start animation
     }
 
-    function KanjiPrompt(props) {
-        if (props.guessMode === GuessMode.GUESS_KANJI) {
-            const acceptedMeaning = props.kanjiPrompt['data']['meanings'].filter(acceptedMeaning => acceptedMeaning.accepted_answer)[0]["meaning"];
+    function GuessMode() {
+        if (kanjiPrompt["promptMode"] === "meaning") {
+            return "Guess Meaning";
+        }
+        if (kanjiPrompt["promptMode"] === "reading") {
+            return "Guess Reading";
+        }
+        if (kanjiPrompt["promptMode"] === "kanji") {
+            return "Guess Kanji";
+        }
+        return "Error";
+    }
+
+    function KanjiPrompt() {
+        if (kanjiPrompt["promptMode"] === "kanji") {
+            const acceptedMeaning = kanjiPrompt['data']['meanings'].filter(acceptedMeaning => acceptedMeaning.accepted_answer)[0]["meaning"];
             return <KanjiPromptStyled promptText={acceptedMeaning} />;
         }
-        return <KanjiPromptStyled promptText={props.kanjiPrompt['data']['slug']} />;
+        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} />;
     }
 
     function KanjiPromptStyled(props) {
@@ -163,20 +188,20 @@ export const QuestionAnswerComponent = (props) => {
     function AnswerResult(props) {
         return <div className='answer-result'>{props.currentState === AnswerState.ANSWERED ?
             props.result === Result.CORRECT
-                ? getSuccessText(props)
-                : getIncorrectText(props)
+                ? getSuccessText()
+                : getIncorrectText()
             : ""}
         </div>
     }
 
-    function getSuccessText(props) {
-        return props.guessMode === GuessMode.GUESS_KANJI
+    function getSuccessText() {
+        return kanjiPrompt["promptMode"] === "kanji"
             ? kanjiPrompt['data']['slug']
             : "Correct!";
     }
 
-    function getIncorrectText(props) {
-        return props.guessMode === GuessMode.GUESS_KANJI
+    function getIncorrectText() {
+        return kanjiPrompt["promptMode"] === "kanji"
             ? getAcceptedAnswers(kanjiPrompt).filter(answer => answer.primary)[0][getCurrentModeSingle()] + " - " + kanjiPrompt['data']['slug']
             : getAcceptedAnswers(kanjiPrompt).filter(answer => answer.primary)[0][getCurrentModeSingle()]
     }
@@ -218,7 +243,7 @@ export const QuestionAnswerComponent = (props) => {
                     <Row>
                         <Col>
                             <Button>
-                                <Link href="/">Go back</Link>    
+                                <Link href="/">Go back</Link>
                             </Button>
                         </Col>
                     </Row>
@@ -232,12 +257,17 @@ export const QuestionAnswerComponent = (props) => {
             <Col>
                 <HeaderMenu endSessionHandler={endSession}
                     totalAnswers={totalAnswers} totalCorrect={totalCorrect}
-                    totalReviews={props.kanjis.length} />
+                    totalReviews={props.prompts.length} />
                 <Row>
                     <Col className='AppBody'>
                         <Row>
                             <Col>
-                                {kanjiPrompt && <KanjiPrompt kanjiPrompt={kanjiPrompt} guessMode={props.guessMode} />}
+                                {kanjiPrompt && <GuessMode />}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                {kanjiPrompt && <KanjiPrompt />}
                             </Col>
                         </Row>
                         {answerState !== AnswerState.FINISHED && (
@@ -252,7 +282,7 @@ export const QuestionAnswerComponent = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <AnswerResult currentState={answerState} result={answerResult} guessMode={props.guessMode} />
+                                        <AnswerResult currentState={answerState} result={answerResult} />
                                     </Col>
                                 </Row>
                             </>

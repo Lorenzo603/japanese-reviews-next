@@ -177,10 +177,12 @@ button.btn-primary.selected-set-button {
 /**********/
 button.btn-primary.start-quiz-button:disabled {
   background-color: gray;
+  border-color: gray;
   border-radius: 0.5rem;
 }
 button.btn-primary.start-quiz-button {
   background-color: #0d6efd;
+  border-color: #0d6efd;
   border-radius: 0.5rem;
 }
 

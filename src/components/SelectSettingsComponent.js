@@ -3,105 +3,101 @@
 import { Col, Row, Form, Button, Tab, Tabs } from 'react-bootstrap';
 import { RadioSelectModeComponent } from './RadioSelectModeComponent';
 import { SelectionOption } from './SelectionOptionComponent';
-import { GuessMode } from '../app/GuessMode'
-import { QuizSet } from '../app/QuizSet'
 import styles from '../app/page.module.css'
 import { useState } from 'react';
 import { SelectLevel } from './SelectLevelComponent';
+import SelectModeButton from './SelectModeButtonComponent';
 // import { useLocalStorage } from "./useLocalStorage";
 
 export const SelectSettings = (props) => {
 
     const [selectedSet, setSelectedSet] = useState('select-level');
-    const [quizSet, setQuizSet] = useState(QuizSet.KANJI);
-    const [guessMode, setGuessMode] = useState(GuessMode.GUESS_MEANING);
-    const guessModeMap = {
-        "guess-meaning": GuessMode.GUESS_MEANING,
-        "guess-reading": GuessMode.GUESS_READING,
-        "guess-kanji": GuessMode.GUESS_KANJI,
-    }
+
+    const [guessMeaningSelected, setGuessMeaningSelected] = useState(true);
+    const [guessReadingSelected, setGuessReadingSelected] = useState(false);
+    const [guessKanjiSelected, setGuessKanjiSelected] = useState(false);
+
+    const [kanjiSetSelected, setKanjiSetSelected] = useState(true);
+    const [vocabularySetSelected, setVocabularySetSelected] = useState(false);
+
     // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
     const [selectedLevel, setSelectedLevel] = useState(1);
-
-
-    const handleGuessModeSelection = (event) => {
-        const selectedId = event.target.getAttribute('id');
-        setGuessMode(guessModeMap[selectedId]);
-    }
-
-    const handleQuizSetSelection = (event) => {
-        const selectedId = event.target.getAttribute('id');
-        setQuizSet(selectedId === 'kanji-set' ? QuizSet.KANJI : QuizSet.VOCABULARY);
-    }
 
     const handleLevelSelect = (level) => {
         setSelectedLevel(level);
     }
 
-    const selectModeOptions = {
-        "title": "Select Mode:",
-        "onClickHandler": handleGuessModeSelection,
-        "options": [
-            {
-                "id": "guess-meaning",
-                "label": "Guess Meaning",
-                "isChecked": () => { return guessMode === GuessMode.GUESS_MEANING },
-            },
-            {
-                "id": "guess-reading",
-                "label": "Guess Reading",
-                "isChecked": () => { return guessMode === GuessMode.GUESS_READING },
-            },
-            {
-                "id": "guess-kanji",
-                "label": "Guess Kanji",
-                "isChecked": () => { return guessMode === GuessMode.GUESS_KANJI },
-            },
-        ],
-    };
-
-    const selectQuizSetOptions = {
-        "title": "Select Quiz Set",
-        "onClickHandler": handleQuizSetSelection,
-        "options": [
-            {
-                "id": "kanji-set",
-                "label": "Kanjis",
-                "isChecked": () => { return quizSet === QuizSet.KANJI },
-            },
-            {
-                "id": "vocabulary-set",
-                "label": "Vocab",
-                "isChecked": () => { return quizSet === QuizSet.VOCABULARY },
-            },
-        ],
-    };
+    const isStartQuizButtonDisabled = () => {
+        return (!guessMeaningSelected && !guessReadingSelected && !guessKanjiSelected)
+        || (!kanjiSetSelected && !vocabularySetSelected)
+    }
 
     return (
         <>
-            <RadioSelectModeComponent config={selectModeOptions} />
-
+            <RadioSelectModeComponent title="Select Mode:">
+                <Col className='col-2'>
+                    <SelectModeButton key="guess-meaning" id="guess-meaning"
+                        onClickHander={() => { setGuessMeaningSelected(!guessMeaningSelected) }}
+                        checked={guessMeaningSelected}>
+                        Guess Meaning
+                    </SelectModeButton>
+                </Col>
+                <Col className='col-2'>
+                    <SelectModeButton key="guess-reading" id="guess-reading"
+                        onClickHander={() => { setGuessReadingSelected(!guessReadingSelected) }}
+                        checked={guessReadingSelected}>
+                        Guess Reading
+                    </SelectModeButton>
+                </Col>
+                <Col className='col-2'>
+                    <SelectModeButton key="guess-kanji" id="guess-kanji"
+                        onClickHander={() => { setGuessKanjiSelected(!guessKanjiSelected) }}
+                        checked={guessKanjiSelected}>
+                        Guess Kanji
+                    </SelectModeButton>
+                </Col>
+            </RadioSelectModeComponent>
             <Row className='align-items-center p-3'>
                 <Col className='col-2 select-title'>
                     Select Set:
                 </Col>
                 <Col className='col-2'>
-                    <Button className={selectedSet === 'select-level' ? 'selected-set-button-checked' : 'selected-set-button'} 
+                    <Button className={selectedSet === 'select-level' ? 'selected-set-button-checked' : 'selected-set-button'}
                         onClick={() => { setSelectedSet('select-level') }}>Select Level</Button>
                 </Col>
                 <Col className='col-2'>
-                    <Button className={selectedSet === 'preconfigured-sets' ? 'selected-set-button-checked' : 'selected-set-button'} 
+                    <Button className={selectedSet === 'preconfigured-sets' ? 'selected-set-button-checked' : 'selected-set-button'}
                         onClick={() => { setSelectedSet('preconfigured-sets') }}>Preconfigured sets</Button>
                 </Col>
             </Row>
 
             {selectedSet == 'select-level' ?
                 <>
-                    <RadioSelectModeComponent config={selectQuizSetOptions} />
+                    <RadioSelectModeComponent title="Select Quiz Set:">
+                        <Col className='col-2'>
+                            <SelectModeButton key="kanji-set" id="kanji-set"
+                                onClickHander={() => { setKanjiSetSelected(!kanjiSetSelected) }}
+                                checked={kanjiSetSelected}>
+                                Kanjis
+                            </SelectModeButton>
+                        </Col>
+                        <Col className='col-2'>
+                            <SelectModeButton key="vocabulary-set" id="vocabulary-set"
+                                onClickHander={() => { setVocabularySetSelected(!vocabularySetSelected) }}
+                                checked={vocabularySetSelected}>
+                                Vocab
+                            </SelectModeButton>
+                        </Col>
+                    </RadioSelectModeComponent>
                     <Row className='align-items-center p-3'>
                         <Col className="col-4">
                             <Form onSubmit={props.handleSetSelection} data-option={'level'}
-                                data-selected-level={selectedLevel} data-quiz-set={quizSet} data-guess-mode={guessMode}>
+                                data-guess-meaning-selected={guessMeaningSelected}
+                                data-guess-reading-selected={guessReadingSelected}
+                                data-guess-kanji-selected={guessKanjiSelected}
+                                data-kanjiset-selected={kanjiSetSelected}
+                                data-vocabularyset-selected={vocabularySetSelected}
+                                data-selected-level={selectedLevel}>
                                 <Row className='align-items-center'>
                                     <Col className="level-label">
                                         Level:
@@ -112,7 +108,10 @@ export const SelectSettings = (props) => {
                                 </Row>
                                 <Row>
                                     <Col className='mt-4'>
-                                        <Button type='submit' className='start-quiz-button'>Start Quiz</Button>
+                                        <Button type='submit' className='start-quiz-button'
+                                            disabled={isStartQuizButtonDisabled()}>
+                                            Start Quiz
+                                        </Button>
                                     </Col>
                                 </Row>
                             </Form>
