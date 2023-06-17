@@ -265,11 +265,9 @@ export const QuestionAnswerComponent = (props) => {
                             {wrongAnswers.length === 0 ? "Congratulations!" : <WrongAnswersRecap />}
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <Button>
-                                <Link href="/">Go back</Link>
-                            </Button>
+                    <Row className="justify-content-center m-3">
+                        <Col className='col-1 p-2 position-relative linkButton'>
+                            <Link className='stretched-link linkButton' href="/">Go back</Link>
                         </Col>
                     </Row>
                 </Col>
