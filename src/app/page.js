@@ -76,7 +76,7 @@ export default function Home() {
         break;
       case "review":
         const elementIds = event.target.getAttribute('data-review-set').split(',').map(elementId => Number(elementId));
-        console.log("element ids:", elementIds);
+        console.log("Review element ids:", elementIds);
         const selectedKanji = fullKanjiDictionary.filter(kanji => elementIds.includes(kanji['id']));
         const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
         selectedSet = selectedKanji.concat(selectedVocabulary);
@@ -94,13 +94,13 @@ export default function Home() {
     const guessKanjiSelected = event.target.getAttribute('data-guess-kanji-selected') === "true";
 
     const promptSet = []
-    if (guessMeaningSelected) {
+    if (guessMeaningSelected || dataOption === "review") {
       const cloneSet = structuredClone(selectedSet);
       cloneSet.forEach(prompt => { prompt.promptMode = "meaning" });
       promptSet.push(...cloneSet);
     }
 
-    if (guessReadingSelected) {
+    if (guessReadingSelected || dataOption === "review") {
       const cloneSet = structuredClone(selectedSet);
       cloneSet
         .filter(prompt => prompt.data.hasOwnProperty('readings'))

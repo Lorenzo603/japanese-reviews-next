@@ -20,20 +20,19 @@ export const PendingReviewsComponent = (props) => {
     }
 
     function formatDate(dateString) {
-        const date = new Date(dateString);
+        const parsedDate = new Date(dateString);
 
-        const formattedDate = date.toLocaleDateString('en', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-        });
+        const month = parsedDate.toLocaleString('default', { month: 'short' });
+        const day = parsedDate.getDate();
+        const year = parsedDate.getFullYear();
 
-        const formattedTime = date.toLocaleTimeString('en', {
-            hour: 'numeric',
-            hour12: false,
-        });
+        const hours = parsedDate.getHours();
+        const minutes = parsedDate.getMinutes();
 
-        return `${formattedDate} - ${formattedTime}h`;
+        const formattedDate = `${month} ${day}, ${year}`;
+        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+        return `${formattedDate} ${formattedTime}`;
     }
 
     function findClosestNextDate(arr) {
@@ -56,7 +55,7 @@ export const PendingReviewsComponent = (props) => {
             .then((res) => res.json())
             .then((data) => {
                 console.log('GET pending reviews:', data);
-                const reviews = convertDateStringToDate(data[0].reviews);
+                const reviews = convertDateStringToDate(data[0].reviews.filter(review => review.current_srs_stage < 9));
 
                 const now = new Date();
                 const pendingReviews = reviews.filter((review) => review.unlock_date < now);
