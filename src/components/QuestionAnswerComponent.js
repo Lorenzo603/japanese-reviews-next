@@ -172,13 +172,13 @@ export const QuestionAnswerComponent = (props) => {
 
     function GuessModeText() {
         if (kanjiPrompt["promptMode"] === "meaning") {
-            return <><span>Guess </span><b>Meaning</b></>;
+            return <span>Guess <b>Meaning</b></span>;
         }
         if (kanjiPrompt["promptMode"] === "reading") {
-            return <><span>Guess </span><b>Reading</b></>;
+            return <span>Guess <b>Reading</b></span>;
         }
         if (kanjiPrompt["promptMode"] === "kanji") {
-            return <><span>Guess </span><b>Kanji</b></>;
+            return <span>Guess <b>Kanji</b></span>;
         }
         return "Error";
     }
