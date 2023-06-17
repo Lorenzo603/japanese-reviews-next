@@ -237,6 +237,18 @@ button.btn-primary.start-quiz-button {
 /**********/
 /* Questions Input/Output
 /**********/
+
+.guess-mode-instructions-kanji {
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: #f500a3;
+}
+.guess-mode-instructions-vocabulary {
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: #a135bb;
+}
+
 #answer-input {
   width: 100%;
   padding: 1rem 2rem;

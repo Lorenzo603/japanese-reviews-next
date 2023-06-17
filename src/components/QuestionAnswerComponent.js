@@ -160,7 +160,17 @@ export const QuestionAnswerComponent = (props) => {
         element.classList.add('shake-animation'); // start animation
     }
 
-    function GuessMode() {
+    function GuessModeInstructions() {
+        return (
+            <Row className='justify-content-center align-items-center'>
+                <Col className={'col-1 p-2 ' + (kanjiPrompt["object"] === "kanji" ? 'guess-mode-instructions-kanji' : 'guess-mode-instructions-vocabulary')}>
+                    <GuessModeText />
+                </Col>
+            </Row>
+        );
+    }
+
+    function GuessModeText() {
         if (kanjiPrompt["promptMode"] === "meaning") {
             return "Guess Meaning";
         }
@@ -182,7 +192,7 @@ export const QuestionAnswerComponent = (props) => {
     }
 
     function KanjiPromptStyled(props) {
-        return <p className="kanjiPrompt">{props.promptText}</p>;
+        return <div className="kanjiPrompt">{props.promptText}</div>;
     }
 
     function AnswerResult(props) {
@@ -262,7 +272,7 @@ export const QuestionAnswerComponent = (props) => {
                     <Col className='AppBody'>
                         <Row>
                             <Col>
-                                {kanjiPrompt && <GuessMode />}
+                                {kanjiPrompt && <GuessModeInstructions />}
                             </Col>
                         </Row>
                         <Row>
