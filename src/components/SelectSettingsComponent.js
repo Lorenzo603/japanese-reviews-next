@@ -27,7 +27,7 @@ export const SelectSettings = (props) => {
 
     const handleLevelSelect = (newLastSelectedLevel) => {
         setSelectedLevel(newLastSelectedLevel);
-        setCookie('lastSelectedLevel', newLastSelectedLevel);
+        setCookie('lastSelectedLevel', newLastSelectedLevel, {sameSite: true});
         fetch('/api/accounts', {
             method: 'POST',
             headers: {
@@ -53,7 +53,7 @@ export const SelectSettings = (props) => {
                 console.log('GET last selected level:', data);
                 const newLastSelectedLevel = Number(data[0].last_selected_level);
                 setSelectedLevel(newLastSelectedLevel);
-                setCookie('lastSelectedLevel', newLastSelectedLevel);
+                setCookie('lastSelectedLevel', newLastSelectedLevel, {sameSite: true});
             })
             .catch((error) => {
                 console.log('ERROR getting the last selected level:', error);
