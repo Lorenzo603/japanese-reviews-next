@@ -72,8 +72,3 @@ export async function POST(request) {
 
     return NextResponse.json(promptSet);
 }
-
-// todo upgrade nodejs and use real structuredclone
-function structuredClone(o) {
-    return JSON.parse(JSON.stringify(o));
-}
