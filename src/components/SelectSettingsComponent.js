@@ -10,6 +10,7 @@ import SelectModeButton from './SelectModeButtonComponent';
 import { useQuizContext } from '@/app/context/quizContext';
 // import { useLocalStorage } from "./useLocalStorage";
 import { setCookie, getCookie } from 'cookies-next';
+import { LoadingSpinner } from './LoadingSpinner';
 
 export const SelectSettings = (props) => {
 
@@ -25,9 +26,11 @@ export const SelectSettings = (props) => {
     // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
     const [selectedLevel, setSelectedLevel] = useState(null);
 
+    const [loading, setLoading] = useState(false);
+
     const handleLevelSelect = (newLastSelectedLevel) => {
         setSelectedLevel(newLastSelectedLevel);
-        setCookie('lastSelectedLevel', newLastSelectedLevel, {sameSite: true});
+        setCookie('lastSelectedLevel', newLastSelectedLevel, { sameSite: true });
         fetch('/api/accounts', {
             method: 'POST',
             headers: {
@@ -42,7 +45,8 @@ export const SelectSettings = (props) => {
     }
 
     const isStartQuizButtonDisabled = () => {
-        return (!guessMeaningSelected && !guessReadingSelected && !guessKanjiSelected)
+        return loading
+            || (!guessMeaningSelected && !guessReadingSelected && !guessKanjiSelected)
             || (!kanjiSetSelected && !vocabularySetSelected)
     }
 
@@ -53,7 +57,7 @@ export const SelectSettings = (props) => {
                 console.log('GET last selected level:', data);
                 const newLastSelectedLevel = Number(data[0].last_selected_level);
                 setSelectedLevel(newLastSelectedLevel);
-                setCookie('lastSelectedLevel', newLastSelectedLevel, {sameSite: true});
+                setCookie('lastSelectedLevel', newLastSelectedLevel, { sameSite: true });
             })
             .catch((error) => {
                 console.log('ERROR getting the last selected level:', error);
@@ -61,6 +65,11 @@ export const SelectSettings = (props) => {
                 setSelectedLevel(newLastSelectedLevel !== undefined ? newLastSelectedLevel : 1);
             })
     }, []);
+
+    function onFormSubmit(event) {
+        setLoading(true);
+        props.handleSetSelection(event);
+    }
 
     return (
         <>
@@ -121,7 +130,7 @@ export const SelectSettings = (props) => {
                     </RadioSelectModeComponent>
                     <Row className='align-items-center p-3'>
                         <Col className="col-8">
-                            <Form onSubmit={props.handleSetSelection} data-option={'level'}
+                            <Form onSubmit={onFormSubmit} data-option={'level'}
                                 data-guess-meaning-selected={guessMeaningSelected}
                                 data-guess-reading-selected={guessReadingSelected}
                                 data-guess-kanji-selected={guessKanjiSelected}
@@ -137,10 +146,10 @@ export const SelectSettings = (props) => {
                                     </Col>
                                 </Row>
                                 <Row className='justify-content-end'>
-                                    <Col className='col-4 mt-4'>
+                                    <Col className='col-4 mt-4 d-flex flex-column'>
                                         <Button type='submit' className='start-quiz-button'
                                             disabled={isStartQuizButtonDisabled()}>
-                                            Start Quiz
+                                            {loading ? <LoadingSpinner className="loading-spinner" /> : 'Start Quiz'}
                                         </Button>
                                     </Col>
                                 </Row>

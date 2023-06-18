@@ -18,7 +18,6 @@ export default function Home() {
   async function handleSetSelection(event) {
     event.preventDefault();
 
-    
     const dataOption = event.target.getAttribute('data-option');
     const selectedLevel = Number(event.target.getAttribute('data-selected-level'));
     const kanjiSetSelected = event.target.getAttribute('data-kanjiset-selected') === "true"
