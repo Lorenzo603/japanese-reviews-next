@@ -40,7 +40,7 @@ Installing
 ```sudo npm install pm2 -g```
 
 Running
-```pm2 --name HelloWorld start npm -- start```
+```pm2 --name JapaneseReviewsNext start npm -- start```
 
 Listing running processes
 ```pm2 ps```
