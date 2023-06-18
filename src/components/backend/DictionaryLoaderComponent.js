@@ -2,14 +2,19 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
+import { caching } from 'cache-manager';
 
-const dictionaryCacheMap = new Map();
+const memoryCache = await caching('memory', {
+  max: 5,
+  ttl: 0 * 1000 /*milliseconds*/,
+});
 
 export async function getDictionary(dictionaryId) {
 
-    if (dictionaryCacheMap.has(dictionaryId)) {
+    const cachedDictionary = await memoryCache.get(dictionaryId);
+    if (cachedDictionary !== undefined) {
         console.log("Returning dictionary from cache:", dictionaryId);
-        return dictionaryCacheMap.get(dictionaryId);
+        return cachedDictionary;
     }
 
     const jsonDirectory = path.join(process.cwd(), 'src', 'resources');
@@ -18,7 +23,7 @@ export async function getDictionary(dictionaryId) {
     const filteredDictionary = fullDictionary['data']
         .filter(item => item['data']['hidden_at'] === null);
     
-    dictionaryCacheMap.set(dictionaryId, filteredDictionary);
+    await memoryCache.set(dictionaryId, filteredDictionary, 0);
 
     return filteredDictionary;
 }
