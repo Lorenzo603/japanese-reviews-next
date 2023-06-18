@@ -56,7 +56,7 @@ export default function Home() {
         <Row>
           <Col className='AppBody'>
             <Row className='justify-content-center'>
-              <Col className='col-8'>
+              <Col className='col-6'>
                 <SelectSettings handleSetSelection={handleSetSelection} />
               </Col>
               <Col className='col-2'>

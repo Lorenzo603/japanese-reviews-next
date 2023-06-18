@@ -7,7 +7,7 @@ export const RadioSelectModeComponent = (props) => {
     return (
 
         <Row className='align-items-center p-3'>
-            <Col className='col-2 select-title'>
+            <Col className='col-4 select-title'>
                 {props.title}
             </Col>
 

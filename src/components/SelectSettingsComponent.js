@@ -88,14 +88,14 @@ export const SelectSettings = (props) => {
                 </Col>
             </RadioSelectModeComponent>
             <Row className='align-items-center p-3'>
-                <Col className='col-2 select-title'>
+                <Col className='col-4 select-title'>
                     Select Set:
                 </Col>
-                <Col className='col-2'>
+                <Col className='col-4'>
                     <Button className={selectedSet === 'select-level' ? 'selected-set-button-checked' : 'selected-set-button'}
                         onClick={() => { setSelectedSet('select-level') }}>Select Level</Button>
                 </Col>
-                <Col className='col-2'>
+                <Col className='col-4'>
                     <Button className={selectedSet === 'preconfigured-sets' ? 'selected-set-button-checked' : 'selected-set-button'}
                         onClick={() => { setSelectedSet('preconfigured-sets') }}>Preconfigured sets</Button>
                 </Col>
@@ -120,7 +120,7 @@ export const SelectSettings = (props) => {
                         </Col>
                     </RadioSelectModeComponent>
                     <Row className='align-items-center p-3'>
-                        <Col className="col-4">
+                        <Col className="col-8">
                             <Form onSubmit={props.handleSetSelection} data-option={'level'}
                                 data-guess-meaning-selected={guessMeaningSelected}
                                 data-guess-reading-selected={guessReadingSelected}
@@ -128,16 +128,16 @@ export const SelectSettings = (props) => {
                                 data-kanjiset-selected={kanjiSetSelected}
                                 data-vocabularyset-selected={vocabularySetSelected}
                                 data-selected-level={selectedLevel}>
-                                <Row className='align-items-center'>
-                                    <Col className="level-label">
+                                <Row className='justify-content-end align-items-center'>
+                                    <Col className="col-4 level-label">
                                         Level:
                                     </Col>
-                                    <Col>
+                                    <Col className='col-4'>
                                         <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col className='mt-4'>
+                                <Row className='justify-content-end'>
+                                    <Col className='col-4 mt-4'>
                                         <Button type='submit' className='start-quiz-button'
                                             disabled={isStartQuizButtonDisabled()}>
                                             Start Quiz
