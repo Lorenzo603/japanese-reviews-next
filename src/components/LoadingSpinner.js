@@ -1,5 +1,6 @@
-export const LoadingSpinner = () => (
+export const LoadingSpinner = (props) => (
     <svg
+    className={props.className}
     width="13"
     height="14"
     viewBox="0 0 13 14"

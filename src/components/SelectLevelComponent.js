@@ -1,6 +1,7 @@
 'use client'
 
 import { Button, Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
+import { LoadingSpinner } from './LoadingSpinner';
 
 export const SelectLevel = (props) => {
 
@@ -27,7 +28,7 @@ export const SelectLevel = (props) => {
 
     return (
         <OverlayTrigger variant="dark" trigger="click" placement="right" rootClose="true" overlay={popover}>
-            <Button className='selectedLevel'>{props.level || <span>🌀</span>}</Button>
+            <Button className='selectedLevel'>{props.level || <LoadingSpinner className='loading-spinner' />}</Button>
         </OverlayTrigger >
     );
 }
