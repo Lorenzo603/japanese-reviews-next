@@ -1,14 +1,15 @@
 'use client'
 
-import { Col, Row, Form, Button, Tab, Tabs } from 'react-bootstrap';
+import { Col, Row, Form, Button } from 'react-bootstrap';
 import { RadioSelectModeComponent } from './RadioSelectModeComponent';
 import { SelectionOption } from './SelectionOptionComponent';
 import styles from '../app/page.module.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SelectLevel } from './SelectLevelComponent';
 import SelectModeButton from './SelectModeButtonComponent';
 import { useQuizContext } from '@/app/context/quizContext';
 // import { useLocalStorage } from "./useLocalStorage";
+import { setCookie, getCookie } from 'cookies-next';
 
 export const SelectSettings = (props) => {
 
@@ -22,16 +23,44 @@ export const SelectSettings = (props) => {
         vocabularySetSelected, setVocabularySetSelected } = useQuizContext();
 
     // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
-    const [selectedLevel, setSelectedLevel] = useState(1);
+    const [selectedLevel, setSelectedLevel] = useState(null);
 
-    const handleLevelSelect = (level) => {
-        setSelectedLevel(level);
+    const handleLevelSelect = (newLastSelectedLevel) => {
+        setSelectedLevel(newLastSelectedLevel);
+        setCookie('lastSelectedLevel', newLastSelectedLevel);
+        fetch('/api/accounts', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ newLastSelectedLevel: newLastSelectedLevel })
+        })
+            .then((res) => {
+                console.log('POST last selected level response status:', res.status);
+                res.json();
+            })
     }
 
     const isStartQuizButtonDisabled = () => {
         return (!guessMeaningSelected && !guessReadingSelected && !guessKanjiSelected)
             || (!kanjiSetSelected && !vocabularySetSelected)
     }
+
+    useEffect(() => {
+        fetch('/api/accounts')
+            .then((res) => res.json())
+            .then((data) => {
+                console.log('GET last selected level:', data);
+                const newLastSelectedLevel = Number(data[0].last_selected_level);
+                setSelectedLevel(newLastSelectedLevel);
+                setCookie('lastSelectedLevel', newLastSelectedLevel);
+            })
+            .catch((error) => {
+                console.log('ERROR getting the last selected level:', error);
+                const newLastSelectedLevel = getCookie('lastSelectedLevel');
+                setSelectedLevel(newLastSelectedLevel !== undefined ? newLastSelectedLevel : 1);
+            })
+    }, []);
 
     return (
         <>
@@ -104,7 +133,7 @@ export const SelectSettings = (props) => {
                                         Level:
                                     </Col>
                                     <Col>
-                                        <SelectLevel handleLevelSelect={handleLevelSelect} />
+                                        <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
                                     </Col>
                                 </Row>
                                 <Row>
