@@ -26,6 +26,7 @@ export async function POST(request) {
     return NextResponse.json({ message: 'User authenticated' }, { status: 200 });
 }
 
+// TODO calculate hash
 function calculateHash(password) {
     return password;
 }
