@@ -47,3 +47,9 @@ Listing running processes
 
 Stopping
 ```pm2 delete 0```
+
+Check application logs
+```pm2 logs 0```
+
+Empty logs
+```pm2 flush 0```
