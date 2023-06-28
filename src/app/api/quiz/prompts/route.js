@@ -2,7 +2,7 @@ import { getDictionary } from '@/components/backend/DictionaryLoaderComponent';
 import { NextResponse } from 'next/server'
 
 export async function POST(request) {
-    console.log("PromptSet endpoint called...");
+    console.log("Calculating PromptSet...");
     const reqJson = await request.json();
     // console.log("PromptSet request body:", reqJson);
 

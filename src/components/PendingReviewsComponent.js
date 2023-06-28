@@ -67,6 +67,9 @@ export const PendingReviewsComponent = (props) => {
 
                 setReviewSet(pendingReviews);
             })
+            .catch(error => {
+                console.log('ERROR getting pending reviews:', error);
+            })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

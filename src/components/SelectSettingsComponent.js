@@ -39,7 +39,7 @@ export const SelectSettings = (props) => {
             body: JSON.stringify({ newLastSelectedLevel: newLastSelectedLevel })
         })
             .then((res) => {
-                console.log('POST last selected level response status:', res.status);
+                console.log('POST update last selected level response status:', res.status);
                 res.json();
             })
     }
