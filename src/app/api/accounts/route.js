@@ -6,7 +6,7 @@ export async function GET() {
     const client = await clientPromise;
     const db = client.db("japanese-reviews");
     const response = await db.collection("accounts").find({ "username": "Lorenzo" }).toArray();
-    console.log("Account info DB response:", response);
+    // console.log("Account info DB response:", response);
     return NextResponse.json(response);
 }
 
