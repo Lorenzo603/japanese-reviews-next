@@ -51,19 +51,24 @@ export const SelectSettings = (props) => {
     }
 
     useEffect(() => {
-        fetch('/api/accounts')
-            .then((res) => res.json())
-            .then((data) => {
-                console.log('GET last selected level:', data);
-                const newLastSelectedLevel = Number(data[0].last_selected_level);
-                setSelectedLevel(newLastSelectedLevel);
-                setCookie('lastSelectedLevel', newLastSelectedLevel, { sameSite: true });
-            })
-            .catch((error) => {
-                console.log('ERROR getting the last selected level:', error);
-                const newLastSelectedLevel = getCookie('lastSelectedLevel');
-                setSelectedLevel(newLastSelectedLevel !== undefined ? newLastSelectedLevel : 1);
-            })
+        const newLastSelectedLevel = getCookie('lastSelectedLevel');
+        if (newLastSelectedLevel !== undefined) {
+            setSelectedLevel(newLastSelectedLevel);
+        } else {
+            fetch('/api/accounts')
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log('GET last selected level:', data);
+                    const newLastSelectedLevel = Number(data[0].last_selected_level);
+                    setSelectedLevel(newLastSelectedLevel);
+                    setCookie('lastSelectedLevel', newLastSelectedLevel, { sameSite: true });
+                })
+                .catch((error) => {
+                    console.log('ERROR getting the last selected level:', error);
+                    setSelectedLevel(1);
+                })
+        }
+
     }, []);
 
     function onFormSubmit(event) {
