@@ -13,6 +13,9 @@ const srsLevelToWaitingTimeMap = {
 
 function calculateUnlockDate(srsLevel) {
     const now = new Date();
+    now.setMinutes(0);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
     return new Date(now.getTime() + srsLevelToWaitingTimeMap[srsLevel]);
 }
 

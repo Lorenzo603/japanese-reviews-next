@@ -59,7 +59,7 @@ export const PendingReviewsComponent = (props) => {
                 const reviews = convertDateStringToDate(data[0].reviews.filter(review => review.current_srs_stage < 9));
 
                 const now = new Date();
-                const pendingReviews = reviews.filter((review) => review.unlock_date < now);
+                const pendingReviews = reviews.filter((review) => review.unlock_date <= now);
                 const upcomingReviews = reviews.filter((review) => review.unlock_date > now);
                 setPendingReviewsCount(pendingReviews.length);
                 setNextUnlock(findClosestNextDate(upcomingReviews));
