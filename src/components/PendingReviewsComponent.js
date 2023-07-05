@@ -6,9 +6,12 @@ import { useQuizContext } from '@/app/context/quizContext';
 
 export const PendingReviewsComponent = (props) => {
 
+    const NEXT_WEEK_MILLIS = 7 * 24 * 60 * 60 * 1000;
+
     const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
     const [nextUnlock, setNextUnlock] = useState(null);
-    const [upcomingReviewsCount, setUpcomingReviewsCount] = useState(0);
+    const [totalReviewsCount, setTotalReviewsCount] = useState(0);
+    const [upcomingReviewsCountArrayMap, setUpcomingReviewsCountArrayMap] = useState([]);
     const { setReviewSet } = useQuizContext();
 
     function convertDateStringToDate(array) {
@@ -60,11 +63,31 @@ export const PendingReviewsComponent = (props) => {
 
                 const now = new Date();
                 const pendingReviews = reviews.filter((review) => review.unlock_date <= now);
-                const upcomingReviews = reviews.filter((review) => review.unlock_date > now);
+                const totalReviews = reviews.filter((review) => review.unlock_date > now);
                 setPendingReviewsCount(pendingReviews.length);
-                setNextUnlock(findClosestNextDate(upcomingReviews));
-                setUpcomingReviewsCount(upcomingReviews.length);
+                setNextUnlock(findClosestNextDate(totalReviews));
+                setTotalReviewsCount(totalReviews.length);
 
+                const nextWeek = new Date(now.getTime() + NEXT_WEEK_MILLIS)
+                const upcomingReviews = totalReviews.filter(review => review.unlock_date < nextWeek);
+                const groupedReviews = upcomingReviews.reduce((group, review) => {
+                    const { unlock_date } = review;
+                    const formattedDate = formatDate(unlock_date);
+                    if (!group.has(formattedDate)) {
+                        group.set(formattedDate, 1);
+                        return group;
+                    }
+                    group.set(formattedDate, group.get(formattedDate) + 1);
+                    return group;
+                }, new Map());
+                const sortedGroupedReviews = Array.from(groupedReviews).sort(
+                    (a, b) => {
+                        const a0 = new Date(a[0]);
+                        const b0 = new Date(b[0]);
+                        return a0 > b0 ? 1 : a0 < b0 ? -1 : 0;
+                    }
+                );
+                setUpcomingReviewsCountArrayMap(sortedGroupedReviews);
                 setReviewSet(pendingReviews);
             })
             .catch(error => {
@@ -93,7 +116,24 @@ export const PendingReviewsComponent = (props) => {
             </Row>
             <Row className="justify-content-center p-3">
                 <Col>
-                    Upcoming reviews: {upcomingReviewsCount}
+                    <Row className="justify-content-center p-2">Upcoming reviews:</Row>
+                    {upcomingReviewsCountArrayMap.map(upComingReview => {
+                        return (
+                            <Row key={upComingReview[0]} className="justify-content-center p-1">
+                                <Col className="col-8">
+                                    {upComingReview[0]}:
+                                </Col>
+                                <Col className="col-2">
+                                    {upComingReview[1]}
+                                </Col>
+                            </Row>
+                        );
+                    })}
+                </Col>
+            </Row>
+            <Row className="justify-content-center p-3">
+                <Col>
+                    Total reviews: {totalReviewsCount}
                 </Col>
             </Row>
         </>
