@@ -9,7 +9,6 @@ export const PendingReviewsComponent = (props) => {
     const NEXT_WEEK_MILLIS = 7 * 24 * 60 * 60 * 1000;
 
     const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
-    const [nextUnlock, setNextUnlock] = useState(null);
     const [totalReviewsCount, setTotalReviewsCount] = useState(0);
     const [upcomingReviewsCountArrayMap, setUpcomingReviewsCountArrayMap] = useState([]);
     const { setReviewSet } = useQuizContext();
@@ -39,21 +38,6 @@ export const PendingReviewsComponent = (props) => {
         return `${formattedDate} ${formattedTime}`;
     }
 
-    function findClosestNextDate(arr) {
-        if (arr.length === 0) {
-            return "None!";
-        }
-        let closestNextDate = arr[0].unlock_date;
-
-        for (let i = 1; i < arr.length; i++) {
-            if (arr[i].unlock_date < closestNextDate) {
-                closestNextDate = arr[i].unlock_date;
-            }
-        }
-
-        return formatDate(closestNextDate);
-    }
-
     useEffect(() => {
         fetch('/api/accounts')
             .then((res) => res.json())
@@ -65,7 +49,6 @@ export const PendingReviewsComponent = (props) => {
                 const pendingReviews = reviews.filter((review) => review.unlock_date <= now);
                 const totalReviews = reviews.filter((review) => review.unlock_date > now);
                 setPendingReviewsCount(pendingReviews.length);
-                setNextUnlock(findClosestNextDate(totalReviews));
                 setTotalReviewsCount(totalReviews.length);
 
                 const nextWeek = new Date(now.getTime() + NEXT_WEEK_MILLIS)
@@ -107,11 +90,6 @@ export const PendingReviewsComponent = (props) => {
                         onClick={props.handleSetSelection}>
                         Pending reviews: {pendingReviewsCount}
                     </Button>
-                </Col>
-            </Row>
-            <Row className="justify-content-center p-3">
-                <Col>
-                    Next Unlock: {nextUnlock}
                 </Col>
             </Row>
             <Row className="justify-content-center p-3">
