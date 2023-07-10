@@ -83,7 +83,7 @@ export const PendingReviewsComponent = (props) => {
 
     return (
         <>
-            <Row className="justify-content-center p-3">
+            <Row className="justify-content-center p-2 mt-3">
                 <Col>
                     <Button className="start-quiz-button" disabled={pendingReviewsCount === 0}
                         data-option='review'
@@ -94,7 +94,11 @@ export const PendingReviewsComponent = (props) => {
             </Row>
             <Row className="justify-content-center p-3">
                 <Col>
-                    <Row className="justify-content-center p-2">Upcoming reviews:</Row>
+                    <Row className="justify-content-center p-2">
+                        <Col>
+                            <h4>Upcoming reviews</h4>
+                        </Col>
+                    </Row>
                     {upcomingReviewsCountArrayMap.map(upComingReview => {
                         return (
                             <Row key={upComingReview[0]} className="justify-content-center p-1">
