@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Button, Col, Container, Form, Row, SSRProvider } from "react-bootstrap";
+import { setCookie } from 'cookies-next';
 
 export default function LoginPage() {
 
@@ -23,6 +24,10 @@ export default function LoginPage() {
                 if (res.status !== 200) {
                     throw new Error("Error during authentication");
                 }
+                return res.json();
+            })
+            .then((res) => {
+                setCookie('sessionId', res.sessionId, { sameSite: true });
                 router.push('/');
             })
             .catch(error => {
