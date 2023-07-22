@@ -4,7 +4,7 @@ import { randomBytes } from 'crypto';
 
 const sessionMemoryCache = await caching('memory', {
     max: 5,
-    ttl: 2 * 60 * 60 * 1000 /*milliseconds*/, // 2 hours
+    ttl: 24 * 60 * 60 * 1000 /*milliseconds*/, // 24 hours
 });
 
 
