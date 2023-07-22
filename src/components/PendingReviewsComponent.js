@@ -15,8 +15,8 @@ export const PendingReviewsComponent = (props) => {
 
     function convertDateStringToDate(array) {
         const convertedArray = array.map(obj => {
-            const unlock_date = new Date(obj.unlock_date);
-            return { ...obj, unlock_date };
+            const full_unlock_date = new Date(obj.unlock_date);
+            return { ...obj, full_unlock_date };
         });
 
         return convertedArray;
@@ -40,12 +40,11 @@ export const PendingReviewsComponent = (props) => {
     function groupReviewsByUnlockDate(reviews) {
         return reviews.reduce((group, review) => {
             const { unlock_date } = review;
-            const formattedDate = formatDate(unlock_date);
-            if (!group.has(formattedDate)) {
-                group.set(formattedDate, 1);
+            if (!group.has(unlock_date)) {
+                group.set(unlock_date, 1);
                 return group;
             }
-            group.set(formattedDate, group.get(formattedDate) + 1);
+            group.set(unlock_date, group.get(unlock_date) + 1);
             return group;
         }, new Map());
     }
@@ -77,13 +76,13 @@ export const PendingReviewsComponent = (props) => {
                 const reviews = convertDateStringToDate(data[0].reviews.filter(review => review.current_srs_stage < 9));
 
                 const now = new Date();
-                const pendingReviews = reviews.filter((review) => review.unlock_date <= now);
-                const totalReviews = reviews.filter((review) => review.unlock_date > now);
+                const pendingReviews = reviews.filter((review) => review.full_unlock_date <= now);
+                const totalReviews = reviews.filter((review) => review.full_unlock_date > now);
                 setPendingReviewsCount(pendingReviews.length);
                 setTotalReviewsCount(totalReviews.length);
 
                 const nextWeek = new Date(now.getTime() + NEXT_WEEK_MILLIS)
-                const upcomingReviews = totalReviews.filter(review => review.unlock_date < nextWeek);
+                const upcomingReviews = totalReviews.filter(review => review.full_unlock_date < nextWeek);
                 const groupedReviews = groupReviewsByUnlockDate(upcomingReviews);
                 const sortedGroupedReviews = sortReviewsByUnlockDate(groupedReviews);
                 const updatedGroupedReviews = addCumulativeSum(sortedGroupedReviews);
@@ -122,7 +121,7 @@ export const PendingReviewsComponent = (props) => {
                         return (
                             <Row key={upComingReview[0]} className="justify-content-center p-1">
                                 <Col className="col-4 d-flex justify-content-start p-0">
-                                    {upComingReview[0]}:
+                                    {formatDate(upComingReview[0])}:
                                 </Col>
                                 <Col className="col-1 d-flex justify-content-end p-0">
                                     +{upComingReview[1]}
