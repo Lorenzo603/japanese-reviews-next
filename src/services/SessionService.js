@@ -3,7 +3,7 @@ import { caching } from 'cache-manager';
 import { randomBytes } from 'crypto';
 
 const sessionMemoryCache = await caching('memory', {
-    max: 5,
+    max: 1000000,
     ttl: 24 * 60 * 60 * 1000 /*milliseconds*/, // 24 hours
 });
 
