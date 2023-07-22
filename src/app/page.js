@@ -58,7 +58,7 @@ export default function Home() {
               <Col className='col-6'>
                 <SelectSettings handleSetSelection={handleSetSelection} />
               </Col>
-              <Col className='col-2'>
+              <Col className='col-3'>
                 <PendingReviewsComponent handleSetSelection={handleSetSelection} />
               </Col>
             </Row>

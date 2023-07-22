@@ -27,15 +27,46 @@ export const PendingReviewsComponent = (props) => {
 
         const month = parsedDate.toLocaleString('default', { month: 'short' });
         const day = parsedDate.getDate();
-        const year = parsedDate.getFullYear();
 
         const hours = parsedDate.getHours();
         const minutes = parsedDate.getMinutes();
 
-        const formattedDate = `${month} ${day}, ${year}`;
+        const formattedDate = `${month} ${day},`;
         const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
         return `${formattedDate} ${formattedTime}`;
+    }
+
+    function groupReviewsByUnlockDate(reviews) {
+        return reviews.reduce((group, review) => {
+            const { unlock_date } = review;
+            const formattedDate = formatDate(unlock_date);
+            if (!group.has(formattedDate)) {
+                group.set(formattedDate, 1);
+                return group;
+            }
+            group.set(formattedDate, group.get(formattedDate) + 1);
+            return group;
+        }, new Map());
+    }
+
+    function sortReviewsByUnlockDate(reviews) {
+        return Array.from(reviews).sort(
+            (a, b) => {
+                const a0 = new Date(a[0]);
+                const b0 = new Date(b[0]);
+                return a0 > b0 ? 1 : a0 < b0 ? -1 : 0;
+            }
+        );
+    }
+
+    function addCumulativeSum(reviews) {
+        let cumSum = 0;
+        for (const review of reviews) {
+            cumSum += review[1];
+            review.push(cumSum);
+        }
+        return reviews;
     }
 
     useEffect(() => {
@@ -53,24 +84,12 @@ export const PendingReviewsComponent = (props) => {
 
                 const nextWeek = new Date(now.getTime() + NEXT_WEEK_MILLIS)
                 const upcomingReviews = totalReviews.filter(review => review.unlock_date < nextWeek);
-                const groupedReviews = upcomingReviews.reduce((group, review) => {
-                    const { unlock_date } = review;
-                    const formattedDate = formatDate(unlock_date);
-                    if (!group.has(formattedDate)) {
-                        group.set(formattedDate, 1);
-                        return group;
-                    }
-                    group.set(formattedDate, group.get(formattedDate) + 1);
-                    return group;
-                }, new Map());
-                const sortedGroupedReviews = Array.from(groupedReviews).sort(
-                    (a, b) => {
-                        const a0 = new Date(a[0]);
-                        const b0 = new Date(b[0]);
-                        return a0 > b0 ? 1 : a0 < b0 ? -1 : 0;
-                    }
-                );
-                setUpcomingReviewsCountArrayMap(sortedGroupedReviews);
+                const groupedReviews = groupReviewsByUnlockDate(upcomingReviews);
+                const sortedGroupedReviews = sortReviewsByUnlockDate(groupedReviews);
+                const updatedGroupedReviews = addCumulativeSum(sortedGroupedReviews);
+
+                setUpcomingReviewsCountArrayMap(updatedGroupedReviews);
+                console.log(updatedGroupedReviews);
                 setReviewSet(pendingReviews);
             })
             .catch(error => {
@@ -102,11 +121,14 @@ export const PendingReviewsComponent = (props) => {
                     {upcomingReviewsCountArrayMap.map(upComingReview => {
                         return (
                             <Row key={upComingReview[0]} className="justify-content-center p-1">
-                                <Col className="col-8">
+                                <Col className="col-4 d-flex justify-content-start p-0">
                                     {upComingReview[0]}:
                                 </Col>
-                                <Col className="col-2">
-                                    {upComingReview[1]}
+                                <Col className="col-1 d-flex justify-content-end p-0">
+                                    +{upComingReview[1]}
+                                </Col>
+                                <Col className="col-2 d-flex justify-content-end p-0">
+                                    {upComingReview[2]}
                                 </Col>
                             </Row>
                         );
