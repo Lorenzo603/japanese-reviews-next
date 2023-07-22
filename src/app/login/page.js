@@ -44,13 +44,13 @@ export default function LoginPage() {
                             <Row>
                                 <Col>
                                     <label htmlFor="username">Username:</label>
-                                    <input type="text" id="username" name="username" />
+                                    <input type="text" id="username" name="username" autoComplete="username"/>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
                                     <label htmlFor="password">Password:</label>
-                                    <input type="password" id="password" name="password" />
+                                    <input type="password" id="password" name="password" autoComplete="current-password"/>
                                 </Col>
                             </Row>
                             <Row>
