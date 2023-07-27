@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Col, Form, Row, Button } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
 import { updateSrsWrongAnswer, updateSrsAfterReview } from '../services/SrsService';
@@ -34,7 +34,7 @@ export const QuestionAnswerComponent = (props) => {
     const [isExploding, setIsExploding] = useState(false);
     const [scoreMap, setScoreMap] = useState(new Map());
 
-    const { promptSet, reviewMode, reviewSet } = useQuizContext();
+    const { promptSet, reviewMode, practiceMode, reviewSet } = useQuizContext();
 
     const ANSWER_INPUT_ID = 'answer-input';
 
@@ -139,14 +139,16 @@ export const QuestionAnswerComponent = (props) => {
                 const similarAnswerExists = acceptedAnswers.some((element) => {
                     return stringSimilarity.compareTwoStrings(userAnswer, element) >= 0.75;
                 });
-                if (answerContainsRomaji || similarAnswerExists) {
+
+                if (userAnswer.length === 0 || answerContainsRomaji || similarAnswerExists) {
                     shakeInputField();
                 } else {
                     setAnswerResult(Result.WRONG);
                     wrongAnswers.push(kanjiPrompt);
                     updateAnswerCount();
                     updateScoreMap(Result.WRONG);
-                    if (reviewMode === false) {
+
+                    if (reviewMode === false && practiceMode === false) {
                         updateSrsWrongAnswer(kanjiPrompt["id"]);
                     }
                 }

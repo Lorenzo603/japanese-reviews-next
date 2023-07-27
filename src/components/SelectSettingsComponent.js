@@ -21,7 +21,8 @@ export const SelectSettings = (props) => {
         guessReadingSelected, setGuessReadingSelected,
         guessKanjiSelected, setGuessKanjiSelected,
         kanjiSetSelected, setKanjiSetSelected,
-        vocabularySetSelected, setVocabularySetSelected } = useQuizContext();
+        vocabularySetSelected, setVocabularySetSelected,
+        practiceMode, setPracticeMode } = useQuizContext();
 
     // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
     const [selectedLevel, setSelectedLevel] = useState(null);
@@ -142,7 +143,7 @@ export const SelectSettings = (props) => {
                                 data-kanjiset-selected={kanjiSetSelected}
                                 data-vocabularyset-selected={vocabularySetSelected}
                                 data-selected-level={selectedLevel}>
-                                <Row className='justify-content-end align-items-center'>
+                                <Row className='justify-content-end align-items-center p-2'>
                                     <Col className="col-4 level-label">
                                         Level:
                                     </Col>
@@ -150,8 +151,19 @@ export const SelectSettings = (props) => {
                                         <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
                                     </Col>
                                 </Row>
+                                <Row className='justify-content-end align-items-center p-2'>
+                                    <Col className="col-4 level-label">
+                                        Practice Mode:
+                                    </Col>
+                                    <Col className='col-4'>
+                                        <div className="form-check form-switch">
+                                            <input className="form-check-input" type="checkbox" role="switch" id="practiceModeCheck" 
+                                            checked={practiceMode === true} onChange={() => { setPracticeMode(!practiceMode) }} />
+                                        </div>
+                                    </Col>
+                                </Row>
                                 <Row className='justify-content-end'>
-                                    <Col className='col-4 mt-4 d-flex flex-column'>
+                                    <Col className='col-4 p-2 d-flex flex-column'>
                                         <Button type='submit' className='start-quiz-button'
                                             disabled={isStartQuizButtonDisabled()}>
                                             {loading ? <LoadingSpinner className="loading-spinner" /> : 'Start Quiz'}
