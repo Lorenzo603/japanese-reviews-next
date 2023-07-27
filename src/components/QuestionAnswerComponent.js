@@ -160,6 +160,12 @@ export const QuestionAnswerComponent = (props) => {
         }
     }
 
+    function handleKeyDown(e) {
+        if (e.key === 'Tab') {
+            handleSubmit(e);
+        }
+    }
+
     function updateAnswerCount() {
         setAnswerState(AnswerState.ANSWERED);
         setTotalAnswers(totalAnswers + 1);
@@ -301,7 +307,8 @@ export const QuestionAnswerComponent = (props) => {
                                     <Col>
                                         <Form onSubmit={handleSubmit} autoComplete="off">
                                             <input type="text" id={ANSWER_INPUT_ID}
-                                                className={answerState === AnswerState.ANSWERED ? answerResult === Result.CORRECT ? 'correct' : 'wrong' : ''} />
+                                                className={answerState === AnswerState.ANSWERED ? answerResult === Result.CORRECT ? 'correct' : 'wrong' : ''}
+                                                onKeyDown={handleKeyDown} />
                                         </Form>
                                     </Col>
                                 </Row>
