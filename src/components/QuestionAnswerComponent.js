@@ -304,6 +304,13 @@ export const QuestionAnswerComponent = (props) => {
                                 {kanjiPrompt && <KanjiPrompt />}
                             </Col>
                         </Row>
+                        {kanjiPrompt && kanjiPrompt["promptMode"] === "kanji" && kanjiPrompt["data"].hasOwnProperty("parts_of_speech") && (
+                            <Row>
+                                <Col className='mb-3'>
+                                    {kanjiPrompt["data"]["parts_of_speech"].join(', ')}
+                                </Col>
+                            </Row>
+                        )}
                         {answerState !== AnswerState.FINISHED && (
                             <>
                                 <Row>
