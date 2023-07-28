@@ -235,6 +235,11 @@ button.btn-primary.start-quiz-button {
   font-family: "Hiragino Kaku Gothic Pro";
 }
 
+.kanjiPrompt-guessKanji {
+  font-size: 2rem;
+  padding: 1rem;
+}
+
 /**********/
 /* Questions Input/Output
 /**********/

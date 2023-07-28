@@ -208,14 +208,17 @@ export const QuestionAnswerComponent = (props) => {
 
     function KanjiPrompt() {
         if (kanjiPrompt["promptMode"] === "kanji") {
-            const acceptedMeaning = kanjiPrompt['data']['meanings'].filter(acceptedMeaning => acceptedMeaning.accepted_answer)[0]["meaning"];
-            return <KanjiPromptStyled promptText={acceptedMeaning} />;
+            const acceptedMeaningPrompt = kanjiPrompt['data']['meanings']
+                .filter(acceptedMeaning => acceptedMeaning.accepted_answer)
+                .map(acceptedMeaning => acceptedMeaning["meaning"])
+                .join(', ');
+            return <KanjiPromptStyled promptText={acceptedMeaningPrompt} cssClass="kanjiPrompt-guessKanji" />;
         }
-        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} />;
+        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} cssClass="kanjiPrompt" />;
     }
 
     function KanjiPromptStyled(props) {
-        return <div className="kanjiPrompt">{props.promptText}</div>;
+        return <div className={props.cssClass}>{props.promptText}</div>;
     }
 
     function AnswerResult(props) {
