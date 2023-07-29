@@ -222,11 +222,12 @@ export const QuestionAnswerComponent = (props) => {
     }
 
     function AnswerResult(props) {
-        return <div className='answer-result'>{props.currentState === AnswerState.ANSWERED ?
-            props.result === Result.CORRECT
-                ? getSuccessText()
-                : getIncorrectText()
-            : ""}
+        return <div className={(kanjiPrompt && kanjiPrompt["promptMode"] === "kanji") ? 'answer-result-guessKanji' : 'answer-result'}>
+            {props.currentState === AnswerState.ANSWERED ?
+                props.result === Result.CORRECT
+                    ? getSuccessText()
+                    : getIncorrectText()
+                : ""}
         </div>
     }
 
