@@ -110,54 +110,84 @@ export const QuestionAnswerComponent = (props) => {
     }
 
     function getAcceptedAnswers(prompt) {
-        return prompt['data'][getCurrentMode(prompt)]
-            .filter(potentialAnswer => potentialAnswer.accepted_answer)
+        const currentMode = getCurrentMode(prompt);
+        const acceptedAnswers = prompt['data'][currentMode]
+            .filter(potentialAnswer => potentialAnswer.accepted_answer);
+        if (currentMode === 'meanings') {
+            const whitelistedAnswers = prompt['data']['auxiliary_meanings']
+                .filter(auxiliaryMeaning => auxiliaryMeaning['type'] === 'whitelist');
+            acceptedAnswers.push(...whitelistedAnswers);
+        }
+        return acceptedAnswers;
     }
 
     function handleSubmit(event) {
         event.preventDefault();
         if (answerState === AnswerState.WAITING_RESPONSE) {
-            const acceptedAnswers = getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle(kanjiPrompt)].toLowerCase());
-            let userAnswer = getAnswerInputElement().value.toLowerCase();
-
-            if ((kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
-                && userAnswer.length > 0
-                && userAnswer.slice(-1) === 'n') {
-                userAnswer = userAnswer.substring(0, userAnswer.length - 1) + 'ん';
-                getAnswerInputElement().value = userAnswer;
-            }
-
-            if (acceptedAnswers.includes(userAnswer)) {
-                setAnswerResult(Result.CORRECT);
-                setTotalCorrect(totalCorrect + 1);
-                updateAnswerCount();
-                updateScoreMap(Result.CORRECT);
-            } else {
-                const answerContainsRomaji = (kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
-                    && userAnswer.length > 0
-                    && !wanakana.isKana(userAnswer);
-                const similarAnswerExists = acceptedAnswers.some((element) => {
-                    return stringSimilarity.compareTwoStrings(userAnswer, element) >= 0.75;
-                });
-
-                if (userAnswer.length === 0 || answerContainsRomaji || similarAnswerExists) {
-                    shakeInputField();
-                } else {
-                    setAnswerResult(Result.WRONG);
-                    wrongAnswers.push(kanjiPrompt);
-                    updateAnswerCount();
-                    updateScoreMap(Result.WRONG);
-
-                    if (reviewMode === false && practiceMode === false) {
-                        updateSrsWrongAnswer(kanjiPrompt["id"]);
-                    }
-                }
-            }
+            validateAnswer();
         } else {
-            setAnswerState(AnswerState.WAITING_RESPONSE);
-            getAnswerInputElement().value = "";
-            updatePrompt();
+            moveToNextPrompt();
         }
+    }
+
+    function validateAnswer() {
+        const acceptedAnswers = getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle(kanjiPrompt)].toLowerCase());
+        let userAnswer = getAnswerInputElement().value.toLowerCase();
+        
+        userAnswer = convertLastNCharacter(userAnswer);
+
+        if (acceptedAnswers.includes(userAnswer)) {
+            handleCorrectAnswer();
+            return;
+        } 
+
+        const answerContainsRomaji = (kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
+            && userAnswer.length > 0
+            && !wanakana.isKana(userAnswer);
+        const similarAnswerExists = acceptedAnswers.some((element) => {
+            return stringSimilarity.compareTwoStrings(userAnswer, element) >= 0.75;
+        });
+
+        if (userAnswer.length === 0 || answerContainsRomaji || similarAnswerExists) {
+            shakeInputField();
+        } else {
+            handleWrongAnswer();
+        }
+        
+    }
+
+    function convertLastNCharacter(userAnswer) {
+        if ((kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
+            && userAnswer.length > 0
+            && userAnswer.slice(-1) === 'n') {
+            userAnswer = userAnswer.substring(0, userAnswer.length - 1) + 'ん';
+            getAnswerInputElement().value = userAnswer;
+        }
+        return userAnswer;
+    }
+
+    function handleCorrectAnswer() {
+        setAnswerResult(Result.CORRECT);
+        setTotalCorrect(totalCorrect + 1);
+        updateAnswerCount();
+        updateScoreMap(Result.CORRECT);
+    }
+
+    function handleWrongAnswer() {
+        setAnswerResult(Result.WRONG);
+        wrongAnswers.push(kanjiPrompt);
+        updateAnswerCount();
+        updateScoreMap(Result.WRONG);
+
+        if (reviewMode === false && practiceMode === false) {
+            updateSrsWrongAnswer(kanjiPrompt["id"]);
+        }
+    }
+
+    function moveToNextPrompt() {
+        setAnswerState(AnswerState.WAITING_RESPONSE);
+        getAnswerInputElement().value = "";
+        updatePrompt();
     }
 
     function handleKeyDown(e) {
