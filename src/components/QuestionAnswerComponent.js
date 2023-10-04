@@ -133,13 +133,13 @@ export const QuestionAnswerComponent = (props) => {
     function validateAnswer() {
         const acceptedAnswers = getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle(kanjiPrompt)].toLowerCase());
         let userAnswer = getAnswerInputElement().value.toLowerCase();
-        
+
         userAnswer = convertLastNCharacter(userAnswer);
 
         if (acceptedAnswers.includes(userAnswer)) {
             handleCorrectAnswer();
             return;
-        } 
+        }
 
         const answerContainsRomaji = (kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
             && userAnswer.length > 0
@@ -147,13 +147,27 @@ export const QuestionAnswerComponent = (props) => {
         const similarAnswerExists = acceptedAnswers.some((element) => {
             return stringSimilarity.compareTwoStrings(userAnswer, element) >= 0.75;
         });
-
         if (userAnswer.length === 0 || answerContainsRomaji || similarAnswerExists) {
             shakeInputField();
-        } else {
-            handleWrongAnswer();
+            return;
+        } 
+        
+        const unexpectedReading = kanjiPrompt["promptMode"] === "reading" && isReadingNotAccepted(userAnswer);
+        if (unexpectedReading) {
+            getAnswerInputElement().classList.add('unexected-reading');
+            shakeInputField();
+            return;
         }
         
+        handleWrongAnswer();
+
+    }
+
+    function isReadingNotAccepted(userAnswer) {
+        return kanjiPrompt['data']['readings']
+            .filter(reading => !reading.accepted_answer)
+            .map(reading => reading['reading'].toLowerCase())
+            .includes(userAnswer);
     }
 
     function convertLastNCharacter(userAnswer) {

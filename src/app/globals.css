@@ -282,6 +282,10 @@ button.btn-primary.start-quiz-button {
   background-color: #b91a1a !important;
 }
 
+.unexected-reading {
+  color: #ffae1e !important;
+}
+
 @keyframes shake {
   0% {
     margin-left: 0rem;
