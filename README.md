@@ -27,7 +27,7 @@ On remote installation folder, run:
 ## Deploy on custom server 
 Use pm2 tool
 
-Installing
+Installing pm2 (only once)
 ```sudo npm install pm2 -g```
 
 Running
