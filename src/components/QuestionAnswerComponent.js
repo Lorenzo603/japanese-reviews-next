@@ -83,19 +83,27 @@ export const QuestionAnswerComponent = (props) => {
     useEffect(() => {
         if (kanjiPrompt) {
             if (kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji") {
-                const element = getAnswerInputElement();
-                if (!element.hasAttribute("data-wanakana-id")) {
-                    wanakana.bind(element);
-                }
+                enableKanaInput();
             } else {
-                const element = getAnswerInputElement();
-                if (element.hasAttribute("data-wanakana-id")) {
-                    wanakana.unbind(element);
-                }
+                disableKanaInput();
             }
         }
 
     }, [kanjiPrompt]);
+
+    function enableKanaInput() {
+        const element = getAnswerInputElement();
+        if (!element.hasAttribute("data-wanakana-id")) {
+            wanakana.bind(element);
+        }
+    }
+
+    function disableKanaInput() {
+        const element = getAnswerInputElement();
+        if (element.hasAttribute("data-wanakana-id")) {
+            wanakana.unbind(element);
+        }
+    }
 
     function endSession() {
         setAnswerState(AnswerState.FINISHED);
@@ -278,13 +286,17 @@ export const QuestionAnswerComponent = (props) => {
     function getSuccessText() {
         return kanjiPrompt["promptMode"] === "kanji"
             ? kanjiPrompt['data']['slug']
-            : "Correct!";
+            : concatenateAcceptedAnswers();
     }
 
     function getIncorrectText() {
         return kanjiPrompt["promptMode"] === "kanji"
             ? getAcceptedAnswers(kanjiPrompt).filter(answer => answer.primary)[0][getCurrentModeSingle(kanjiPrompt)] + " - " + kanjiPrompt['data']['slug']
-            : getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle(kanjiPrompt)]).join(', ')
+            : concatenateAcceptedAnswers();
+    }
+
+    function concatenateAcceptedAnswers() {
+        return getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle(kanjiPrompt)]).join(', ');
     }
 
     function WrongAnswersRecap() {

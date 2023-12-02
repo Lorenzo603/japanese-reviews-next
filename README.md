@@ -24,7 +24,7 @@ On remote installation folder, run:
 ```npm i```
 ```npm run build```
 
-## Deploy on custom server 
+## Start/Stop app on server 
 Use pm2 tool
 
 Installing pm2 (only once)
