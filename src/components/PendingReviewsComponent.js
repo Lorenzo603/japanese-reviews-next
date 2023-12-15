@@ -10,7 +10,7 @@ export const PendingReviewsComponent = (props) => {
 
     const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
     const [totalReviewsCount, setTotalReviewsCount] = useState(0);
-    const [upcomingReviewsCountArrayMap, setUpcomingReviewsCountArrayMap] = useState([]);
+    const [upcomingReviewsCountArray, setUpcomingReviewsCountArray] = useState([]);
     const { setReviewSet } = useQuizContext();
 
     function convertDateStringToDate(array) {
@@ -68,6 +68,21 @@ export const PendingReviewsComponent = (props) => {
         return reviews;
     }
 
+    function groupByDay(reviews) {
+        const groupedItems = reviews.reduce((groups, review) => {
+            const parsedDate = new Date(review[0]);
+            const day = parsedDate.getDate();
+            if (!groups[day]) {
+                groups[day] = [];
+            }
+            groups[day].push(review);
+            return groups;
+        }, {});
+
+        return Object.values(groupedItems);;
+    }
+
+
     useEffect(() => {
         fetch('/api/accounts')
             .then((res) => res.json())
@@ -86,9 +101,10 @@ export const PendingReviewsComponent = (props) => {
                 const groupedReviews = groupReviewsByUnlockDate(upcomingReviews);
                 const sortedGroupedReviews = sortReviewsByUnlockDate(groupedReviews);
                 const updatedGroupedReviews = addCumulativeSum(sortedGroupedReviews);
+                const dayGroupedReviews = groupByDay(updatedGroupedReviews);
 
-                setUpcomingReviewsCountArrayMap(updatedGroupedReviews);
-                console.log(updatedGroupedReviews);
+                setUpcomingReviewsCountArray(dayGroupedReviews);
+                console.log(dayGroupedReviews);
                 setReviewSet(pendingReviews);
             })
             .catch(error => {
@@ -117,21 +133,33 @@ export const PendingReviewsComponent = (props) => {
                             <h4>Upcoming reviews</h4>
                         </Col>
                     </Row>
-                    {upcomingReviewsCountArrayMap.map(upComingReview => {
-                        return (
-                            <Row key={upComingReview[0]} className="justify-content-center p-1">
-                                <Col className="col-4 d-flex justify-content-start p-0">
-                                    {formatDate(upComingReview[0])}:
-                                </Col>
-                                <Col className="col-1 d-flex justify-content-end p-0">
-                                    +{upComingReview[1]}
-                                </Col>
-                                <Col className="col-2 d-flex justify-content-end p-0">
-                                    {upComingReview[2]}
-                                </Col>
-                            </Row>
-                        );
-                    })}
+                    {
+                        upcomingReviewsCountArray.map(dayGroup => {
+                            return (
+                                <Row>
+                                    <Col>
+                                        {
+                                            dayGroup.map(upComingReview => {
+                                                return (
+                                                    <Row key={upComingReview[0]} className="justify-content-center p-1 upComing-review">
+                                                        <Col className="col-4 d-flex justify-content-start p-0">
+                                                            {formatDate(upComingReview[0])}:
+                                                        </Col>
+                                                        <Col className="col-1 d-flex justify-content-end p-0">
+                                                            +{upComingReview[1]}
+                                                        </Col>
+                                                        <Col className="col-2 d-flex justify-content-end p-0">
+                                                            {upComingReview[2]}
+                                                        </Col>
+                                                    </Row>
+                                                );
+                                            })
+                                        }
+                                    </Col>
+                                </Row>
+                            );
+                        })
+                    }
                 </Col>
             </Row>
             <Row className="justify-content-center p-3">
