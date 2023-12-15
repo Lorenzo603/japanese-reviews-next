@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
-import { updateSrsWrongAnswer, updateSrsAfterReview } from '../services/SrsService';
+import { updateSrsWrongAnswer, updateSrsAfterReview, updateSingleSrsAfterReview } from '../services/SrsService';
 import styles from '../app/page.module.css'
 import Link from 'next/link';
 import { useQuizContext } from '@/app/context/quizContext';
@@ -25,7 +25,7 @@ export const QuestionAnswerComponent = (props) => {
     };
 
     const [answerState, setAnswerState] = useState(AnswerState.WAITING_RESPONSE);
-    const [kanjiPrompt, setKanjiPrompt] = useState();
+    const [kanjiPrompt, setKanjiPrompt] = useState(null);
     const [answerResult, setAnswerResult] = useState(Result.NA);
     const [totalAnswers, setTotalAnswers] = useState(0);
     const [totalCorrect, setTotalCorrect] = useState(0);
@@ -44,6 +44,17 @@ export const QuestionAnswerComponent = (props) => {
 
     const updatePrompt = () => {
         console.log("Prompts pool length:", remainingPrompts.length);
+
+        if (reviewMode === true && kanjiPrompt !== null) {
+            const kanjiId = kanjiPrompt["id"];
+            if (scoreMap.has(kanjiId)) {
+                if (scoreMap.get(kanjiId).numPromptsAlreadyAnswered == 2) {
+                    updateSingleSrsAfterReview(scoreMap.get(kanjiId).score, kanjiId, reviewSet);
+                    scoreMap.delete(kanjiId);
+                }
+            }
+        }
+
         if (remainingPrompts.length === 0) {
             setAnswerState(AnswerState.FINISHED);
             if (totalCorrect === totalAnswers) {
@@ -76,7 +87,7 @@ export const QuestionAnswerComponent = (props) => {
             updatePrompt();
             getAnswerInputElement().focus();
         }
-
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -224,8 +235,15 @@ export const QuestionAnswerComponent = (props) => {
     }
 
     function updateScoreMap(result) {
-        const currentScore = scoreMap.has(kanjiPrompt["id"]) ? scoreMap.get(kanjiPrompt["id"]) : 0;
-        setScoreMap(scoreMap.set(kanjiPrompt["id"], result === Result.CORRECT ? currentScore + 1 : currentScore - 2));
+        const isElementAlreadyInMap = scoreMap.has(kanjiPrompt["id"]);
+        const currentScore = isElementAlreadyInMap ? scoreMap.get(kanjiPrompt["id"]).score : 0;
+        const numPromptsAlreadyAnswered = isElementAlreadyInMap ? scoreMap.get(kanjiPrompt["id"]).numPromptsAlreadyAnswered : 0; 
+        setScoreMap(scoreMap.set(
+            kanjiPrompt["id"], {
+                score: result === Result.CORRECT ? currentScore + 1 : currentScore - 2,
+                numPromptsAlreadyAnswered: numPromptsAlreadyAnswered + 1
+            }
+        ));
     }
 
     function shakeInputField() {

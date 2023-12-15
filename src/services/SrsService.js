@@ -24,11 +24,15 @@ function calculateUnlockDate(srsLevel) {
 // C W // this should still result in srs -2
 // W C // avoid adding correct answer if I already responded wrongly once
 // W W // -4
+export const updateSingleSrsAfterReview = async(score, kanjiId, reviewSet) => {
+    const currentSrsStage = reviewSet.filter(review => review.element_id === kanjiId)[0].current_srs_stage;
+    const newSrsStage = clampSrsStage(currentSrsStage + normalizeSrsScore(score));
+    sendRequest('/api/accounts/reviews', 'PUT', kanjiId, newSrsStage);
+}
+
 export const updateSrsAfterReview = async (scoreMap, reviewSet) => {
     scoreMap.forEach((value, key) => {
-        const currentSrsStage = reviewSet.filter(review => review.element_id === key)[0].current_srs_stage;
-        const newSrsStage = clampSrsStage(currentSrsStage + normalizeSrsScore(value));
-        sendRequest('/api/accounts/reviews', 'PUT', key, newSrsStage);
+        updateSingleSrsAfterReview(value.score, key, reviewSet);
     });
 }
 
