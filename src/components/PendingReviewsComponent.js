@@ -149,7 +149,7 @@ export const PendingReviewsComponent = (props) => {
                                                             +{upComingReview[1]}
                                                         </Col>
                                                         <Col className="col-2 d-flex justify-content-end p-0">
-                                                            {upComingReview[2]}
+                                                            {upComingReview[2] + pendingReviewsCount}
                                                         </Col>
                                                     </Row>
                                                 );
