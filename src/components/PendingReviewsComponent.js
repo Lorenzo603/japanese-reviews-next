@@ -89,16 +89,16 @@ export const PendingReviewsComponent = (props) => {
             .then((data) => {
                 console.log('GET pending reviews:', data);
                 const reviews = convertDateStringToDate(data[0].reviews.filter(review => review.current_srs_stage < 9));
+                setTotalReviewsCount(reviews.length);
 
                 const now = new Date();
                 const pendingReviews = reviews.filter((review) => review.full_unlock_date <= now);
-                const totalReviews = reviews.filter((review) => review.full_unlock_date > now);
+                const allUpcomingReviews = reviews.filter((review) => review.full_unlock_date > now);
                 setPendingReviewsCount(pendingReviews.length);
-                setTotalReviewsCount(totalReviews.length);
 
                 const nextWeek = new Date(now.getTime() + NEXT_WEEK_MILLIS)
-                const upcomingReviews = totalReviews.filter(review => review.full_unlock_date < nextWeek);
-                const groupedReviews = groupReviewsByUnlockDate(upcomingReviews);
+                const imminentUpcomingReviews = allUpcomingReviews.filter(review => review.full_unlock_date < nextWeek);
+                const groupedReviews = groupReviewsByUnlockDate(imminentUpcomingReviews);
                 const sortedGroupedReviews = sortReviewsByUnlockDate(groupedReviews);
                 const updatedGroupedReviews = addCumulativeSum(sortedGroupedReviews);
                 const dayGroupedReviews = groupByDay(updatedGroupedReviews);
