@@ -64,7 +64,7 @@ const MultiRangeSliderComponent = ({ min, max, onChange, minValue, maxValue }) =
           event.target.value = value.toString();
         }}
         className={classnames("thumb thumb--zindex-3", {
-          "thumb--zindex-5": minVal > max - 100
+          "thumb--zindex-5": minVal === max
         })}
       />
       <input
