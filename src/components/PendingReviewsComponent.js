@@ -136,7 +136,7 @@ export const PendingReviewsComponent = (props) => {
                     {
                         upcomingReviewsCountArray.map(dayGroup => {
                             return (
-                                <Row>
+                                <Row key={dayGroup}>
                                     <Col>
                                         {
                                             dayGroup.map(upComingReview => {
