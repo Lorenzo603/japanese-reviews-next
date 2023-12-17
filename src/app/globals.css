@@ -148,6 +148,14 @@ CUSTOM CSS
   text-align: left;
 }
 
+.quiz-settings {
+  margin-top: 1em;
+  margin-bottom: 2em;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #0d6efd;
+}
+
 /**********/
 /* Buttons
 /**********/
