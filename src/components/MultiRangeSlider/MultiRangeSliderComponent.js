@@ -7,9 +7,9 @@ import classnames from "classnames";
 import PropTypes from "prop-types";
 import "./multiRangeSlider.css";
 
-const MultiRangeSliderComponent = ({ min, max, onChange }) => {
-  const [minVal, setMinVal] = useState(min);
-  const [maxVal, setMaxVal] = useState(max);
+const MultiRangeSliderComponent = ({ min, max, onChange, minValue, maxValue }) => {
+  const [minVal, setMinVal] = useState(minValue !== undefined ? minValue : min);
+  const [maxVal, setMaxVal] = useState(maxValue !== undefined ? maxValue : max);
   const minValRef = useRef(null);
   const maxValRef = useRef(null);
   const range = useRef(null);

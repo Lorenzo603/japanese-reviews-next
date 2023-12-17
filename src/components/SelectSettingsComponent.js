@@ -197,16 +197,21 @@ export const SelectSettings = (props) => {
                 <Col>
                     <Row><Col>Visually similar Kanjis</Col></Row>
 
-                    <Row>
+                    <Row className='align-items-center p-3'>
+                        <Col className="col-4 level-label">
+                            Level range:
+                        </Col>
                         <Col>
                             <MultiRangeSliderComponent
                                 min={1}
                                 max={60}
                                 onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
+                                minValue={20}
+                                maxValue={30}
                             />
                         </Col>
                         <Col>
-                            <Button>Start Quiz</Button>
+                            <Button type='submit' className='start-quiz-button'>Start Quiz</Button>
                         </Col>
                     </Row>
                 </Col>
