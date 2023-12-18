@@ -13,7 +13,7 @@ export const VisuallySimilarKanji = (props) => {
         return storedValue !== undefined ? storedValue : defaultvalue;
     }
 
-    
+
     function handleMultiRangeSliderChange({ min, max }) {
         visMinValue = min;
         localStorage.setItem('visMinValue', visMinValue);
@@ -23,7 +23,8 @@ export const VisuallySimilarKanji = (props) => {
     }
 
     function onVisSimFormSubmit(event) {
-        console.log('VISMIN, VISMAX', visMinValue, visMaxValue)
+        event.preventDefault();
+        props.handleLevelSelection(visMinValue, visMaxValue);
     }
 
     return (

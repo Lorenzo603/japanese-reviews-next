@@ -50,6 +50,36 @@ export default function Home() {
 
   }
 
+  async function handleLevelSelection(minLevel, maxLevel) {
+
+    const fullKanjiSetResponse = await (await fetch('/api/quiz/prompts', {
+      method: 'post',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        dataOption: "full-kanji",
+        kanjiSetSelected: true,
+        guessMeaningSelected: true,
+        guessReadingSelected: true
+      })
+    })).json();
+
+    const levelSet = fullKanjiSetResponse
+      .filter(kanji => minLevel <= kanji['data']['level'] && kanji['data']['level'] <= maxLevel)
+      .filter(kanji => kanji['data']['visually_similar_subject_ids'].length > 0)
+
+    // fetch 'visually_similar_subject_ids' in other levels
+    const visuallySimilarKanjis = [...new Set(levelSet.flatMap(kanji => kanji['data']['visually_similar_subject_ids']))]
+      .flatMap(kanjiId => fullKanjiSetResponse.filter(kanji => kanji['id'] === kanjiId));
+    
+    levelSet.push(...visuallySimilarKanjis)
+    // console.log('Visually Similar Kanji set: ', levelSet);
+
+    setPromptSet(levelSet);
+    router.push('/quiz');
+  }
+
   return (
     <SSRProvider>
       <Container fluid className='App'>
@@ -58,7 +88,7 @@ export default function Home() {
             <Row className='justify-content-center'>
               <Col className='col-6'>
                 <SelectSettings handleSetSelection={handleSetSelection} />
-                <VisuallySimilarKanji />
+                <VisuallySimilarKanji handleLevelSelection={handleLevelSelection} />
               </Col>
               <Col className='col-3'>
                 <PendingReviewsComponent handleSetSelection={handleSetSelection} />

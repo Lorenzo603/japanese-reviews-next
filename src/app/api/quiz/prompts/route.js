@@ -15,7 +15,7 @@ export async function POST(request) {
         case "full-vocab":
             selectedSet = fullVocabularyDictionary;
             break;
-        case "full":
+        case "full-kanji":
             selectedSet = fullKanjiDictionary;
             break;
         case "level":
