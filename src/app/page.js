@@ -7,6 +7,7 @@ import styles from './page.module.css'
 import { useRouter } from 'next/navigation';
 import { useQuizContext } from './context/quizContext';
 import PendingReviewsComponent from '@/components/PendingReviewsComponent';
+import VisuallySimilarKanji from '@/components/VisuallySimilarKanjiComponent';
 
 
 export default function Home() {
@@ -57,6 +58,7 @@ export default function Home() {
             <Row className='justify-content-center'>
               <Col className='col-6'>
                 <SelectSettings handleSetSelection={handleSetSelection} />
+                <VisuallySimilarKanji />
               </Col>
               <Col className='col-3'>
                 <PendingReviewsComponent handleSetSelection={handleSetSelection} />
