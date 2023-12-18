@@ -84,7 +84,7 @@ export const SelectSettings = (props) => {
         props.handleSetSelection(event);
     }
 
-    function handleMultiRangeSliderChange({min, max}) {
+    function handleMultiRangeSliderChange({ min, max }) {
         visMinValue = min;
         localStorage.setItem('visMinValue', visMinValue);
         visMaxValue = max;
@@ -100,6 +100,7 @@ export const SelectSettings = (props) => {
         <>
             <Row className='quiz-settings'>
                 <Col>
+                    <Row><Col><h4 className='quiz-type-title'>Meaning and Reading</h4></Col></Row>
                     <RadioSelectModeComponent title="Select Mode:">
                         <Col className='col-2'>
                             <SelectModeButton key="guess-meaning" id="guess-meaning"
@@ -213,7 +214,7 @@ export const SelectSettings = (props) => {
 
             <Row className='quiz-settings'>
                 <Col>
-                    <Row><Col>Visually similar Kanjis</Col></Row>
+                    <Row><Col><h4 className='quiz-type-title'>Visually Similar Kanjis</h4></Col></Row>
 
                     <Row className='align-items-center p-3'>
                         <Col className="col-4 level-label">

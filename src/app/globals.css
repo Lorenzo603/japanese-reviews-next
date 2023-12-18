@@ -156,6 +156,10 @@ CUSTOM CSS
   border-color: #0d6efd;
 }
 
+h4.quiz-type-title {
+  margin-top: 0.5em;
+}
+
 /**********/
 /* Buttons
 /**********/
