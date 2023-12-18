@@ -39,10 +39,10 @@ export const VisuallySimilarKanji = (props) => {
 
                 <Form id="vis-sim-form" onSubmit={onVisSimFormSubmit}>
                     <Row className='align-items-center p-3'>
-                        <Col className="col-4 level-label">
+                        <Col className="col-2 level-label">
                             Level Range:
                         </Col>
-                        <Col className="col-4">
+                        <Col className="col-8">
                             <MultiRangeSliderComponent
                                 min={1}
                                 max={60}
