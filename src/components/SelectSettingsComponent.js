@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { SelectLevel } from './SelectLevelComponent';
 import SelectModeButton from './SelectModeButtonComponent';
 import { useQuizContext } from '@/app/context/quizContext';
-// import { useLocalStorage } from "./useLocalStorage";
 import { setCookie, getCookie } from 'cookies-next';
 import { LoadingSpinner } from './LoadingSpinner';
 import MultiRangeSliderComponent from './MultiRangeSlider/MultiRangeSliderComponent';
@@ -25,10 +24,17 @@ export const SelectSettings = (props) => {
         vocabularySetSelected, setVocabularySetSelected,
         practiceMode, setPracticeMode } = useQuizContext();
 
-    // const [selectedLevel, setSelectedLevel] = useLocalStorage("selectedLevel", 1);
     const [selectedLevel, setSelectedLevel] = useState(null);
 
     const [loading, setLoading] = useState(false);
+
+    let visMinValue = loadfromLocalStorage('visMinValue', 21);
+    let visMaxValue = loadfromLocalStorage('visMaxValue', 41);
+
+    function loadfromLocalStorage(localStorageKey, defaultvalue) {
+        const storedValue = JSON.parse(localStorage.getItem(localStorageKey));
+        return storedValue !== undefined ? storedValue : defaultvalue;
+    }
 
     const handleLevelSelect = (newLastSelectedLevel) => {
         setSelectedLevel(newLastSelectedLevel);
@@ -76,6 +82,18 @@ export const SelectSettings = (props) => {
     function onFormSubmit(event) {
         setLoading(true);
         props.handleSetSelection(event);
+    }
+
+    function handleMultiRangeSliderChange({min, max}) {
+        visMinValue = min;
+        localStorage.setItem('visMinValue', visMinValue);
+        visMaxValue = max;
+        localStorage.setItem('visMaxValue', visMaxValue);
+        //console.log(`min = ${min}, max = ${max}`);
+    }
+
+    function onVisKanjiClick(event) {
+        console.log('VISMIN, VISMAX', visMinValue, visMaxValue)
     }
 
     return (
@@ -205,13 +223,13 @@ export const SelectSettings = (props) => {
                             <MultiRangeSliderComponent
                                 min={1}
                                 max={60}
-                                onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
-                                minValue={20}
-                                maxValue={30}
+                                onChange={handleMultiRangeSliderChange}
+                                minStartValue={visMinValue}
+                                maxStartValue={visMaxValue}
                             />
                         </Col>
                         <Col>
-                            <Button type='submit' className='start-quiz-button'>Start Quiz</Button>
+                            <Button type='submit' className='start-quiz-button' onClick={onVisKanjiClick}>Start Quiz</Button>
                         </Col>
                     </Row>
                 </Col>
