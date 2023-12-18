@@ -37,28 +37,30 @@ export const VisuallySimilarKanji = (props) => {
             <Col>
                 <Row><Col><h4 className='quiz-type-title'>Visually Similar Kanjis</h4></Col></Row>
 
-                <Row className='align-items-center p-3'>
-                    <Col className="col-4 level-label">
-                        Level range:
-                    </Col>
-                    <Col>
-                        <MultiRangeSliderComponent
-                            min={1}
-                            max={60}
-                            onChange={handleMultiRangeSliderChange}
-                            minStartValue={visMinValue}
-                            maxStartValue={visMaxValue}
-                        />
-                    </Col>
-                    <Col className='col-4 p-2 d-flex flex-column'>
-                        <Form id="vis-sim-form" onSubmit={onVisSimFormSubmit}>
+                <Form id="vis-sim-form" onSubmit={onVisSimFormSubmit}>
+                    <Row className='align-items-center p-3'>
+                        <Col className="col-4 level-label">
+                            Level Range:
+                        </Col>
+                        <Col className="col-4">
+                            <MultiRangeSliderComponent
+                                min={1}
+                                max={60}
+                                onChange={handleMultiRangeSliderChange}
+                                minStartValue={visMinValue}
+                                maxStartValue={visMaxValue}
+                            />
+                        </Col>
+                        <Col className='col-2 p-2 d-flex flex-column'>
+
                             <Button type='submit' className='start-quiz-button'
                                 disabled={loading}>
                                 {loading ? <LoadingSpinner className="loading-spinner" /> : 'Start Quiz'}
                             </Button>
-                        </Form>
-                    </Col>
-                </Row>
+
+                        </Col>
+                    </Row>
+                </Form>
             </Col>
         </Row>
     );
