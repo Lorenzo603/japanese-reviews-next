@@ -27,7 +27,7 @@ function calculateUnlockDate(srsLevel) {
 export const updateSingleSrsAfterReview = async(score, kanjiId, reviewSet) => {
     const currentSrsStage = reviewSet.filter(review => review.element_id === kanjiId)[0].current_srs_stage;
     const newSrsStage = clampSrsStage(currentSrsStage + normalizeSrsScore(score));
-    sendRequest('/api/accounts/reviews', 'PUT', kanjiId, newSrsStage);
+    sendRequest('/api/reviews', 'PUT', kanjiId, newSrsStage);
 }
 
 export const updateSrsAfterReview = async (scoreMap, reviewSet) => {
@@ -49,14 +49,14 @@ function clampSrsStage(score) {
 
 
 export const updateSrsWrongAnswer = async (elementId) => {
-    const accountInfo = await (await fetch('/api/accounts')).json();
-    const currentReviewArr = accountInfo[0].reviews.filter((review) => review.element_id === elementId)
+    const reviewData = await (await fetch('/api/reviews')).json();
+    const currentReviewArr = reviewData.reviews.filter((review) => review.element_id === elementId)
     const isReviewExisting = currentReviewArr.length > 0;
     if (isReviewExisting) {
         const currentReview = currentReviewArr[0];
-        sendRequest('/api/accounts/reviews', 'PUT', elementId, clampSrsStage(currentReview.current_srs_stage - 2));
+        sendRequest('/api/reviews', 'PUT', elementId, clampSrsStage(currentReview.current_srs_stage - 2));
     } else {
-        sendRequest('/api/accounts/reviews', 'POST', elementId, 1);
+        sendRequest('/api/reviews', 'POST', elementId, 1);
     }
 
 }

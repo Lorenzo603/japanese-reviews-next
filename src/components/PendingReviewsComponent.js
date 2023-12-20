@@ -6,22 +6,12 @@ import { useQuizContext } from '@/app/context/quizContext';
 
 export const PendingReviewsComponent = (props) => {
 
-    const NEXT_WEEK_MILLIS = 7 * 24 * 60 * 60 * 1000;
-
     const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
     const [totalReviewsCount, setTotalReviewsCount] = useState(0);
     const [upcomingReviewsCountArray, setUpcomingReviewsCountArray] = useState([]);
     const { setReviewSet } = useQuizContext();
 
-    function convertDateStringToDate(array) {
-        const convertedArray = array.map(obj => {
-            const full_unlock_date = new Date(obj.unlock_date);
-            return { ...obj, full_unlock_date };
-        });
-
-        return convertedArray;
-    }
-
+    
     function formatDate(dateString) {
         const parsedDate = new Date(dateString);
 
@@ -37,74 +27,21 @@ export const PendingReviewsComponent = (props) => {
         return `${formattedDate} ${formattedTime}`;
     }
 
-    function groupReviewsByUnlockDate(reviews) {
-        return reviews.reduce((group, review) => {
-            const { unlock_date } = review;
-            if (!group.has(unlock_date)) {
-                group.set(unlock_date, 1);
-                return group;
-            }
-            group.set(unlock_date, group.get(unlock_date) + 1);
-            return group;
-        }, new Map());
-    }
-
-    function sortReviewsByUnlockDate(reviews) {
-        return Array.from(reviews).sort(
-            (a, b) => {
-                const a0 = new Date(a[0]);
-                const b0 = new Date(b[0]);
-                return a0 > b0 ? 1 : a0 < b0 ? -1 : 0;
-            }
-        );
-    }
-
-    function addCumulativeSum(reviews) {
-        let cumSum = 0;
-        for (const review of reviews) {
-            cumSum += review[1];
-            review.push(cumSum);
-        }
-        return reviews;
-    }
-
-    function groupByDay(reviews) {
-        const groupedItems = reviews.reduce((groups, review) => {
-            const parsedDate = new Date(review[0]);
-            const day = parsedDate.getDate();
-            if (!groups[day]) {
-                groups[day] = [];
-            }
-            groups[day].push(review);
-            return groups;
-        }, {});
-
-        return Object.values(groupedItems);;
-    }
-
-
     useEffect(() => {
-        fetch('/api/accounts')
+        fetch('/api/reviews')
             .then((res) => res.json())
             .then((data) => {
-                console.log('GET pending reviews:', data);
-                const reviews = convertDateStringToDate(data[0].reviews.filter(review => review.current_srs_stage < 9));
-                setTotalReviewsCount(reviews.length);
+                // console.log('GET pending reviews:', data);
 
-                const now = new Date();
-                const pendingReviews = reviews.filter((review) => review.full_unlock_date <= now);
-                const allUpcomingReviews = reviews.filter((review) => review.full_unlock_date > now);
+                const reviews = data.reviews;
+                const pendingReviews = data.pendingReviews;
+                const upcomingReviews = data.upcomingReviews;
+
+                setTotalReviewsCount(reviews.length);
                 setPendingReviewsCount(pendingReviews.length);
 
-                const nextWeek = new Date(now.getTime() + NEXT_WEEK_MILLIS)
-                const imminentUpcomingReviews = allUpcomingReviews.filter(review => review.full_unlock_date < nextWeek);
-                const groupedReviews = groupReviewsByUnlockDate(imminentUpcomingReviews);
-                const sortedGroupedReviews = sortReviewsByUnlockDate(groupedReviews);
-                const updatedGroupedReviews = addCumulativeSum(sortedGroupedReviews);
-                const dayGroupedReviews = groupByDay(updatedGroupedReviews);
+                setUpcomingReviewsCountArray(upcomingReviews);
 
-                setUpcomingReviewsCountArray(dayGroupedReviews);
-                console.log(dayGroupedReviews);
                 setReviewSet(pendingReviews);
             })
             .catch(error => {
