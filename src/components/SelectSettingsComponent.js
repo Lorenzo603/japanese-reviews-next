@@ -31,7 +31,7 @@ export const SelectSettings = (props) => {
     const handleLevelSelect = (newLastSelectedLevel) => {
         setSelectedLevel(newLastSelectedLevel);
         setCookie('lastSelectedLevel', newLastSelectedLevel, { sameSite: true });
-        fetch('/api/accounts', {
+        fetch('/api/accounts/lastSelectedLevel', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -55,11 +55,11 @@ export const SelectSettings = (props) => {
         if (newLastSelectedLevel !== undefined) {
             setSelectedLevel(newLastSelectedLevel);
         } else {
-            fetch('/api/accounts')
+            fetch('/api/accounts/lastSelectedLevel')
                 .then((res) => res.json())
                 .then((data) => {
                     console.log('GET last selected level:', data);
-                    const newLastSelectedLevel = Number(data[0].last_selected_level);
+                    const newLastSelectedLevel = Number(data);
                     setSelectedLevel(newLastSelectedLevel);
                     setCookie('lastSelectedLevel', newLastSelectedLevel, { sameSite: true });
                 })
