@@ -119,7 +119,7 @@ export async function POST(request) {
                 "reviews": {
                     element_id: reqJson.element_id,
                     current_srs_stage: reqJson.current_srs_stage,
-                    unlock_date: calculateUnlockDate(reqJson.current_srs_stage)
+                    unlock_date: JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
                 }
             }
         });
@@ -137,7 +137,7 @@ export async function PUT(request) {
             { "username": "Lorenzo", "reviews.element_id": reqJson.element_id }, {
             $set: {
                 "reviews.$.current_srs_stage": reqJson.current_srs_stage,
-                "reviews.$.unlock_date": calculateUnlockDate(reqJson.current_srs_stage)
+                "reviews.$.unlock_date": JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
             }
         });
     return NextResponse.json(response);
