@@ -1,25 +1,3 @@
-
-const srsLevelToWaitingTimeMap = {
-    1: (4 * 60 * 60 * 1000), // 4 hours
-    2: (8 * 60 * 60 * 1000), // 8 hours
-    3: (24 * 60 * 60 * 1000), // 1 day
-    4: (2 * 24 * 60 * 60 * 1000), // 2 days
-    5: (7 * 24 * 60 * 60 * 1000), // 1 week
-    6: (2 * 7 * 24 * 60 * 60 * 1000), // 2 weeks
-    7: (4 * 7 * 24 * 60 * 60 * 1000), // 1 month
-    8: (4 * 4 * 7 * 24 * 60 * 60 * 1000), // 4 months
-    9: (100 * 12 * 4 * 7 * 24 * 60 * 60 * 1000), // Forever
-};
-
-function calculateUnlockDate(srsLevel) {
-    const now = new Date();
-    now.setMinutes(0);
-    now.setSeconds(0);
-    now.setMilliseconds(0);
-    return new Date(now.getTime() + srsLevelToWaitingTimeMap[srsLevel]);
-}
-
-
 // C C // avoid double correct answer if I already responded correctly once
 // C W // this should still result in srs -2
 // W C // avoid adding correct answer if I already responded wrongly once
@@ -69,8 +47,7 @@ function sendRequest(url, method, elementId, newSrsStage) {
         },
         body: JSON.stringify({
             element_id: elementId,
-            current_srs_stage: newSrsStage,
-            unlock_date: calculateUnlockDate(newSrsStage)
+            current_srs_stage: newSrsStage
         })
     })
         .then((res) => {

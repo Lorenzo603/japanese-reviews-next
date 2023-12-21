@@ -3,6 +3,26 @@ import clientPromise from "../../../lib/mongodb";
 
 const NEXT_WEEK_MILLIS = 7 * 24 * 60 * 60 * 1000;
 
+const srsLevelToWaitingTimeMap = {
+    1: (4 * 60 * 60 * 1000), // 4 hours
+    2: (8 * 60 * 60 * 1000), // 8 hours
+    3: (24 * 60 * 60 * 1000), // 1 day
+    4: (2 * 24 * 60 * 60 * 1000), // 2 days
+    5: (7 * 24 * 60 * 60 * 1000), // 1 week
+    6: (2 * 7 * 24 * 60 * 60 * 1000), // 2 weeks
+    7: (4 * 7 * 24 * 60 * 60 * 1000), // 1 month
+    8: (4 * 4 * 7 * 24 * 60 * 60 * 1000), // 4 months
+    9: (100 * 12 * 4 * 7 * 24 * 60 * 60 * 1000), // Forever
+};
+
+function calculateUnlockDate(srsLevel) {
+    const now = new Date();
+    now.setMinutes(0);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+    return new Date(now.getTime() + srsLevelToWaitingTimeMap[srsLevel]);
+}
+
 export async function GET() {
     console.log("Getting all reviews...");
     const client = await clientPromise;
@@ -96,7 +116,11 @@ export async function POST(request) {
         .updateOne(
             { "username": "Lorenzo" }, {
             $addToSet: {
-                "reviews": reqJson
+                "reviews": {
+                    element_id: reqJson.element_id,
+                    current_srs_stage: reqJson.current_srs_stage,
+                    unlock_date: calculateUnlockDate(reqJson.current_srs_stage)
+                }
             }
         });
     return NextResponse.json(response);
@@ -113,7 +137,7 @@ export async function PUT(request) {
             { "username": "Lorenzo", "reviews.element_id": reqJson.element_id }, {
             $set: {
                 "reviews.$.current_srs_stage": reqJson.current_srs_stage,
-                "reviews.$.unlock_date": reqJson.unlock_date,
+                "reviews.$.unlock_date": calculateUnlockDate(reqJson.current_srs_stage)
             }
         });
     return NextResponse.json(response);
