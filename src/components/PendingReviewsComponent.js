@@ -11,7 +11,7 @@ export const PendingReviewsComponent = (props) => {
     const [upcomingReviewsCountArray, setUpcomingReviewsCountArray] = useState([]);
     const { setReviewSet } = useQuizContext();
 
-    
+
     function formatDate(dateString) {
         const parsedDate = new Date(dateString);
 
@@ -27,6 +27,22 @@ export const PendingReviewsComponent = (props) => {
         return `${formattedDate} ${formattedTime}`;
     }
 
+
+    function groupByDay(reviews) {
+        const groupedItems = reviews.reduce((groups, review) => {
+            const parsedDate = new Date(review[0]);
+            const day = parsedDate.getDate();
+            if (!groups[day]) {
+                groups[day] = [];
+            }
+            groups[day].push(review);
+            return groups;
+        }, {});
+
+        return Object.values(groupedItems);;
+    }
+
+
     useEffect(() => {
         fetch('/api/reviews')
             .then((res) => res.json())
@@ -40,7 +56,9 @@ export const PendingReviewsComponent = (props) => {
                 setTotalReviewsCount(reviews.length);
                 setPendingReviewsCount(pendingReviews.length);
 
-                setUpcomingReviewsCountArray(upcomingReviews);
+                const dayGroupedReviews = groupByDay(upcomingReviews);
+                // console.log(dayGroupedReviews);
+                setUpcomingReviewsCountArray(dayGroupedReviews);
 
                 setReviewSet(pendingReviews);
             })

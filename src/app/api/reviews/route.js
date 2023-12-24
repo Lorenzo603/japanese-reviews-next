@@ -41,13 +41,11 @@ export async function GET() {
     const groupedReviews = groupReviewsByUnlockDate(imminentUpcomingReviews);
     const sortedGroupedReviews = sortReviewsByUnlockDate(groupedReviews);
     const updatedGroupedReviews = addCumulativeSum(sortedGroupedReviews);
-    const dayGroupedReviews = groupByDay(updatedGroupedReviews);
-    // console.log(dayGroupedReviews);
 
     const response = {
         "reviews": reviews,
         "pendingReviews": pendingReviews,
-        "upcomingReviews": dayGroupedReviews,
+        "upcomingReviews": updatedGroupedReviews,
     }
     return NextResponse.json(response);
 }
@@ -92,24 +90,10 @@ function addCumulativeSum(reviews) {
     return reviews;
 }
 
-function groupByDay(reviews) {
-    const groupedItems = reviews.reduce((groups, review) => {
-        const parsedDate = new Date(review[0]);
-        const day = parsedDate.getDate();
-        if (!groups[day]) {
-            groups[day] = [];
-        }
-        groups[day].push(review);
-        return groups;
-    }, {});
-
-    return Object.values(groupedItems);;
-}
-
 export async function POST(request) {
     const reqJson = await request.json();
     console.log("Add review payload:", reqJson);
-    
+
     const client = await clientPromise;
     const db = client.db("japanese-reviews");
     const response = await db.collection("accounts")
@@ -129,7 +113,7 @@ export async function POST(request) {
 export async function PUT(request) {
     const reqJson = await request.json();
     console.log("Update review payload:", reqJson)
-    
+
     const client = await clientPromise;
     const db = client.db("japanese-reviews");
     const response = await db.collection("accounts")
