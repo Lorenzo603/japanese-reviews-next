@@ -11,15 +11,14 @@ export async function POST(request) {
 
     const client = await clientPromise;
     const db = client.db("japanese-reviews");
-    const accounts = await db.collection("accounts").find({ "username": username }).toArray();
-    // const accounts = [{'_id': 'aaa', 'password': 'ASDasd123'}];
+    const account = await db.collection("accounts").findOne({ "username": username });
+    // const account = {'_id': 'aaa', 'password': 'ASDasd123'};
 
-    if (accounts.length === 0) {
+    if (account === null) {
         console.log("No account for username:", username);
         return NextResponse.json({ error: 'Error' }, { status: 400 });
     }
 
-    const account = accounts[0];
     if (calculateHash(password) !== account.password) {
         console.log("Password mismatch for username:", username);
         return NextResponse.json({ error: 'Error' }, { status: 400 });

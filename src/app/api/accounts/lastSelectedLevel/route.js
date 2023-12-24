@@ -5,9 +5,9 @@ export async function GET() {
     console.log("Getting last selected level...");
     const client = await clientPromise;
     const db = client.db("japanese-reviews");
-    const response = await db.collection("accounts").find({ "username": "Lorenzo" }).toArray();
-    // console.log("Getting last selected level DB response:", response);
-    return NextResponse.json(response[0].last_selected_level);
+    const account = await db.collection("accounts").findOne({ "username": "Lorenzo" });
+    // console.log("Getting last selected level DB response:", account);
+    return NextResponse.json(account.last_selected_level);
 }
 
 export async function POST(request) {

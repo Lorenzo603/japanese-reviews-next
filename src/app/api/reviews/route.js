@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import clientPromise from "../../../lib/mongodb";
+import { ObjectId } from 'mongodb';
 
 const NEXT_WEEK_MILLIS = 7 * 24 * 60 * 60 * 1000;
 
@@ -27,10 +28,11 @@ export async function GET() {
     console.log("Getting all reviews...");
     const client = await clientPromise;
     const db = client.db("japanese-reviews");
-    const accounts = await db.collection("accounts").find({ "username": "Lorenzo" }).toArray();
-    // console.log("Account info DB response:", accounts);
+    const account = await db.collection("accounts").findOne({ "username": "Lorenzo" });
+    // console.log("Account info DB response:", account);
 
-    const reviews = convertDateStringToDate(accounts[0].reviews.filter(review => review.current_srs_stage < 9));
+    const accountReviews = await db.collection("reviews").find({ "account_id": account._id }).toArray();
+    const reviews = convertDateStringToDate(accountReviews.filter(review => review.current_srs_stage < 9));
 
     const now = new Date();
     const pendingReviews = reviews.filter((review) => review.full_unlock_date <= now);
@@ -96,16 +98,12 @@ export async function POST(request) {
 
     const client = await clientPromise;
     const db = client.db("japanese-reviews");
-    const response = await db.collection("accounts")
-        .updateOne(
-            { "username": "Lorenzo" }, {
-            $addToSet: {
-                "reviews": {
-                    element_id: reqJson.element_id,
-                    current_srs_stage: reqJson.current_srs_stage,
-                    unlock_date: JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
-                }
-            }
+    const response = await db.collection("reviews")
+        .insertOne({
+            account_id: new ObjectId("6487929695ecece4fa568835"),
+            element_id: reqJson.element_id,
+            current_srs_stage: reqJson.current_srs_stage,
+            unlock_date: JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
         });
     return NextResponse.json(response);
 }
@@ -116,12 +114,12 @@ export async function PUT(request) {
 
     const client = await clientPromise;
     const db = client.db("japanese-reviews");
-    const response = await db.collection("accounts")
+    const response = await db.collection("reviews")
         .updateOne(
-            { "username": "Lorenzo", "reviews.element_id": reqJson.element_id }, {
+            { "account_id": new ObjectId("6487929695ecece4fa568835"), "element_id": reqJson.element_id }, {
             $set: {
-                "reviews.$.current_srs_stage": reqJson.current_srs_stage,
-                "reviews.$.unlock_date": JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
+                "current_srs_stage": reqJson.current_srs_stage,
+                "unlock_date": JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
             }
         });
     return NextResponse.json(response);
