@@ -76,8 +76,8 @@ function groupReviewsByUnlockDate(reviews) {
 function sortReviewsByUnlockDate(reviews) {
     return Array.from(reviews).sort(
         (a, b) => {
-            const a0 = new Date(a[0]);
-            const b0 = new Date(b[0]);
+            const a0 = a[0];
+            const b0 = b[0];
             return a0 > b0 ? 1 : a0 < b0 ? -1 : 0;
         }
     );

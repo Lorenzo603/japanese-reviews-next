@@ -42,6 +42,15 @@ export const PendingReviewsComponent = (props) => {
         return Object.values(groupedItems);;
     }
 
+    function sortReviews(reviews) {
+        return Array.from(reviews).sort(
+            (a, b) => {
+                const a0 = a[0][0];
+                const b0 = b[0][0];
+                return a0 > b0 ? 1 : a0 < b0 ? -1 : 0;
+            }
+        );
+    }
 
     useEffect(() => {
         fetch('/api/reviews')
@@ -58,7 +67,7 @@ export const PendingReviewsComponent = (props) => {
 
                 const dayGroupedReviews = groupByDay(upcomingReviews);
                 // console.log(dayGroupedReviews);
-                setUpcomingReviewsCountArray(dayGroupedReviews);
+                setUpcomingReviewsCountArray(sortReviews(dayGroupedReviews));
 
                 setReviewSet(pendingReviews);
             })
