@@ -383,12 +383,17 @@ button.btn-primary.flip-button {
   background-color: #0d6efd;
   border-color: #0d6efd;
   border-radius: 0.5rem;
+  font-size: 2em;
+  padding: 1em;
+  margin-top: 2em;
 }
 
 button.btn-primary.correct-button {
   background-color: #65a25d;
   border-color: #65a25d;
   border-radius: 0.5rem;
+  font-size: 2em;
+  padding: 1em;
 }
 
 
@@ -396,4 +401,12 @@ button.btn-primary.wrong-button {
   background-color: #b91a1a;
   border-color: #b91a1a;
   border-radius: 0.5rem;
+  font-size: 2em;
+  padding: 1em;
+}
+
+.flashcard-result {
+  text-align: left;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
 }

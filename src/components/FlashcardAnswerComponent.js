@@ -121,35 +121,35 @@ export const FlashcardAnswerComponent = (props) => {
         const readingsOn = readings.filter(reading => reading['type'] === 'onyomi');
         const readingsNames = readings.filter(reading => reading['type'] === 'nanori');
 
-        return <div className={'answer-result'}>
-            <Row>
+        return <div className={'flashcard-result'}>
+            <Row className='p-2'>
                 <Col>
                     {getMeanings(kanjiPrompt).map(meaning => meaning['meaning']).join(', ')}
                 </Col>
             </Row>
             {whitelistedMeanings.length > 0 &&
-                <Row>
+                <Row className='p-2'>
                     <Col>
                         {whitelistedMeanings.map(meaning => meaning['meaning']).join(', ')}
                     </Col>
                 </Row>
             }
             {readingsKun.length > 0 &&
-                <Row>
+                <Row className='p-2'>
                     <Col>
                         {readingsKun.map(reading => reading['reading']).join(', ')}
                     </Col>
                 </Row>
             }
             {readingsOn.length > 0 &&
-                <Row>
+                <Row className='p-2'>
                     <Col>
                         {readingsOn.map(reading => wanakana.toKatakana(reading['reading'])).join(', ')}
                     </Col>
                 </Row>
             }
             {readingsNames.length > 0 &&
-                <Row>
+                <Row className='p-2'>
                     <Col>
                         Nanori: {readingsNames.map(reading => reading['reading']).join(', ')}
                     </Col>
@@ -257,8 +257,8 @@ export const FlashcardAnswerComponent = (props) => {
                         )}
                         {answerState === AnswerState.ANSWERED && (
                             <>
-                                <Row>
-                                    <Col>
+                                <Row className='justify-content-center'>
+                                    <Col className='col-4'>
                                         <AnswerResult />
                                     </Col>
                                 </Row>
