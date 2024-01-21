@@ -7,6 +7,7 @@ import Confetti from 'react-dom-confetti';
 import styles from '../app/page.module.css'
 import Link from 'next/link';
 import { useQuizContext } from '@/app/context/quizContext';
+var wanakana = require('wanakana');
 
 export const FlashcardAnswerComponent = (props) => {
 
@@ -37,11 +38,11 @@ export const FlashcardAnswerComponent = (props) => {
         }
 
         if (answerState === AnswerState.ANSWERED) {
-            if (e.key === ' ' || e.key === 'c') {
+            if (e.key === ' ' || e.key === 'c' || e.key === 'ArrowRight') {
                 markAnswerCorrect();
                 return;
             }
-            if (e.key === 'w') {
+            if (e.key === 'w' || e.key === 'ArrowLeft') {
                 markAnswerWrong();
                 return;
             }
@@ -93,7 +94,7 @@ export const FlashcardAnswerComponent = (props) => {
         return function cleanup() {
             window.removeEventListener('keydown', handleKeyDownCallback);
         }
-        ƒ
+
     }, [handleKeyDownCallback]);
 
     function endSession() {
@@ -115,41 +116,45 @@ export const FlashcardAnswerComponent = (props) => {
 
     function AnswerResult() {
         const whitelistedMeanings = getWhitelistedMeanings(kanjiPrompt);
+        const readings = getReadings(kanjiPrompt);
+        const readingsKun = readings.filter(reading => !reading.hasOwnProperty('type') || reading['type'] === 'kunyomi');
+        const readingsOn = readings.filter(reading => reading['type'] === 'onyomi');
+        const readingsNames = readings.filter(reading => reading['type'] === 'nanori');
+
         return <div className={'answer-result'}>
-            <Row><Col>Meanings</Col></Row>
             <Row>
                 <Col>
-                    <ul>
-                        {getMeanings(kanjiPrompt).map(meaning => {
-                            return <li key={meaning['meaning']}>{meaning['meaning']}</li>
-                        })}
-                    </ul>
+                    {getMeanings(kanjiPrompt).map(meaning => meaning['meaning']).join(', ')}
                 </Col>
             </Row>
             {whitelistedMeanings.length > 0 &&
-                <>
-                    <Row><Col>Whitelisted meanings</Col></Row>
-                    <Row>
-                        <Col>
-                            <ul>
-                                {whitelistedMeanings.map(meaning => {
-                                    return <li key={meaning['meaning']}>{meaning['meaning']}</li>
-                                })}
-                            </ul>
-                        </Col>
-                    </Row>
-                </>
+                <Row>
+                    <Col>
+                        {whitelistedMeanings.map(meaning => meaning['meaning']).join(', ')}
+                    </Col>
+                </Row>
             }
-            <Row><Col>Readings</Col></Row>
-            <Row>
-                <Col>
-                    <ul>
-                        {getReadings(kanjiPrompt).map(reading => {
-                            return <li key={reading['reading']}>{reading['reading']}</li>
-                        })}
-                    </ul>
-                </Col>
-            </Row>
+            {readingsKun.length > 0 &&
+                <Row>
+                    <Col>
+                        {readingsKun.map(reading => reading['reading']).join(', ')}
+                    </Col>
+                </Row>
+            }
+            {readingsOn.length > 0 &&
+                <Row>
+                    <Col>
+                        {readingsOn.map(reading => wanakana.toKatakana(reading['reading'])).join(', ')}
+                    </Col>
+                </Row>
+            }
+            {readingsNames.length > 0 &&
+                <Row>
+                    <Col>
+                        Nanori: {readingsNames.map(reading => reading['reading']).join(', ')}
+                    </Col>
+                </Row>
+            }
         </div>
     }
 
@@ -230,7 +235,6 @@ export const FlashcardAnswerComponent = (props) => {
         );
     }
 
-    console.log("answerState111:", answerState);
     return (
         <Row>
             <Col>
