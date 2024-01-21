@@ -32,13 +32,13 @@ export const FlashcardAnswerComponent = (props) => {
     function handleKeyDown(e) {
         e.preventDefault();
 
-        if (e.key === ' ' && answerState === AnswerState.WAITING_RESPONSE) {
+        if ((e.key === ' ' || e.key === 'ArrowRight') && answerState === AnswerState.WAITING_RESPONSE) {
             flipFlashcard();
             return;
         }
 
         if (answerState === AnswerState.ANSWERED) {
-            if (e.key === ' ' || e.key === 'c' || e.key === 'ArrowRight') {
+            if (e.key === ' ' || e.key === 'ArrowRight' || e.key === 'c') {
                 markAnswerCorrect();
                 return;
             }
