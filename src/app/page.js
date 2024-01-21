@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useQuizContext } from './context/quizContext';
 import PendingReviewsComponent from '@/components/PendingReviewsComponent';
 import VisuallySimilarKanji from '@/components/VisuallySimilarKanjiComponent';
+import FlashcardSettings from '@/components/FlashcardSettingsComponent';
 
 
 export default function Home() {
@@ -80,6 +81,30 @@ export default function Home() {
     router.push('/quiz');
   }
 
+  async function handleFlashcardFormSubmission(event) {
+    event.preventDefault();
+
+    const selectedLevel = Number(event.target.getAttribute('data-selected-level'));
+
+    let promptSetResponse = await (await fetch('/api/quiz/prompts', {
+      method: 'post',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        dataOption: 'level',
+        selectedLevel: selectedLevel,
+        kanjiSetSelected: true,
+        vocabularySetSelected: true,
+        guessMeaningSelected: true,
+      })
+    })).json();
+
+    setPromptSet(promptSetResponse);
+    router.push('/flashcards');
+
+  }
+
   return (
     <SSRProvider>
       <Container fluid className='App'>
@@ -89,6 +114,7 @@ export default function Home() {
               <Col className='col-6'>
                 <SelectSettings handleSetSelection={handleSetSelection} />
                 <VisuallySimilarKanji handleLevelSelection={handleLevelSelection} />
+                <FlashcardSettings handleFlashcardFormSubmission={handleFlashcardFormSubmission} />
               </Col>
               <Col className='col-3'>
                 <PendingReviewsComponent handleSetSelection={handleSetSelection} />
