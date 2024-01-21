@@ -410,3 +410,11 @@ button.btn-primary.wrong-button {
   padding: 1rem 2rem;
   font-size: 1.5rem;
 }
+
+.flashcard-result .flashcard-result-section {
+  border-top: 1px solid;
+}
+
+.flashcard-result .flashcard-result-section:last-child {
+  border-bottom: 1px solid;
+}
