@@ -5,7 +5,7 @@ import { Col, Form, Row } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
 import { updateSrsWrongAnswer, updateSrsAfterReview, updateSingleSrsAfterReview } from '../services/SrsService';
-import styles from '../app/page.module.css'
+import styles from '../page.module.css'
 import Link from 'next/link';
 import { useQuizContext } from '@/app/context/quizContext';
 var wanakana = require('wanakana');

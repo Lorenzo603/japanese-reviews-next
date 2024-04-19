@@ -2,7 +2,7 @@
 
 import { Col, Row, Form, Button } from 'react-bootstrap';
 import { SelectionOption } from './SelectionOptionComponent';
-import styles from '../app/page.module.css'
+import styles from '../page.module.css'
 import { useEffect, useState } from 'react';
 import { SelectLevel } from './SelectLevelComponent';
 import { setCookie, getCookie } from 'cookies-next';

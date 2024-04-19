@@ -1,6 +1,6 @@
 'use client'
 
-import QuestionAnswerComponent from "@/components/QuestionAnswerComponent";
+import QuestionAnswerComponent from "@/app/components/QuestionAnswerComponent";
 import { Col, Container, Row, SSRProvider } from "react-bootstrap";
 
 export default function QuizPage() {

@@ -1,6 +1,6 @@
 'use client'
 
-import FlashcardAnswerComponent from "@/components/FlashcardAnswerComponent";
+import FlashcardAnswerComponent from "@/app/components/FlashcardAnswerComponent";
 import { Col, Container, Row, SSRProvider } from "react-bootstrap";
 
 export default function FlashcardsPage() {

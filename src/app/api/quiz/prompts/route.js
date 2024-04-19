@@ -1,4 +1,4 @@
-import { getDictionary } from '@/components/backend/DictionaryLoaderComponent';
+import { getDictionary } from '@/app/components/backend/DictionaryLoaderComponent';
 import { NextResponse } from 'next/server'
 
 export async function POST(request) {

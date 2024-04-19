@@ -2,13 +2,13 @@
 
 import { SSRProvider } from 'react-bootstrap';
 import { Col, Container, Row } from 'react-bootstrap';
-import { SelectSettings } from '../components/SelectSettingsComponent';
+import { SelectSettings } from './components/SelectSettingsComponent';
 import styles from './page.module.css'
 import { useRouter } from 'next/navigation';
 import { useQuizContext } from './context/quizContext';
-import PendingReviewsComponent from '@/components/PendingReviewsComponent';
-import VisuallySimilarKanji from '@/components/VisuallySimilarKanjiComponent';
-import FlashcardSettings from '@/components/FlashcardSettingsComponent';
+import PendingReviewsComponent from '@/app/components/PendingReviewsComponent';
+import VisuallySimilarKanji from '@/app/components/VisuallySimilarKanjiComponent';
+import FlashcardSettings from '@/app/components/FlashcardSettingsComponent';
 import { SessionAuth } from "supertokens-auth-react/recipe/session"
 
 
