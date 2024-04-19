@@ -9,6 +9,7 @@ import { useQuizContext } from './context/quizContext';
 import PendingReviewsComponent from '@/components/PendingReviewsComponent';
 import VisuallySimilarKanji from '@/components/VisuallySimilarKanjiComponent';
 import FlashcardSettings from '@/components/FlashcardSettingsComponent';
+import { SessionAuth } from "supertokens-auth-react/recipe/session"
 
 
 export default function Home() {
@@ -73,7 +74,7 @@ export default function Home() {
     // fetch 'visually_similar_subject_ids' in other levels
     const visuallySimilarKanjis = [...new Set(levelSet.flatMap(kanji => kanji['data']['visually_similar_subject_ids']))]
       .flatMap(kanjiId => fullKanjiSetResponse.filter(kanji => kanji['id'] === kanjiId));
-    
+
     levelSet.push(...visuallySimilarKanjis)
     // console.log('Visually Similar Kanji set: ', levelSet);
 
@@ -106,24 +107,25 @@ export default function Home() {
   }
 
   return (
-    <SSRProvider>
-      <Container fluid className='App'>
-        <Row>
-          <Col className='AppBody'>
-            <Row className='justify-content-center'>
-              <Col className='col-6'>
-                <SelectSettings handleSetSelection={handleSetSelection} />
-                <VisuallySimilarKanji handleLevelSelection={handleLevelSelection} />
-                <FlashcardSettings handleFlashcardFormSubmission={handleFlashcardFormSubmission} />
-              </Col>
-              <Col className='col-3'>
-                <PendingReviewsComponent handleSetSelection={handleSetSelection} />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    </SSRProvider>
-
+    <SessionAuth>
+      <SSRProvider>
+        <Container fluid className='App'>
+          <Row>
+            <Col className='AppBody'>
+              <Row className='justify-content-center'>
+                <Col className='col-6'>
+                  <SelectSettings handleSetSelection={handleSetSelection} />
+                  <VisuallySimilarKanji handleLevelSelection={handleLevelSelection} />
+                  <FlashcardSettings handleFlashcardFormSubmission={handleFlashcardFormSubmission} />
+                </Col>
+                <Col className='col-3'>
+                  <PendingReviewsComponent handleSetSelection={handleSetSelection} />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </SSRProvider>
+    </SessionAuth>
   )
 }
