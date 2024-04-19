@@ -2,6 +2,8 @@ import SuperTokens from "supertokens-node";
 import ThirdPartyEmailPasswordNode from 'supertokens-node/recipe/thirdpartyemailpassword'
 import SessionNode from 'supertokens-node/recipe/session'
 import { appInfo } from './appInfo'
+import Dashboard from "supertokens-node/recipe/dashboard"
+import UserRoles from "supertokens-node/recipe/userroles"
 
 export const backendConfig = () => {
   return {
@@ -49,6 +51,8 @@ export const backendConfig = () => {
         }],
       }),
       SessionNode.init(),
+      Dashboard.init(),
+      UserRoles.init(),
     ],
     isInServerlessEnv: true,
   }
