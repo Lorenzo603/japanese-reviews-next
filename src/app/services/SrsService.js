@@ -1,3 +1,5 @@
+// TODO: Do this on Backend
+
 // C C // avoid double correct answer if I already responded correctly once
 // C W // this should still result in srs -2
 // W C // avoid adding correct answer if I already responded wrongly once
@@ -34,7 +36,13 @@ export const updateSrsWrongAnswer = async (elementId) => {
         const currentReview = currentReviewArr[0];
         sendRequest('/api/reviews', 'PUT', elementId, clampSrsStage(currentReview.current_srs_stage - 2));
     } else {
-        sendRequest('/api/reviews', 'POST', elementId, 1);
+        const reviews = await (await fetch(`/api/reviews/${elementId}`)).json();
+        console.log('reviews:', reviews);
+        if (reviews.length === 0) {
+            sendRequest('/api/reviews', 'POST', elementId, 1);
+        } else {
+            sendRequest('/api/reviews', 'PUT', elementId, 1);
+        }
     }
 
 }
