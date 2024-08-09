@@ -150,7 +150,9 @@ export const QuestionAnswerComponent = (props) => {
     }
 
     function validateAnswer() {
-        const acceptedAnswers = getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle(kanjiPrompt)].toLowerCase());
+        const currentModeSingle = getCurrentModeSingle(kanjiPrompt);
+        const acceptedAnswers = getAcceptedAnswers(kanjiPrompt)
+            .map(answer => answer[currentModeSingle].trim().toLowerCase());
         let userAnswer = getAnswerInputElement().value.toLowerCase();
 
         userAnswer = convertLastNCharacter(userAnswer);
@@ -308,13 +310,15 @@ export const QuestionAnswerComponent = (props) => {
     }
 
     function getIncorrectText() {
+        const currentModeSingle = getCurrentModeSingle(kanjiPrompt);
         return kanjiPrompt["promptMode"] === "kanji"
-            ? getAcceptedAnswers(kanjiPrompt).filter(answer => answer.primary)[0][getCurrentModeSingle(kanjiPrompt)] + " - " + kanjiPrompt['data']['slug']
+            ? getAcceptedAnswers(kanjiPrompt).filter(answer => answer.primary)[0][currentModeSingle] + " - " + kanjiPrompt['data']['slug']
             : concatenateAcceptedAnswers();
     }
 
     function concatenateAcceptedAnswers() {
-        return getAcceptedAnswers(kanjiPrompt).map(answer => answer[getCurrentModeSingle(kanjiPrompt)]).join(', ');
+        const currentModeSingle = getCurrentModeSingle(kanjiPrompt);
+        return getAcceptedAnswers(kanjiPrompt).map(answer => answer[currentModeSingle]).join(', ');
     }
 
     function WrongAnswersRecap() {
