@@ -9,7 +9,7 @@ import { useQuizContext } from './context/quizContext';
 import PendingReviewsComponent from '@/app/components/PendingReviewsComponent';
 import VisuallySimilarKanji from '@/app/components/VisuallySimilarKanjiComponent';
 import FlashcardSettings from '@/app/components/FlashcardSettingsComponent';
-import { SessionAuth } from "supertokens-auth-react/recipe/session"
+// import { SessionAuth } from "supertokens-auth-react/recipe/session"
 
 
 export default function Home() {
@@ -107,7 +107,8 @@ export default function Home() {
   }
 
   return (
-    <SessionAuth>
+    // Enable SessionAuth to protect route
+    // <SessionAuth>
       <SSRProvider>
         <Container fluid className='App'>
           <Row>
@@ -126,6 +127,6 @@ export default function Home() {
           </Row>
         </Container>
       </SSRProvider>
-    </SessionAuth>
+    // </SessionAuth>
   )
 }
