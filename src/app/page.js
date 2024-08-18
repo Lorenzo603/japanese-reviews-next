@@ -1,3 +1,4 @@
+import Link from "next/link";
 import LoginButton from "./components/buttons/login/LoginButton";
 
 export default function Home() {
@@ -25,9 +26,11 @@ export default function Home() {
           <h1>Browse By JPLT Levels</h1>
           <section>
             <h2>JPLT Level 5</h2>
+            <Link href="/visually-similar/jlpt-level-5" />
           </section>
           <section>
             <h2>JPLT Level 4</h2>
+            <Link href="/visually-similar/jlpt-level-4" />
           </section>
         </div>
 
