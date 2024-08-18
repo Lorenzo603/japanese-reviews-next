@@ -357,7 +357,7 @@ export const QuestionAnswerComponent = (props) => {
                     </Row>
                     <Row className="justify-content-center m-3">
                         <Col className='col-1 p-2 position-relative linkButton'>
-                            <Link className='stretched-link linkButton' href="/">Go back</Link>
+                            <Link className='stretched-link linkButton' href="/dashboard">Go back</Link>
                         </Col>
                     </Row>
                 </Col>
