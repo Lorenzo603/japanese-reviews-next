@@ -1,6 +1,5 @@
 'use client'
 
-import { SSRProvider } from 'react-bootstrap';
 import { Col, Container, Row } from 'react-bootstrap';
 import { SelectSettings } from '@/app/components/SelectSettingsComponent';
 import styles from '../page.module.css'
@@ -9,7 +8,6 @@ import { useQuizContext } from '@/app/context/quizContext';
 import PendingReviewsComponent from '@/app/components/PendingReviewsComponent';
 import VisuallySimilarKanji from '@/app/components/VisuallySimilarKanjiComponent';
 import FlashcardSettings from '@/app/components/FlashcardSettingsComponent';
-import { SessionAuth } from "supertokens-auth-react/recipe/session"
 
 
 export default function Dashboard() {
@@ -48,7 +46,7 @@ export default function Dashboard() {
 
         setReviewMode(dataOption === "review");
         setPromptSet(promptSetResponse);
-        router.push('/quiz');
+        router.push('/dashboard/quiz');
 
     }
 
@@ -79,7 +77,7 @@ export default function Dashboard() {
         // console.log('Visually Similar Kanji set: ', levelSet);
 
         setPromptSet(levelSet);
-        router.push('/quiz');
+        router.push('/dashboard/quiz');
     }
 
     async function handleFlashcardFormSubmission(event) {
@@ -102,30 +100,27 @@ export default function Dashboard() {
         })).json();
 
         setPromptSet(promptSetResponse);
-        router.push('/flashcards');
+        router.push('/dashboard/flashcards');
 
     }
 
     return (
-        <SessionAuth>
-            <SSRProvider>
-                <Container fluid className='App'>
-                    <Row>
-                        <Col className='AppBody'>
-                            <Row className='justify-content-center'>
-                                <Col className='col-6'>
-                                    <SelectSettings handleSetSelection={handleSetSelection} />
-                                    <VisuallySimilarKanji handleLevelSelection={handleLevelSelection} />
-                                    <FlashcardSettings handleFlashcardFormSubmission={handleFlashcardFormSubmission} />
-                                </Col>
-                                <Col className='col-3'>
-                                    <PendingReviewsComponent handleSetSelection={handleSetSelection} />
-                                </Col>
-                            </Row>
+
+        <Container fluid className='App'>
+            <Row>
+                <Col className='AppBody'>
+                    <Row className='justify-content-center'>
+                        <Col className='col-6'>
+                            <SelectSettings handleSetSelection={handleSetSelection} />
+                            <VisuallySimilarKanji handleLevelSelection={handleLevelSelection} />
+                            <FlashcardSettings handleFlashcardFormSubmission={handleFlashcardFormSubmission} />
+                        </Col>
+                        <Col className='col-3'>
+                            <PendingReviewsComponent handleSetSelection={handleSetSelection} />
                         </Col>
                     </Row>
-                </Container>
-            </SSRProvider>
-        </SessionAuth>
+                </Col>
+            </Row>
+        </Container>
     )
 }
