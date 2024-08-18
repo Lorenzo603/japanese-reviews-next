@@ -13,7 +13,13 @@ export const JlptLevelGroupComponent = async (props) => {
             <section>
 
                 <ul>
-                    {kanjiList.map(kanji => <li key={kanji["id"]}>{kanji["data"]["slug"]}</li>)}
+                    {kanjiList.map(kanji => 
+                        <li key={kanji["id"]}>
+                            <a className="font-['Hiragino_Kaku_Gothic_Pro']" href={`/visually-similar/kanji/${kanji["id"]}`}>
+                                {kanji["data"]["slug"]}
+                            </a>
+                        </li>
+                    )}
                 </ul>
 
             </section>
