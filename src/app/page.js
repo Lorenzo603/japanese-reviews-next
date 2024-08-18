@@ -1,6 +1,8 @@
+import LoginButton from "./components/buttons/login/LoginButton";
 
 export default function Home() {
 
+  
   return (
 
     <div className='text-white'>
@@ -10,7 +12,7 @@ export default function Home() {
           <a>Browse by WK level</a>
         </nav>
         <div>
-          Login
+          <LoginButton />
         </div>
       </header>
 
