@@ -26,11 +26,11 @@ export default function Home() {
           <h1>Browse By JPLT Levels</h1>
           <section>
             <h2>JPLT Level 5</h2>
-            <Link href="/visually-similar/jlpt-level-5" />
+            <Link href="/visually-similar/jlpt-level-5">JLPT 5</Link>
           </section>
           <section>
             <h2>JPLT Level 4</h2>
-            <Link href="/visually-similar/jlpt-level-4" />
+            <Link href="/visually-similar/jlpt-level-4">JLPT 4</Link>
           </section>
         </div>
 
