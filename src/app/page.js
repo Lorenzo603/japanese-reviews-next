@@ -17,7 +17,7 @@ export default function Home() {
         </div>
 
         <div>
-          <h1>Browse By JPLT Levels</h1>
+          <h1 id="browse-by-jlpt-level">Browse By JPLT Levels</h1>
           <section>
             <h2>JPLT Level 5</h2>
             <Link href="/visually-similar/jlpt-level-5">JLPT 5</Link>

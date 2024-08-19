@@ -1,3 +1,4 @@
+import Link from "next/link";
 import LoginButton from "../buttons/login/LoginButton";
 
 const HeaderComponent = () => {
@@ -5,8 +6,8 @@ const HeaderComponent = () => {
     return (
         <header>
             <nav>
-                <a>Browse by JPLT level</a>
-                <a>Browse by WK level</a>
+                <Link href="/">Home</Link>
+                <Link href="/#browse-by-jlpt-level">Browse by JPLT level</Link>
             </nav>
             <div>
                 <LoginButton />
