@@ -7,7 +7,7 @@ export const SearchComponent = () => {
 
     const typesenseInstantsearchAdapter = new TypesenseInstantsearchAdapter({
         server: {
-            apiKey: "", // Be sure to use an API key that only allows search operations
+            apiKey: process.env.NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY, // Be sure to use an API key that only allows search operations
             nodes: [
                 {
                     host: "localhost",
