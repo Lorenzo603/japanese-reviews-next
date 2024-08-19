@@ -1,6 +1,6 @@
 import Link from "next/link";
-import LoginButton from "./components/buttons/login/LoginButton";
 import SearchComponent from "./components/search/SearchComponent";
+import HeaderComponent from "./components/nav/HeaderComponent";
 
 
 export default function Home() {
@@ -8,15 +8,7 @@ export default function Home() {
   return (
 
     <div className='text-white'>
-      <header>
-        <nav>
-          <a>Browse by JPLT level</a>
-          <a>Browse by WK level</a>
-        </nav>
-        <div>
-          <LoginButton />
-        </div>
-      </header>
+      <HeaderComponent />
 
       <main>
         <div>

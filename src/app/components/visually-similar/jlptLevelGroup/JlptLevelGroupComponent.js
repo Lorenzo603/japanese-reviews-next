@@ -7,7 +7,7 @@ export const JlptLevelGroupComponent = async (props) => {
         .filter(item => item['data'].hasOwnProperty('categories') && item['data']['categories'].includes(`jlpt${props.jlptLevelNumber}`))
     
     return (
-        <main className='text-white'>
+        <main>
             This is JLPT Level {props.jlptLevelNumber}
 
             <section>
