@@ -2,6 +2,7 @@
 
 import { Hits, InstantSearch, SearchBox } from "react-instantsearch";
 import TypesenseInstantsearchAdapter from "typesense-instantsearch-adapter";
+import HitComponent from "./HitComponent";
 
 export const SearchComponent = () => {
 
@@ -54,7 +55,7 @@ export const SearchComponent = () => {
     return (
         <InstantSearch indexName="kanjis" searchClient={proxySearchClient} future={{preserveSharedStateOnUnmount: true,}}>
             <SearchBox />
-            <Hits />
+            <Hits hitComponent={HitComponent} />
         </InstantSearch>
     )
 }
