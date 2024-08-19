@@ -1,9 +1,10 @@
 import Link from "next/link";
 import LoginButton from "./components/buttons/login/LoginButton";
+import SearchComponent from "./components/search/SearchComponent";
+
 
 export default function Home() {
 
-  
   return (
 
     <div className='text-white'>
@@ -20,6 +21,7 @@ export default function Home() {
       <main>
         <div>
           <h1>Search</h1>
+          <SearchComponent />
         </div>
 
         <div>

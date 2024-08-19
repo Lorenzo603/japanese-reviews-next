@@ -22,10 +22,12 @@
     "react-bootstrap": "^2.7.4",
     "react-dom": "18.2.0",
     "react-dom-confetti": "^0.2.0",
+    "react-instantsearch": "^7.12.4",
     "string-similarity": "^4.0.4",
     "supertokens-auth-react": "^0.40.0",
     "supertokens-node": "^17.0.4",
     "supertokens-web-js": "^0.10.1",
+    "typesense-instantsearch-adapter": "^2.8.0",
     "wanakana": "^5.1.0"
   },
   "devDependencies": {
