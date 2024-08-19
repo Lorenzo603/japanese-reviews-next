@@ -23,7 +23,7 @@ export const SearchComponent = () => {
         //  So you can pass any parameters supported by the search endpoint below.
         //  query_by is required.
         additionalSearchParameters: {
-            query_by: "slug,meanings,readings",
+            query_by: "slug,meanings,readingsKun,readingsOn,readingsNames",
         },
     });
     const searchClient = typesenseInstantsearchAdapter.searchClient;
