@@ -22,13 +22,17 @@ export const LoginButton = () => {
     };
 
     return (
-        <>
+        <div>
             {isAuthenticated ? (
                 <button onClick={handleSignOut}>Sign Out</button>
             ) : (
-                <button>Sign In / Register</button>
+                <button
+                    className="p-3 bg-pink-500 
+                    hover:bg-pink-300 hover:text-pink-600 rounded">
+                    Sign In / Register
+                </button>
             )}
-        </>
+        </div>
     );
 };
 

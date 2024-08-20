@@ -7,10 +7,10 @@ export default function Home() {
 
   return (
 
-    <div className='text-white'>
+    <div className="text-white">
       <HeaderComponent />
 
-      <main>
+      <main className="bg-pink-50 text-slate-900">
         <div>
           <h1>Search</h1>
           <SearchComponent />
