@@ -29,7 +29,7 @@ export const LoginButton = () => {
                 <button
                     className="p-3 bg-pink-500 
                     hover:bg-pink-300 hover:text-pink-600 rounded">
-                    Sign In / Register
+                    Sign In
                 </button>
             )}
         </div>

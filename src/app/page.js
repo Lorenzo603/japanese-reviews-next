@@ -11,10 +11,12 @@ export default function Home() {
       <HeaderComponent />
 
       <main className="bg-pink-50 text-slate-900">
-        <div>
-          <h1>Search</h1>
-          <SearchComponent />
-        </div>
+        <section>
+          <div>
+            <h1>Search</h1>
+            <SearchComponent />
+          </div>
+        </section>
 
         <div>
           <h1 id="browse-by-jlpt-level">Browse By JPLT Levels</h1>
