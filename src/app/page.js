@@ -13,24 +13,38 @@ export default function Home() {
       <main className="bg-pink-50 text-slate-900">
         <section>
           <div>
-            <h1>Search</h1>
-            <SearchComponent />
+            <h1 className="sr-only">Search</h1>
+            <div className="flex justify-center p-4">
+              <div>
+                <SearchComponent />
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <p>Search using kanji, meaning, or kana</p>
+            </div>
+
           </div>
         </section>
 
         <div>
           <h1 id="browse-by-jlpt-level">Browse By JPLT Levels</h1>
           <section>
-            <h2>JPLT Level 5</h2>
-            <Link href="/visually-similar/jlpt-level-5">JLPT 5</Link>
-          </section>
-          <section>
-            <h2>JPLT Level 4</h2>
-            <Link href="/visually-similar/jlpt-level-4">JLPT 4</Link>
+            <div>
+              <Link href="/visually-similar/jlpt-level-5">JLPT 5</Link>
+            </div>
+            <div>
+              <Link href="/visually-similar/jlpt-level-4">JLPT 4</Link>
+            </div>
           </section>
         </div>
 
       </main>
+
+      <footer>
+        <div className="bg-pink-200">
+          <p>Footer</p>
+        </div>
+      </footer>
     </div>
 
 
