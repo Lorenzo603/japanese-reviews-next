@@ -42,9 +42,12 @@ export default function Home() {
         </div>
       </main>
 
-      <footer>
-        <div className="bg-pink-200">
-          <p>Footer</p>
+      <footer className="bg-pink-700 text-slate-100">
+        <div className="flex">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 
+             px-4 py-6">
+            <p className="m-0">© {new Date().getFullYear()} Lorenzo Furrer. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>
