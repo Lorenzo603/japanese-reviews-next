@@ -7,37 +7,39 @@ export default function Home() {
 
   return (
 
-    <div className="text-white">
-      <HeaderComponent />
+    <div className="relative overflow-hidden">
+      <main>
+        <HeaderComponent />
 
-      <main className="bg-pink-50 text-slate-900">
-        <section>
-          <div>
-            <h1 className="sr-only">Search</h1>
-            <div className="flex justify-center p-4">
-              <div>
-                <SearchComponent />
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <p>Search using kanji, meaning, or kana</p>
-            </div>
-
-          </div>
-        </section>
-
-        <div>
-          <h1 id="browse-by-jlpt-level">Browse By JPLT Levels</h1>
+        <div className="bg-pink-50 text-slate-900">
           <section>
             <div>
-              <Link href="/visually-similar/jlpt-level-5">JLPT 5</Link>
-            </div>
-            <div>
-              <Link href="/visually-similar/jlpt-level-4">JLPT 4</Link>
+              <h1 className="sr-only">Search</h1>
+              <div className="flex justify-center p-4">
+                <div>
+                  <SearchComponent />
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <p>Search using kanji, meaning, or kana</p>
+              </div>
+
             </div>
           </section>
-        </div>
 
+          <div>
+            <h1 id="browse-by-jlpt-level">Browse By JPLT Levels</h1>
+            <section>
+              <div>
+                <Link href="/visually-similar/jlpt-level-5">JLPT 5</Link>
+              </div>
+              <div>
+                <Link href="/visually-similar/jlpt-level-4">JLPT 4</Link>
+              </div>
+            </section>
+          </div>
+
+        </div>
       </main>
 
       <footer>

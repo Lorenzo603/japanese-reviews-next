@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <SuperTokensProvider>
-        <body className={inter.className}>
+        <body className={inter.className + " h-screen"}>
           {children}
         </body>
       </SuperTokensProvider>

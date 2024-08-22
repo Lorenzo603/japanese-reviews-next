@@ -1,5 +1,6 @@
 'use client'
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { doesSessionExist, signOut } from "supertokens-auth-react/recipe/session";
 
@@ -26,11 +27,10 @@ export const LoginButton = () => {
             {isAuthenticated ? (
                 <button onClick={handleSignOut}>Sign Out</button>
             ) : (
-                <button
-                    className="p-3 bg-pink-500 
-                    hover:bg-pink-300 hover:text-pink-600 rounded">
-                    Sign In
-                </button>
+                <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
+                    bg-pink-500 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
+                    hover:bg-pink-700 no-underline"
+                    href="/sign-in">Sign In</Link>
             )}
         </div>
     );
