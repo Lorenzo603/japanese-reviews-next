@@ -56,9 +56,11 @@ export const SearchComponent = () => {
     <InstantSearch indexName="kanjis" searchClient={proxySearchClient} future={{ preserveSharedStateOnUnmount: true, }}>
       <SearchBox
         classNames={{
-          // form: 'flex',
-          input: 'bg-slate-50 rounded border p-2 sm:w-96',
-          // submit: 'bg-red-500',
+          root: '',
+          form: 'flex w-full h-12',
+          input: 'bg-slate-50 w-full p-2 border-y-2 border-l-2 rounded-l-lg sm:w-96 focus:outline-none',
+          submit: 'bg-slate-50 h-full p-2 border-y-2 border-r-2 rounded-r-lg',
+          submitIcon: 'h-full w-full',
         }}
         placeholder="Search kanji"
         // submitIconComponent={({ classNames }) => (
