@@ -8,8 +8,8 @@ const HitComponent = ({ hit }) => {
         <Link className="no-underline text-slate-900"
             href={`/visually-similar/kanji/${hit.id}`} >
             <div className="flex gap-4">
-                <div className="text-5xl">
-                    <span>{hit.slug}</span>
+                <div className="japanese-font text-5xl">
+                    {hit.slug}
                 </div>
                 <div className="flex-col">
                     <div>
@@ -20,17 +20,17 @@ const HitComponent = ({ hit }) => {
                         />
                     </div>
                     {hit.readingsKun.length > 0 &&
-                        <div>
+                        <div className="japanese-font">
                             Kun:&nbsp;{hit.readingsKun.join(", ")}
                         </div>
                     }
                     {hit.readingsOn.length > 0 &&
-                        <div>
+                        <div className="japanese-font">
                             On:&nbsp;{hit.readingsOn.map(reading => wanakana.toKatakana(reading)).join(", ")}
                         </div>
                     }
                     {hit.readingsNames.length > 0 &&
-                        <div>
+                        <div className="japanese-font">
                             Name:&nbsp;{hit.readingsNames.join(", ")}
                         </div>
                     }

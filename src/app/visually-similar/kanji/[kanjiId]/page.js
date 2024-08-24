@@ -22,7 +22,7 @@ export default async function VisuallySimilarKanji({ params }) {
             <main>
                 <section>
                     <div>
-                        <h1 className="font-['Hiragino_Kaku_Gothic_Pro']">{kanji['slug']}</h1>
+                        <h1 className="japanese-font">{kanji['slug']}</h1>
 
                         <h2>Meanings</h2>
                         <ul>
@@ -49,7 +49,7 @@ export default async function VisuallySimilarKanji({ params }) {
                                             .map(reading => reading['reading'])
                                             .map(reading => {
                                                 return (
-                                                    <li key={reading} className="font-['Hiragino_Kaku_Gothic_Pro']">
+                                                    <li key={reading} className="japanese-font">
                                                         {reading}
                                                     </li>
                                                 )
@@ -68,7 +68,7 @@ export default async function VisuallySimilarKanji({ params }) {
                                             .map(reading => reading['reading'])
                                             .map(reading => {
                                                 return (
-                                                    <li key={reading} className="font-['Hiragino_Kaku_Gothic_Pro']">
+                                                    <li key={reading} className="japanese-font">
                                                         {wanakana.toKatakana(reading)}
                                                     </li>
                                                 )
@@ -87,7 +87,7 @@ export default async function VisuallySimilarKanji({ params }) {
                                             .map(reading => reading['reading'])
                                             .map(reading => {
                                                 return (
-                                                    <li key={reading} className="font-['Hiragino_Kaku_Gothic_Pro']">
+                                                    <li key={reading} className="japanese-font">
                                                         {reading}
                                                     </li>
                                                 )
@@ -113,7 +113,7 @@ export default async function VisuallySimilarKanji({ params }) {
                                             .filter(item => item['id'] === visuallySimilarKanjiId)[0]["data"];
                                         return (
                                             <li key={visuallySimilarKanjiId}>
-                                                <a className="font-['Hiragino_Kaku_Gothic_Pro']" href={`/visually-similar/kanji/${visuallySimilarKanjiId}`}>
+                                                <a className="japanese-font" href={`/visually-similar/kanji/${visuallySimilarKanjiId}`}>
                                                     {visuallySimilarKanji["slug"]}
                                                 </a>
                                             </li>
