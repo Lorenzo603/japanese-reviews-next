@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SearchComponent from "./components/search/SearchComponent";
 import HeaderComponent from "./components/nav/HeaderComponent";
+import FooterComponent from "./components/nav/FooterComponent";
 
 
 export default function Home() {
@@ -11,30 +12,36 @@ export default function Home() {
       <main>
         <HeaderComponent />
 
-        <div className="bg-pink-50 text-slate-900">
+        <div>
           <section>
             <div>
               <h1 className="sr-only">Search</h1>
-              <div className="flex justify-center p-4">
+              <div className="flex justify-center p-4 pb-1">
                 <div>
                   <SearchComponent />
                 </div>
               </div>
               <div className="flex justify-center">
-                <p>Search using kanji, meaning, or kana</p>
+                <p className="italic">Search using kanji, meaning, or kana</p>
               </div>
 
             </div>
           </section>
 
-          <div>
-            <h1 id="browse-by-jlpt-level">Browse By JPLT Levels</h1>
+          <div className="p-2">
+            <h1 id="browse-by-jlpt-level" className="text-2xl">Browse By JPLT Level</h1>
             <section>
-              <div>
-                <Link href="/visually-similar/jlpt-level-5">JLPT 5</Link>
+              <div className="pt-2 pb-2">
+                <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
+                    bg-pink-500 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
+                    hover:bg-pink-700 no-underline"
+                  href="/visually-similar/jlpt-level-5">JLPT 5 &gt;&gt;</Link>
               </div>
-              <div>
-                <Link href="/visually-similar/jlpt-level-4">JLPT 4</Link>
+              <div className="pt-2 pb-2">
+              <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
+                    bg-pink-500 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
+                    hover:bg-pink-700 no-underline"
+                  href="/visually-similar/jlpt-level-4">JLPT 4 &gt;&gt;</Link>
               </div>
             </section>
           </div>
@@ -42,14 +49,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="bg-pink-700 text-slate-100">
-        <div className="flex">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 
-             px-4 py-6">
-            <p className="m-0">© {new Date().getFullYear()} Lorenzo Furrer. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <FooterComponent />
     </div>
 
 
