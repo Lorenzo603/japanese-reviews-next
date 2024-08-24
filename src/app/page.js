@@ -16,7 +16,7 @@ export default function Home() {
           <section>
             <div>
               <h1 className="sr-only">Search</h1>
-              <div className="flex justify-center p-4 pb-1">
+              <div className="flex-1 sm:flex justify-center p-4 pb-1">
                 <div>
                   <SearchComponent />
                 </div>

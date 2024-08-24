@@ -1,32 +1,43 @@
+import Link from "next/link";
 import { Highlight } from "react-instantsearch";
 var wanakana = require('wanakana');
 
 const HitComponent = ({ hit }) => {
 
     return (
-        <div className="p-2">
-            <a href={`/visually-similar/kanji/${hit.id}`}>
-                <div className="text-lg">
-                    {hit.slug}
+        <Link className="no-underline text-slate-900"
+            href={`/visually-similar/kanji/${hit.id}`} >
+            <div className="flex gap-4">
+                <div className="text-5xl">
+                    <span>{hit.slug}</span>
                 </div>
-                <div>
-                    <Highlight hit={hit} attribute="meanings" tagname="mark"
-                        classNames={{
-                            highlighted: 'bg-green-500 p-0',
-                        }}
-                    />
+                <div className="flex-col">
+                    <div>
+                        <Highlight hit={hit} attribute="meanings" tagname="mark"
+                            classNames={{
+                                highlighted: 'bg-pink-200 p-0',
+                            }}
+                        />
+                    </div>
+                    {hit.readingsKun.length > 0 &&
+                        <div>
+                            Kun:&nbsp;{hit.readingsKun.join(", ")}
+                        </div>
+                    }
+                    {hit.readingsOn.length > 0 &&
+                        <div>
+                            On:&nbsp;{hit.readingsOn.map(reading => wanakana.toKatakana(reading)).join(", ")}
+                        </div>
+                    }
+                    {hit.readingsNames.length > 0 &&
+                        <div>
+                            Name:&nbsp;{hit.readingsNames.join(", ")}
+                        </div>
+                    }
                 </div>
-                <div className="text-red-200">
-                    {hit.readingsKun.join(", ")}
-                </div>
-                <div className="text-red-300">
-                    {hit.readingsOn.map(reading => wanakana.toKatakana(reading)).join(", ")}
-                </div>
-                <div className="text-red-400">
-                    {hit.readingsNames.join(", ")}
-                </div>
-            </a>
-        </div>
+
+            </div>
+        </Link>
     )
 
 }

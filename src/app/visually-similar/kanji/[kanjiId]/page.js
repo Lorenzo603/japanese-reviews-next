@@ -1,4 +1,5 @@
 import { getDictionary } from "@/app/components/backend/DictionaryLoaderComponent";
+import FooterComponent from "@/app/components/nav/FooterComponent";
 import HeaderComponent from "@/app/components/nav/HeaderComponent";
 var wanakana = require('wanakana');
 
@@ -16,7 +17,7 @@ export default async function VisuallySimilarKanji({ params }) {
     const visuallySimilarKanjiIds = kanji['visually_similar_subject_ids'];
 
     return (
-        <div className='text-white'>
+        <div>
             <HeaderComponent />
             <main>
                 <section>
@@ -124,6 +125,8 @@ export default async function VisuallySimilarKanji({ params }) {
                 }
 
             </main>
+
+            <FooterComponent />
         </div>
     )
 }

@@ -6,8 +6,8 @@ import { SuperTokensProvider } from "./components/supertokens/supertokensProvide
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Japanese Reviews Next',
-  description: 'Japanese Reviews Next',
+  title: 'Visually Similar Kanji Japanese Reviews',
+  description: 'Visually Similar Kanji Japanese Reviews',
 }
 
 export default function RootLayout({ children }) {

@@ -76,7 +76,13 @@ export const SearchComponent = () => {
             search(query);
           }}
       />
-      <Hits hitComponent={HitComponent} />
+      <Hits 
+        hitComponent={HitComponent}
+        classNames={{
+          root: 'bg-slate-50',
+          item: 'p-2',
+        }} 
+      />
     </InstantSearch>
   )
 }
