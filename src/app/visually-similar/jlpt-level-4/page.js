@@ -5,7 +5,7 @@ import JlptLevelGroupComponent from '@/app/components/visually-similar/jlptLevel
 export default function VisuallySimilarJlptLevel4() {
 
     return (
-        <div className='text-white'>
+        <div>
             <HeaderComponent />
             <JlptLevelGroupComponent jlptLevelNumber={4} />
             <FooterComponent />
