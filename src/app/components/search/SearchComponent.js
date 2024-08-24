@@ -1,10 +1,36 @@
 'use client';
 
-import { Hits, InstantSearch, SearchBox } from "react-instantsearch";
+import { Hits, InstantSearch, SearchBox, useInstantSearch } from "react-instantsearch";
 import TypesenseInstantsearchAdapter from "typesense-instantsearch-adapter";
 import HitComponent from "./HitComponent";
 
 export const SearchComponent = () => {
+
+  function ResultsHook() {
+    const { results } = useInstantSearch();
+    if (results === undefined) {
+      return;
+    }
+    const searchSubmitButton = document.getElementsByClassName("ais-SearchBox-submit")[0];
+    const searchInput = document.getElementsByClassName("ais-SearchBox-input")[0];
+    const searchResetButton = document.getElementsByClassName("ais-SearchBox-reset")[0];
+    if (searchSubmitButton === undefined || searchInput === undefined || searchResetButton === undefined) {
+      return;
+    }
+
+    if (results.query === '') {
+      searchSubmitButton.classList.remove('hidden');
+      searchInput.classList.add('border-b-2', 'rounded-bl-lg');
+    } else if (results.nbHits === 0) {
+      searchInput.classList.add('border-b-2', 'rounded-bl-lg');
+      searchResetButton.classList.add('border-b-2', 'rounded-br-lg');
+    } else {
+      searchSubmitButton.classList.add('hidden');
+      searchInput.classList.remove('border-b-2', 'rounded-bl-lg');
+      searchResetButton.classList.remove('border-b-2', 'rounded-br-lg');
+    }
+
+  }
 
   const typesenseInstantsearchAdapter = new TypesenseInstantsearchAdapter({
     server: {
@@ -52,37 +78,32 @@ export const SearchComponent = () => {
     },
   };
 
+
   return (
-    <InstantSearch indexName="kanjis" searchClient={proxySearchClient} future={{ preserveSharedStateOnUnmount: true, }}>
+    <InstantSearch indexName="kanjis" searchClient={proxySearchClient}
+      future={{ preserveSharedStateOnUnmount: true, }}>
       <SearchBox
         classNames={{
           root: '',
           form: 'flex w-full h-12',
-          input: 'bg-slate-50 w-full p-2 border-y-2 border-l-2 rounded-l-lg sm:w-96 focus:outline-none',
+          input: 'bg-slate-50 w-full p-2 border-t-2 border-b-2 border-l-2 rounded-tl-lg rounded-bl-lg sm:w-96 focus:outline-none',
           submit: 'bg-slate-50 h-full p-2 border-y-2 border-r-2 rounded-r-lg',
           submitIcon: 'h-full w-full',
-          reset: 'bg-slate-50 h-full p-2 border-y-2 border-r-2 rounded-r-lg',
+          reset: 'bg-slate-50 h-full p-2 border-t-2 border-b-2 border-r-2 rounded-tr-lg rounded-br-lg',
           resetIcon: 'h-full w-full',
         }}
-        placeholder="Search kanji"
-        queryHook={
-          (query, search) => {
-            const searchSubmitButton = document.getElementsByClassName("ais-SearchBox-submit")[0];
-            if (query === '') {
-              searchSubmitButton.classList.remove('hidden');
-            } else {
-              searchSubmitButton.classList.add('hidden');
-            }
-            search(query);
-          }}
+        placeholder="Search kanji..."
+
       />
-      <Hits 
+      <Hits
         hitComponent={HitComponent}
         classNames={{
           root: 'bg-slate-50',
-          item: 'p-2',
-        }} 
+          list: 'p-0',
+          item: 'p-2 border-y',
+        }}
       />
+      <ResultsHook />
     </InstantSearch>
   )
 }

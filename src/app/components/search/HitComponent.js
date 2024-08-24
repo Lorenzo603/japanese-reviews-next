@@ -12,7 +12,7 @@ const HitComponent = ({ hit }) => {
                     {hit.slug}
                 </div>
                 <div className="flex-col">
-                    <div>
+                    <div className="font-bold pb-2">
                         <Highlight hit={hit} attribute="meanings" tagname="mark"
                             classNames={{
                                 highlighted: 'bg-pink-200 p-0',
@@ -21,17 +21,17 @@ const HitComponent = ({ hit }) => {
                     </div>
                     {hit.readingsKun.length > 0 &&
                         <div className="japanese-font">
-                            Kun:&nbsp;{hit.readingsKun.join(", ")}
+                            Kun:&nbsp;{hit.readingsKun.join("、")}
                         </div>
                     }
                     {hit.readingsOn.length > 0 &&
                         <div className="japanese-font">
-                            On:&nbsp;{hit.readingsOn.map(reading => wanakana.toKatakana(reading)).join(", ")}
+                            On:&nbsp;{hit.readingsOn.map(reading => wanakana.toKatakana(reading)).join("、")}
                         </div>
                     }
                     {hit.readingsNames.length > 0 &&
                         <div className="japanese-font">
-                            Name:&nbsp;{hit.readingsNames.join(", ")}
+                            Name:&nbsp;{hit.readingsNames.join("、")}
                         </div>
                     }
                 </div>
