@@ -7,15 +7,17 @@ const HeaderComponent = () => {
             <nav className="mx-auto flex h-24 max-w-7xl items-center justify-between gap-x-6 p-6
                 bg-pink-200">
                 <div className="flex">
-                    <div>
-                        <h1 className="relative flex flex-row select-none items-baseline text-2xl font-bold mb-0">
-                            <span className="tracking-tight text-pink-500 cursor-pointer">
-                                Visually
-                                <span className="text-pink-600">Similar</span>
-                                <span className="text-pink-700">Kanji</span>
-                            </span>
-                        </h1>
-                    </div>
+                    <Link className="no-underline" href="/">
+                        <div>
+                            <h1 className="relative flex flex-row select-none items-baseline text-2xl font-bold mb-0">
+                                <span className="tracking-tight text-pink-500 cursor-pointer">
+                                    Visually
+                                    <span className="text-pink-600">Similar</span>
+                                    <span className="text-pink-700">Kanji</span>
+                                </span>
+                            </h1>
+                        </div>
+                    </Link>
                     <div>
                         <Link className="hidden md:inline" href="/#browse-by-jlpt-level">Browse by JLPT level</Link>
                     </div>

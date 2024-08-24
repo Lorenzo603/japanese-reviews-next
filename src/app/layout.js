@@ -2,6 +2,8 @@ import './globals.css'
 import { Inter, Noto_Sans_JP } from 'next/font/google'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SuperTokensProvider } from "./components/supertokens/supertokensProvider";
+import HeaderComponent from './components/nav/HeaderComponent';
+import FooterComponent from './components/nav/FooterComponent';
 
 const inter = Inter({ subsets: ['latin'] })
 const notoSansJp = Noto_Sans_JP({
@@ -22,7 +24,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <SuperTokensProvider>
         <body className={`${inter.className} ${notoSansJp.variable} h-screen bg-pink-50 text-slate-900`}>
-          {children}
+          <div className="relative overflow-hidden">
+            <HeaderComponent />
+            {children}
+            <FooterComponent />
+          </div>
         </body>
       </SuperTokensProvider>
     </html>
