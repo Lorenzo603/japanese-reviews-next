@@ -21,11 +21,11 @@ export const JlptLevelGroupComponent = async (props) => {
                             href={`/visually-similar/kanji/${kanji["id"]}`}
                         >
                             <li key={kanji["id"]}>
-                                <div className='flex flex-col'>
-                                    <div className='japanese-font text-5xl flex justify-center'>
+                                <div className='flex flex-col w-24'>
+                                    <div className='japanese-font text-5xl flex justify-center text-center'>
                                         {kanji["data"]["slug"]}
                                     </div>
-                                    <div className='flex justify-center pt-2'>
+                                    <div className='flex justify-center text-center pt-2'>
                                         {kanji["data"]["meanings"][0]["meaning"]}
                                     </div>
 
