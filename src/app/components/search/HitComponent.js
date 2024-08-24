@@ -10,7 +10,7 @@ const HitComponent = ({ hit }) => {
                     {hit.slug}
                 </div>
                 <div>
-                    <Highlight hit={hit} attribute="meanings" tagName="mark"
+                    <Highlight hit={hit} attribute="meanings" tagname="mark"
                         classNames={{
                             highlighted: 'bg-green-500 p-0',
                         }}
