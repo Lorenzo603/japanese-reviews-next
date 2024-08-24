@@ -100,7 +100,7 @@ export const SearchComponent = () => {
         classNames={{
           root: 'bg-slate-50',
           list: 'p-0',
-          item: 'p-2 border-y',
+          item: 'p-2 border',
         }}
       />
       <ResultsHook />
