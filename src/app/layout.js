@@ -24,10 +24,16 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <SuperTokensProvider>
         <body className={`${inter.className} ${notoSansJp.variable} h-screen bg-pink-50 text-slate-900`}>
-          <div className="relative overflow-hidden">
-            <HeaderComponent />
-            {children}
-            <FooterComponent />
+          <div className="relative flex flex-col h-full">
+            <div>
+              <HeaderComponent />
+            </div>
+            <div className='flex-grow'>
+              {children}
+            </div>
+            <div>
+              <FooterComponent />
+            </div>
           </div>
         </body>
       </SuperTokensProvider>
