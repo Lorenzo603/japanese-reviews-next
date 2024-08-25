@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const JlptLevelGroupComponent = async (props) => {
 
-    const fullKanjiDictionary = await getDictionary('kanji_full');
+    const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
     const kanjiList = fullKanjiDictionary
         .filter(item => item['data'].hasOwnProperty('categories') && item['data']['categories'].includes(`jlpt${props.jlptLevelNumber}`))
 

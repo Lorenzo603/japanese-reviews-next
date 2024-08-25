@@ -6,7 +6,7 @@ export async function POST(request) {
     const reqJson = await request.json();
     // console.log("PromptSet request body:", reqJson);
 
-    const fullKanjiDictionary = await getDictionary('kanji_full');
+    const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
     const fullVocabularyDictionary = await getDictionary('vocabulary_full');
 
     const dataOption = reqJson.dataOption;

@@ -25,5 +25,6 @@ export async function getDictionary(dictionaryId) {
     
     await memoryCache.set(dictionaryId, filteredDictionary, 0);
 
+    console.log("Loaded dictionary from file:", dictionaryId);
     return filteredDictionary;
 }

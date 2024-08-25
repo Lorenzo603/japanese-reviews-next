@@ -3,7 +3,7 @@ var wanakana = require('wanakana');
 
 export default async function VisuallySimilarKanji({ params }) {
 
-    const fullKanjiDictionary = await getDictionary('kanji_full');
+    const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
     const kanji = fullKanjiDictionary
         .filter(item => item['id'] === parseInt(params.kanjiId))[0]["data"];
 
