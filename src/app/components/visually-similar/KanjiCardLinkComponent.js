@@ -3,10 +3,11 @@ import Link from 'next/link';
 export const KanjiCardLinkComponent = async (props) => {
 
     return (
-        <li key={props.kanjiId} className='bg-pink-500 
+        <li key={props.kanjiId} className={`
+                    ${props.kanjiHasSimilarities ? 'bg-pink-500' : 'bg-pink-300'} 
                     border border-pink-500 rounded-md
                     p-2
-                    hover:bg-pink-600'>
+                    hover:bg-pink-600`}>
             <Link className="no-underline text-white"
                 href={`/visually-similar/kanji/${props.kanjiId}`}
             >

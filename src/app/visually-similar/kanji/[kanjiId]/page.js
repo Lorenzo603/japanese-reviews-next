@@ -122,6 +122,7 @@ export default async function VisuallySimilarKanji({ params }) {
                                                     kanjiId={visuallySimilarKanjiId}
                                                     kanjiSlug={visuallySimilarKanji["slug"]}
                                                     kanjiMeaning={visuallySimilarKanji["meanings"][0]["meaning"]}
+                                                    kanjiHasSimilarities={true}
                                                 />
                                             );
                                         })
