@@ -1,5 +1,5 @@
 import { getDictionary } from '@/app/components/backend/DictionaryLoaderComponent';
-import Link from 'next/link';
+import KanjiCardLinkComponent from '../KanjiCardLinkComponent';
 
 export const JlptLevelGroupComponent = async (props) => {
 
@@ -13,25 +13,11 @@ export const JlptLevelGroupComponent = async (props) => {
                 <h1>JLPT Level {props.jlptLevelNumber}</h1>
                 <ul className='flex flex-row flex-wrap m-0 p-0 gap-2'>
                     {kanjiList.map(kanji =>
-                        <Link
-                            className="no-underline bg-pink-500 text-white 
-                                border border-pink-500 rounded-md
-                                p-2
-                                hover:bg-pink-600"
-                            href={`/visually-similar/kanji/${kanji["id"]}`}
-                        >
-                            <li key={kanji["id"]}>
-                                <div className='flex flex-col w-24'>
-                                    <div className='japanese-font text-5xl flex justify-center text-center'>
-                                        {kanji["data"]["slug"]}
-                                    </div>
-                                    <div className='flex justify-center text-center pt-2'>
-                                        {kanji["data"]["meanings"][0]["meaning"]}
-                                    </div>
-
-                                </div>
-                            </li>
-                        </Link>
+                        <KanjiCardLinkComponent
+                            kanjiId={kanji["id"]}
+                            kanjiSlug={kanji["data"]["slug"]}
+                            kanjiMeaning={kanji["data"]["meanings"][0]["meaning"]}
+                        />
                     )}
                 </ul>
             </div>

@@ -1,4 +1,5 @@
 import { getDictionary } from "@/app/components/backend/DictionaryLoaderComponent";
+import KanjiCardLinkComponent from "@/app/components/visually-similar/KanjiCardLinkComponent";
 var wanakana = require('wanakana');
 
 export default async function VisuallySimilarKanji({ params }) {
@@ -16,110 +17,120 @@ export default async function VisuallySimilarKanji({ params }) {
 
     return (
         <main>
-            <section>
+            <div className="p-4">
+
+
                 <div>
-                    <h1 className="japanese-font">{kanji['slug']}</h1>
+                    <section>
+                        <h1 className="sr-only">Kanji</h1>
+                        <div className="japanese-font text-6xl">{kanji['slug']}</div>
+                    </section>
 
-                    <h2>Meanings</h2>
-                    <ul>
-                        {
-                            kanji['meanings']
-                                .map(meaning => meaning['meaning'])
-                                .map(meaning => {
-                                    return (
-                                        <li key={meaning}>
-                                            {meaning}
-                                        </li>
-                                    )
-                                })
+                    <section>
+                        <h2>Meanings</h2>
+                        <ul>
+                            {
+                                kanji['meanings']
+                                    .map(meaning => meaning['meaning'])
+                                    .map(meaning => {
+                                        return (
+                                            <li key={meaning}>
+                                                {meaning}
+                                            </li>
+                                        )
+                                    })
+                            }
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Readings</h2>
+                        {readingsKun.length > 0 &&
+                            <section>
+                                <h3>Kun'yomi</h3>
+                                <ul>
+                                    {
+                                        readingsKun
+                                            .map(reading => reading['reading'])
+                                            .map(reading => {
+                                                return (
+                                                    <li key={reading} className="japanese-font">
+                                                        {reading}
+                                                    </li>
+                                                )
+                                            })
+                                    }
+                                </ul>
+                            </section>
                         }
-                    </ul>
 
-                    <h2>Readings</h2>
-                    {readingsKun.length > 0 &&
-                        <>
-                            <h3>Kun'yomi</h3>
-                            <ul>
-                                {
-                                    readingsKun
-                                        .map(reading => reading['reading'])
-                                        .map(reading => {
-                                            return (
-                                                <li key={reading} className="japanese-font">
-                                                    {reading}
-                                                </li>
-                                            )
-                                        })
-                                }
-                            </ul>
-                        </>
-                    }
+                        {readingsOn.length > 0 &&
+                            <section>
+                                <h3>On'yomi</h3>
+                                <ul>
+                                    {
+                                        readingsOn
+                                            .map(reading => reading['reading'])
+                                            .map(reading => {
+                                                return (
+                                                    <li key={reading} className="japanese-font">
+                                                        {wanakana.toKatakana(reading)}
+                                                    </li>
+                                                )
+                                            })
+                                    }
+                                </ul>
+                            </section>
+                        }
 
-                    {readingsOn.length > 0 &&
-                        <>
-                            <h3>On'yomi</h3>
-                            <ul>
-                                {
-                                    readingsOn
-                                        .map(reading => reading['reading'])
-                                        .map(reading => {
-                                            return (
-                                                <li key={reading} className="japanese-font">
-                                                    {wanakana.toKatakana(reading)}
-                                                </li>
-                                            )
-                                        })
-                                }
-                            </ul>
-                        </>
-                    }
+                        {readingsNames.length > 0 &&
+                            <section>
+                                <h3>Nanori</h3>
+                                <ul>
+                                    {
+                                        readingsNames
+                                            .map(reading => reading['reading'])
+                                            .map(reading => {
+                                                return (
+                                                    <li key={reading} className="japanese-font">
+                                                        {reading}
+                                                    </li>
+                                                )
+                                            })
+                                    }
+                                </ul>
+                            </section>
+                        }
 
-                    {readingsNames.length > 0 &&
-                        <>
-                            <h3>Nanori</h3>
-                            <ul>
-                                {
-                                    readingsNames
-                                        .map(reading => reading['reading'])
-                                        .map(reading => {
-                                            return (
-                                                <li key={reading} className="japanese-font">
-                                                    {reading}
-                                                </li>
-                                            )
-                                        })
-                                }
-                            </ul>
-                        </>
-                    }
-
-
+                    </section>
                 </div>
-            </section>
 
-            {
-                visuallySimilarKanjiIds.length > 0 &&
-                <section>
-                    <h2>Visually Similar Kanjis</h2>
-                    <ul>
-                        {
-                            Array.from(visuallySimilarKanjiIds)
-                                .map(visuallySimilarKanjiId => {
-                                    const visuallySimilarKanji = fullKanjiDictionary
-                                        .filter(item => item['id'] === visuallySimilarKanjiId)[0]["data"];
-                                    return (
-                                        <li key={visuallySimilarKanjiId}>
-                                            <a className="japanese-font" href={`/visually-similar/kanji/${visuallySimilarKanjiId}`}>
-                                                {visuallySimilarKanji["slug"]}
-                                            </a>
-                                        </li>
-                                    );
-                                })
-                        }
-                    </ul>
-                </section>
-            }
 
+                <div>
+                    {
+                        visuallySimilarKanjiIds.length > 0 &&
+                        <section>
+                            <h1>Visually Similar Kanjis</h1>
+                            <ul className='flex flex-row flex-wrap m-0 p-0 gap-2'>
+                                {
+                                    Array.from(visuallySimilarKanjiIds)
+                                        .map(visuallySimilarKanjiId => {
+                                            const visuallySimilarKanji = fullKanjiDictionary
+                                                .filter(item => item['id'] === visuallySimilarKanjiId)[0]["data"];
+                                            return (
+                                                <KanjiCardLinkComponent
+                                                    kanjiId={visuallySimilarKanjiId}
+                                                    kanjiSlug={visuallySimilarKanji["slug"]}
+                                                    kanjiMeaning={visuallySimilarKanji["meanings"][0]["meaning"]}
+                                                />
+                                            );
+                                        })
+                                }
+                            </ul>
+                        </section>
+                    }
+                </div>
+            </div>
         </main>
     )
 }
