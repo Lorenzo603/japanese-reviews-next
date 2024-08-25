@@ -14,10 +14,6 @@ export default function Home() {
                 <SearchComponent />
               </div>
             </div>
-            <div className="flex justify-center">
-              <p className="italic">Search using kanji, meaning, or kana</p>
-            </div>
-
           </div>
         </section>
 
