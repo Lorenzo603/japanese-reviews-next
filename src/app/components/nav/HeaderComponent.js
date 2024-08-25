@@ -18,11 +18,18 @@ const HeaderComponent = () => {
                             </h1>
                         </div>
                     </Link>
-                    <div>
-                        <Link className="hidden md:inline" href="/#browse-by-jlpt-level">Browse by JLPT level</Link>
-                    </div>
                 </div>
                 <div className="flex flex-1 items-center justify-end gap-x-6">
+                    <div>
+                        <Link
+                            className="no-underline 
+                            font-bold text-md text-blue-900
+                            items-baseline 
+                            hidden sm:inline"
+                            href="/#browse-by-jlpt-level">
+                            Browse by JLPT level
+                        </Link>
+                    </div>
                     <div className="flex items-center gap-4">
                         <LoginButton />
                     </div>
