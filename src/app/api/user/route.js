@@ -1,6 +1,6 @@
 import { withSession } from "supertokens-node/nextjs";
 import { NextResponse } from "next/server";
-import { ensureSuperTokensInit } from '../../auth/config/backend';
+import { ensureSuperTokensInit } from '../../(auth)/auth/config/backend';
 
 ensureSuperTokensInit();
 

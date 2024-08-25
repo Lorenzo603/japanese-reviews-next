@@ -2,7 +2,7 @@
 
 import { Col, Container, Row } from 'react-bootstrap';
 import { SelectSettings } from '@/app/components/SelectSettingsComponent';
-import styles from '../page.module.css'
+import styles from '../../page.module.css'
 import { useRouter } from 'next/navigation';
 import { useQuizContext } from '@/app/context/quizContext';
 import PendingReviewsComponent from '@/app/components/PendingReviewsComponent';

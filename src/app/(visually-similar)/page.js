@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SearchComponent from "./components/search/SearchComponent";
+import SearchComponent from "../components/search/SearchComponent";
 
 export default function Home() {
 
