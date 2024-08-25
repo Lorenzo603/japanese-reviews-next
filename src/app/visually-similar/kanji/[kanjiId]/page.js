@@ -23,11 +23,11 @@ export default async function VisuallySimilarKanji({ params }) {
                 <div>
                     <section>
                         <h1 className="sr-only">Kanji</h1>
-                        <div className="japanese-font text-6xl">{kanji['slug']}</div>
+                        <div className="japanese-font text-6xl pb-4">{kanji['slug']}</div>
                     </section>
 
                     <section>
-                        <h2>Meanings</h2>
+                        <h2 className="text-2xl">Meanings</h2>
                         <ul>
                             {
                                 kanji['meanings']
@@ -44,10 +44,10 @@ export default async function VisuallySimilarKanji({ params }) {
                     </section>
 
                     <section>
-                        <h2>Readings</h2>
+                        <h2 className="text-2xl">Readings</h2>
                         {readingsKun.length > 0 &&
                             <section>
-                                <h3>Kun'yomi</h3>
+                                <h3 className="text-lg">Kun'yomi</h3>
                                 <ul>
                                     {
                                         readingsKun
@@ -66,7 +66,7 @@ export default async function VisuallySimilarKanji({ params }) {
 
                         {readingsOn.length > 0 &&
                             <section>
-                                <h3>On'yomi</h3>
+                                <h3 className="text-lg">On'yomi</h3>
                                 <ul>
                                     {
                                         readingsOn
@@ -85,7 +85,7 @@ export default async function VisuallySimilarKanji({ params }) {
 
                         {readingsNames.length > 0 &&
                             <section>
-                                <h3>Nanori</h3>
+                                <h3 className="text-lg">Nanori</h3>
                                 <ul>
                                     {
                                         readingsNames
@@ -110,7 +110,7 @@ export default async function VisuallySimilarKanji({ params }) {
                     {
                         visuallySimilarKanjiIds.length > 0 &&
                         <section>
-                            <h1>Visually Similar Kanjis</h1>
+                            <h1 className="text-2xl">Visually Similar Kanji</h1>
                             <ul className='flex flex-row flex-wrap m-0 p-0 gap-2'>
                                 {
                                     Array.from(visuallySimilarKanjiIds)
