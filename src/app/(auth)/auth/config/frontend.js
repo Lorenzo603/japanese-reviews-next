@@ -13,6 +13,24 @@ export function setRouter(router, pathName) {
 export const frontendConfig = () => {
   return {
     appInfo,
+    style: `
+      [data-supertokens~=row]::before {
+        display: inline-block;
+        width: 128px;
+        height: 48px;
+        content: "";
+        background-image: url("vercel.svg");
+        background-repeat: no-repeat;
+      }
+      [data-supertokens~=button] {
+        background-color: #ec4899;
+        border-color: #ec4899;
+      }
+      [data-supertokens~=button]:hover {
+        background-color: #be185d;
+        border-color: #be185d;
+      }
+    `,
     recipeList: [
       ThirdPartyReact.init({
         signInAndUpFeature: {
