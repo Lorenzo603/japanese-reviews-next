@@ -15,18 +15,18 @@ export default function DashboardLayout({ children }) {
         <html lang="en">
             <SuperTokensProvider>
                 <body>
-                    <QuizContextProvider>
-                        <SessionAuth
-                            accessDeniedScreen={AccessDeniedScreen}
-                            overrideGlobalClaimValidators={(globalValidators) => [
-                                ...globalValidators, UserRoleClaim.validators.includes("FullReviewRole"),
-                            ]}
-                        >
+                    <SessionAuth
+                        accessDeniedScreen={AccessDeniedScreen}
+                        overrideGlobalClaimValidators={(globalValidators) => [
+                            ...globalValidators, UserRoleClaim.validators.includes("FullReviewRole"),
+                        ]}
+                    >
+                        <QuizContextProvider>
                             <SSRProvider>
                                 {children}
                             </SSRProvider>
-                        </SessionAuth>
-                    </QuizContextProvider>
+                        </QuizContextProvider>
+                    </SessionAuth>
                 </body>
             </SuperTokensProvider>
         </html>
