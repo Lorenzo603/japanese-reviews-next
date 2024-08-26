@@ -38,7 +38,7 @@ export const frontendConfig = () => {
             ThirdPartyReact.Google.init(),
             ThirdPartyReact.Facebook.init(),
             ThirdPartyReact.Github.init(),
-            ThirdPartyReact.Apple.init(),
+            // ThirdPartyReact.Apple.init(),
           ],
         },
       }),
