@@ -3,9 +3,8 @@ import LoginButton from "../buttons/login/LoginButton";
 
 const HeaderComponent = () => {
     return (
-        <header className="sticky top-0 z-50 w-full">
-            <nav className="mx-auto flex h-24 max-w-7xl items-center justify-between gap-x-6 p-6
-                bg-pink-200">
+        <header className="sticky top-0 z-50 w-full bg-pink-200">
+            <nav className="mx-auto flex h-24 max-w-7xl items-center justify-between gap-x-6 p-6">
                 <div className="flex">
                     <Link className="no-underline" href="/">
                         <div>
