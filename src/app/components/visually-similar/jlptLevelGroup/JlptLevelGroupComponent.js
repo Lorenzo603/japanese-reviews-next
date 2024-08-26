@@ -10,7 +10,7 @@ export const JlptLevelGroupComponent = async (props) => {
     return (
         <section>
             <div className='p-4'>
-                <h1>JLPT Level {props.jlptLevelNumber}</h1>
+                <h1 className='text-2xl py-4'>JLPT Level {props.jlptLevelNumber}</h1>
                 <div className='flex flex-row 
                 mb-4
                 border-2 border-blue-900 rounded-md p-2
