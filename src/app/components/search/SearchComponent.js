@@ -37,13 +37,14 @@ export const SearchComponent = () => {
       apiKey: process.env.NEXT_PUBLIC_TYPESENSE_SEARCH_API_KEY, // Be sure to use an API key that only allows search operations
       nodes: [
         {
-          host: "localhost",
-          port: "8108",
-          path: "", // Optional. Example: If you have your typesense mounted in localhost:8108/typesense, path should be equal to '/typesense'
+          host: process.env.NEXT_PUBLIC_TYPESENSE_HOST, //localhost
+          port: "80", //8108
+          path: "/typesense", // Optional. Example: If you have your typesense mounted in localhost:8108/typesense, path should be equal to '/typesense'
           protocol: "http",
         },
       ],
       cacheSearchResultsForSeconds: 2 * 60, // Cache search results from server. Defaults to 2 minutes. Set to 0 to disable caching.
+      sendApiKeyAsQueryParam: false,
     },
     // The following parameters are directly passed to Typesense's search API endpoint.
     //  So you can pass any parameters supported by the search endpoint below.

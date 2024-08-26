@@ -1,4 +1,5 @@
-import ThirdPartyEmailPasswordReact from 'supertokens-auth-react/recipe/thirdpartyemailpassword'
+import EmailPasswordReact from 'supertokens-auth-react/recipe/emailpassword'
+import ThirdPartyReact from 'supertokens-auth-react/recipe/thirdparty'
 import SessionReact from 'supertokens-auth-react/recipe/session'
 import { appInfo } from './appInfo'
 
@@ -13,16 +14,17 @@ export const frontendConfig = () => {
   return {
     appInfo,
     recipeList: [
-      ThirdPartyEmailPasswordReact.init({
+      ThirdPartyReact.init({
         signInAndUpFeature: {
           providers: [
-            ThirdPartyEmailPasswordReact.Google.init(),
-            ThirdPartyEmailPasswordReact.Facebook.init(),
-            ThirdPartyEmailPasswordReact.Github.init(),
-            ThirdPartyEmailPasswordReact.Apple.init(),
+            ThirdPartyReact.Google.init(),
+            ThirdPartyReact.Facebook.init(),
+            ThirdPartyReact.Github.init(),
+            ThirdPartyReact.Apple.init(),
           ],
         },
       }),
+      EmailPasswordReact.init(),
       SessionReact.init(),
     ],
     windowHandler: (original) => ({

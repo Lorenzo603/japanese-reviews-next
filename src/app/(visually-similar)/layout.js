@@ -1,6 +1,5 @@
 import '../globals.css'
 import { Inter, Noto_Sans_JP } from 'next/font/google'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { SuperTokensProvider } from "../components/supertokens/supertokensProvider";
 import HeaderComponent from '../components/nav/HeaderComponent';
 import FooterComponent from '../components/nav/FooterComponent';
@@ -16,7 +15,7 @@ const notoSansJp = Noto_Sans_JP({
 
 export const metadata = {
   title: 'Visually Similar Kanji Japanese Reviews',
-  description: 'Visually Similar Kanji Japanese Reviews',
+  description: 'Browse and perform reviews on japanese visually similar kanji',
 }
 
 export default function RootLayout({ children }) {

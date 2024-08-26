@@ -29,7 +29,7 @@ export const JlptLevelGroupComponent = async (props) => {
                             const hasSimilarKanji = kanji['data'].hasOwnProperty('visually_similar_subject_ids')
                                 && kanji['data']['visually_similar_subject_ids'].length > 0;
                             return (
-                                <KanjiCardLinkComponent
+                                <KanjiCardLinkComponent key={kanji["id"]}
                                     kanjiId={kanji["id"]}
                                     kanjiSlug={kanji["data"]["slug"]}
                                     kanjiMeaning={kanji["data"]["meanings"][0]["meaning"]}

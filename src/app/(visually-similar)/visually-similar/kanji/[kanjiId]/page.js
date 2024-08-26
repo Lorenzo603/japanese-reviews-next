@@ -118,7 +118,7 @@ export default async function VisuallySimilarKanji({ params }) {
                                             const visuallySimilarKanji = fullKanjiDictionary
                                                 .filter(item => item['id'] === visuallySimilarKanjiId)[0]["data"];
                                             return (
-                                                <KanjiCardLinkComponent
+                                                <KanjiCardLinkComponent key={visuallySimilarKanjiId} 
                                                     kanjiId={visuallySimilarKanjiId}
                                                     kanjiSlug={visuallySimilarKanji["slug"]}
                                                     kanjiMeaning={visuallySimilarKanji["meanings"][0]["meaning"]}
