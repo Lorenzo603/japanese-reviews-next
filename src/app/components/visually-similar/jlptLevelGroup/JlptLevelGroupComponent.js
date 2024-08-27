@@ -24,7 +24,7 @@ export const JlptLevelGroupComponent = async (props) => {
                     </div>
 
                     <div>
-                        <ul className='flex flex-row flex-wrap m-0 p-0 gap-2'>
+                        <ul className='flex flex-row flex-wrap gap-2'>
                             {
                                 kanjiList.map(kanji => {
                                     const hasSimilarKanji = kanji['data'].hasOwnProperty('visually_similar_subject_ids')

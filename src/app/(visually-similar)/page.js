@@ -3,6 +3,12 @@ import SearchComponent from "../components/search/SearchComponent";
 
 export default function Home() {
 
+  const handleLevelNumberClick = (levelNumber) => {
+    // window.location.href = '/visually-similar/test/level/' + levelNumber + '/batch/10';
+    console.log('levelNumber:', levelNumber)
+  }
+
+
   return (
     <main>
       <div className="w-full">
@@ -17,6 +23,13 @@ export default function Home() {
               </div>
             </div>
           </section>
+
+          <div className="max-w-2xl py-4">
+            <section>
+              <h1 className="text-2xl">Reviews Settings</h1>
+              <Link className="underline" href="/visually-similar/review-settings">Go to review settings</Link>
+            </section>
+          </div>
 
           <div className="max-w-2xl">
             <section>
