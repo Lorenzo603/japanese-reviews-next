@@ -3,6 +3,7 @@ import { Inter, Noto_Sans_JP } from 'next/font/google'
 import { SuperTokensProvider } from "../components/supertokens/supertokensProvider";
 import HeaderComponent from '../components/nav/HeaderComponent';
 import FooterComponent from '../components/nav/FooterComponent';
+import { VisuallySimilarQuizContextProvider } from '../context/visuallySimilarQuizContext';
 
 const inter = Inter({ subsets: ['latin'] })
 const notoSansJp = Noto_Sans_JP({
@@ -28,7 +29,9 @@ export default function RootLayout({ children }) {
               <HeaderComponent />
             </div>
             <div className='flex-grow'>
-              {children}
+              <VisuallySimilarQuizContextProvider>
+                {children}
+              </VisuallySimilarQuizContextProvider>
             </div>
             <div>
               <FooterComponent />

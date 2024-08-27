@@ -1,18 +1,35 @@
 'use client'
 
-import { useState } from "react";
+import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
+import { useRouter } from "next/navigation";
 
-export default function ReviewSettings() {
+export default function VisuallySimilarReviewSettings() {
 
-    const [guessKanji, setGuessKanji] = useState(true);
-    const [guessMeaning, setGuessMeaning] = useState(false);
+    const router = useRouter();
 
-    const [multichoiceInput, setMultichoiceInput] = useState(true);
-    const [typingInput, setTypingInput] = useState(false);
+    const { setPromptSet, guessKanji, guessMeaning, multichoiceInput, typingInput } = useVisuallySimilarQuizContext();
 
-    const handleLevelNumberClick = (levelNumber) => {
-        // gather kanji of selected level and start quiz
-        
+    const handleLevelNumberClick = async (levelNumber) => {
+
+        let promptSetResponse = await (await fetch('/api/visually-similar/quiz/prompts', {
+            method: 'post',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                selectedLevel: levelNumber,
+                guessKanji: guessKanji,
+                guessMeaning: guessMeaning,
+                multichoiceInput: multichoiceInput,
+                typingInput: typingInput
+            })
+        })).json();
+
+        console.log('promptSetResponse:', promptSetResponse);
+        setPromptSet(promptSetResponse);
+
+        router.push('/visually-similar/review');
+
     }
 
 
