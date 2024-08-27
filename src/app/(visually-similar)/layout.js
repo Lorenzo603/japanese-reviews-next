@@ -15,7 +15,7 @@ const notoSansJp = Noto_Sans_JP({
 
 export const metadata = {
   title: 'Visually Similar Kanji Japanese Reviews',
-  description: 'Browse and perform reviews on japanese visually similar kanji',
+  description: 'Browse and perform reviews on your knowledge of japanese visually similar kanji',
 }
 
 export default function RootLayout({ children }) {

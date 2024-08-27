@@ -93,7 +93,7 @@ export const SearchComponent = () => {
           reset: 'bg-slate-50 h-full p-2 border-t-2 border-b-2 border-r-2 rounded-tr-lg rounded-br-lg',
           resetIcon: 'h-full w-full',
         }}
-        placeholder="Search using kanji, meaning, or kana"
+        placeholder="Search by kanji, meaning, or kana"
 
       />
       <Hits
