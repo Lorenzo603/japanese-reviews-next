@@ -1,7 +1,9 @@
 'use client'
 
 import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
+import Link from "next/link";
 import { useState } from "react";
+import Confetti from 'react-dom-confetti';
 
 export default function VisuallySimilarReview() {
 
@@ -81,30 +83,58 @@ export default function VisuallySimilarReview() {
             setCurrentPrompt(promptSet[currentPromptIndex + 1]);
         } else {
             setAnswerState(AnswerState.FINISHED);
+            if (totalCorrect === totalAnswers) {
+                setIsExploding(true);
+            }
         }
     }
 
+    const [isExploding, setIsExploding] = useState(false);
+    const confettiConfig = {
+        angle: '280',
+        spread: '360',
+        startVelocity: 30,
+        elementCount: 70,
+        dragFriction: 0.12,
+        duration: 4000,
+        stagger: 3,
+        width: '12px',
+        height: '12px',
+        perspective: '500px',
+        colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'],
+    };
+
     return (
-        <main>
-            <div className="w-full">
+        <main className="h-full flex-grow">
+            <div className="h-full flex-grow overflow-hidden">
                 <div className="w-full bg-pink-100 h-2">
                     <div className="bg-red-600 h-2" style={{ width: '45%' }}></div>
                 </div>
-
+                <div className="relative top-10 left-10">
+                    <Confetti active={isExploding} config={confettiConfig} />
+                </div>
                 <section>
                     <div className="mx-auto max-w-7xl p-6">
                         <div className="flex flex-col justify-center text-center max-w-2xl py-4">
                             {
                                 answerState === AnswerState.FINISHED ? (
                                     <div>
-                                        <div>
+                                        <div className="text-4xl pb-6">
                                             Congatulations!
                                         </div>
-                                        <div>
+                                        <div className="text-2xl pb-2">
                                             {`You got ${totalCorrect} out of ${totalAnswers}`}
                                         </div>
-                                        <div>
+                                        <div className="text-2xl">
                                             {Math.round(totalCorrect / totalAnswers * 100)}&#37; correct
+                                        </div>
+                                        <div className="p-10">
+                                            <Link href="/visually-similar/review-settings"
+                                                className="bg-pink-500 hover:bg-pink-400 
+                                                text-white p-4 rounded"
+                                            >
+                                                Go Back
+                                            </Link>
                                         </div>
                                     </div>
                                 ) : (
