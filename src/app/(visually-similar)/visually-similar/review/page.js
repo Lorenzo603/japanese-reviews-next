@@ -18,12 +18,15 @@ export default function VisuallySimilarReview() {
 
     const [answerState, setAnswerState] = useState(AnswerState.WAITING_RESPONSE);
 
+    const totalAnswers = promptSet.length;
+    const [totalCorrect, setTotalCorrect] = useState(0);
+
     const handleUserAnswer = async (answer, idx) => {
         if (answerState === AnswerState.WAITING_RESPONSE) {
             setAnswerState(AnswerState.ANSWERED);
-
             if (answer === currentPrompt["correctAnswer"]) {
                 console.log("Correct answer!");
+                setTotalCorrect(totalCorrect + 1);
                 const correctAnswerItem = document.getElementById(`answer-button-${idx}`);
                 colorItemCorrect(correctAnswerItem);
             } else {
@@ -44,11 +47,8 @@ export default function VisuallySimilarReview() {
                 return;
             }
         } else {
-
             moveToNextPrompt();
-
         }
-
 
     }
 
@@ -94,27 +94,45 @@ export default function VisuallySimilarReview() {
                 <section>
                     <div className="mx-auto max-w-7xl p-6">
                         <div className="flex flex-col justify-center text-center max-w-2xl py-4">
-                            <div className="text-4xl pb-6">
-                                <span className={guessKanji ? "" : "japanese-font"}>{currentPrompt["prompt"]}</span>
-                            </div>
-                            <ul id="answers-list" className="flex flex-col gap-4">
-                                {
-                                    currentPrompt["answers"].map((answer, idx) => {
-                                        return <li key={idx}>
-                                            <button id={`answer-button-${idx}`}
-                                                className='
+                            {
+                                answerState === AnswerState.FINISHED ? (
+                                    <div>
+                                        <div>
+                                            Congatulations!
+                                        </div>
+                                        <div>
+                                            {`You got ${totalCorrect} out of ${totalAnswers}`}
+                                        </div>
+                                        <div>
+                                            {Math.round(totalCorrect / totalAnswers * 100)}&#37; correct
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <div className="text-4xl pb-6">
+                                            <span className={guessKanji ? "" : "japanese-font"}>{currentPrompt["prompt"]}</span>
+                                        </div>
+                                        <ul id="answers-list" className="flex flex-col gap-4">
+                                            {
+                                                currentPrompt["answers"].map((answer, idx) => {
+                                                    return <li key={idx}>
+                                                        <button id={`answer-button-${idx}`}
+                                                            className='
                                                     w-full bg-slate-50 text-black 
                                                     p-2 
                                                     rounded-md
                                                     border-2 border-pink-400 
                                                     hover:bg-pink-400 hover:text-white'
-                                                onClick={() => handleUserAnswer(answer, idx)}>
-                                                <span className={`${guessKanji ? "japanese-font" : ""} text-4xl`}>{answer}</span>
-                                            </button>
-                                        </li>
-                                    })
-                                }
-                            </ul>
+                                                            onClick={() => handleUserAnswer(answer, idx)}>
+                                                            <span className={`${guessKanji ? "japanese-font text-4xl" : "text-2xl"}`}>{answer}</span>
+                                                        </button>
+                                                    </li>
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </section>
