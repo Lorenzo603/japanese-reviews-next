@@ -89,6 +89,40 @@ export default function VisuallySimilarReview() {
         }
     }
 
+    function getCorrectPercentage() {
+        return Math.round(totalCorrect / totalAnswers * 100)
+    }
+
+    function getCongratulationsStatement() {
+        const correctPercentage = getCorrectPercentage();
+        if (correctPercentage === 100) {
+            return "Absolutely perfect!"
+        } else if (correctPercentage >= 80) {
+            return "Amazing work!"
+        } else if (correctPercentage >= 60) {
+            return "Well done!"
+        } else if (correctPercentage >= 40) {
+            return "Nice try!"
+        } else {
+            return "Great effort!"
+        }
+    }
+
+    function getCongratulationsSubStatement() {
+        const correctPercentage = getCorrectPercentage();
+        if (correctPercentage === 100) {
+            return "You aced it! You're a true quiz master. Keep shining!"
+        } else if (correctPercentage >= 80) {
+            return "You're nearly flawless. Keep it up, and you'll achieve perfection!"
+        } else if (correctPercentage >= 60) {
+            return "You're making real strides. Keep up the good work!"
+        } else if (correctPercentage >= 40) {
+            return "You're getting there. A bit more practice, and you'll be unstoppable!"
+        } else {
+            return "Every step forward is progress. Keep going, you'll improve in no time!"
+        }
+    }
+
     const [isExploding, setIsExploding] = useState(false);
     const confettiConfig = {
         angle: '280',
@@ -114,19 +148,24 @@ export default function VisuallySimilarReview() {
                     <Confetti active={isExploding} config={confettiConfig} />
                 </div>
                 <section>
-                    <div className="mx-auto max-w-7xl p-6">
-                        <div className="flex flex-col justify-center text-center max-w-2xl py-4">
+                    <div className="mx-auto max-w-7xl flex justify-center p-6">
+                        <div className="flex flex-col flex-grow justify-center text-center max-w-2xl py-4">
                             {
                                 answerState === AnswerState.FINISHED ? (
                                     <div>
-                                        <div className="text-4xl pb-6">
-                                            Congatulations!
+                                        <div className="flex flex-col">
+                                            <div className="text-4xl pb-2">
+                                                {getCongratulationsStatement()}
+                                            </div>
+                                            <div className="text-xl pb-4 italic">
+                                                {getCongratulationsSubStatement()}
+                                            </div>
                                         </div>
                                         <div className="text-2xl pb-2">
                                             {`You got ${totalCorrect} out of ${totalAnswers}`}
                                         </div>
                                         <div className="text-2xl">
-                                            {Math.round(totalCorrect / totalAnswers * 100)}&#37; correct
+                                            {getCorrectPercentage()}&#37; correct
                                         </div>
                                         <div className="p-10">
                                             <Link href="/visually-similar/review-settings"
