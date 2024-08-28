@@ -11,7 +11,7 @@ export default function VisuallySimilarReview() {
         FINISHED: 2,
     };
 
-    const { promptSet, multichoiceInput, typingInput, quickMode } = useVisuallySimilarQuizContext();
+    const { promptSet, guessKanji, multichoiceInput, typingInput, quickMode } = useVisuallySimilarQuizContext();
 
     const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
     const [currentPrompt, setCurrentPrompt] = useState(promptSet[currentPromptIndex]);
@@ -94,7 +94,9 @@ export default function VisuallySimilarReview() {
                 <section>
                     <div className="mx-auto max-w-7xl p-6">
                         <div className="flex flex-col justify-center text-center max-w-2xl py-4">
-                            <div className="text-4xl pb-6">{currentPrompt["prompt"]}</div>
+                            <div className="text-4xl pb-6">
+                                <span className={guessKanji ? "" : "japanese-font"}>{currentPrompt["prompt"]}</span>
+                            </div>
                             <ul id="answers-list" className="flex flex-col gap-4">
                                 {
                                     currentPrompt["answers"].map((answer, idx) => {
@@ -107,7 +109,7 @@ export default function VisuallySimilarReview() {
                                                     border-2 border-pink-400 
                                                     hover:bg-pink-400 hover:text-white'
                                                 onClick={() => handleUserAnswer(answer, idx)}>
-                                                <span className="japanese-font text-4xl">{answer}</span>
+                                                <span className={`${guessKanji ? "japanese-font" : ""} text-4xl`}>{answer}</span>
                                             </button>
                                         </li>
                                     })

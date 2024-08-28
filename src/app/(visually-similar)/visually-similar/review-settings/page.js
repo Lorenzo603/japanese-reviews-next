@@ -7,9 +7,13 @@ export default function VisuallySimilarReviewSettings() {
 
     const router = useRouter();
 
-    const { setPromptSet, guessKanji, guessMeaning, multichoiceInput, typingInput } = useVisuallySimilarQuizContext();
+    const { setPromptSet, guessKanji, setGuessKanji, 
+        guessMeaning, 
+        multichoiceInput, setMultichoiceInput, 
+        typingInput,
+        quickMode, setQuickMode } = useVisuallySimilarQuizContext();
 
-    const handleLevelNumberClick = async (levelNumber) => {
+    const handleLevelNumberClick = async (selectedLevel) => {
 
         let promptSetResponse = await (await fetch('/api/visually-similar/quiz/prompts', {
             method: 'post',
@@ -17,7 +21,7 @@ export default function VisuallySimilarReviewSettings() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                selectedLevel: levelNumber,
+                selectedLevel: selectedLevel,
                 guessKanji: guessKanji,
                 guessMeaning: guessMeaning,
                 multichoiceInput: multichoiceInput,
@@ -41,7 +45,31 @@ export default function VisuallySimilarReviewSettings() {
                         <section>
                             <h1 className="text-2xl">Review Settings</h1>
                             <p>Try it now</p>
-                            <div>
+                            <div className="flex flex-col">
+                                <div className="flex flex-row">
+                                    <div>
+                                        Guess Kanji:
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" checked={guessKanji} onChange={() => setGuessKanji(!guessKanji)} />
+                                    </div>
+                                </div>
+                                <div className="flex flex-row">
+                                    <div>
+                                        Multichoice:
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" checked={multichoiceInput} onChange={() => setMultichoiceInput(!multichoiceInput)} />
+                                    </div>
+                                </div>
+                                <div className="flex flex-row">
+                                    <div>
+                                        Quick Mode:
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" checked={quickMode} onChange={() => setQuickMode(!quickMode)} />
+                                    </div>
+                                </div>
 
                             </div>
                             <ol className='grid grid-cols-6 md:grid-cols-10 text-center gap-2'>
