@@ -2,7 +2,7 @@
 
 import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Confetti from 'react-dom-confetti';
 
 export default function VisuallySimilarReview() {
@@ -22,6 +22,25 @@ export default function VisuallySimilarReview() {
 
     const totalAnswers = promptSet.length;
     const [totalCorrect, setTotalCorrect] = useState(0);
+
+    const handleKeyDownCallback = useCallback(handleKeyDown, [answerState]);
+
+    function handleKeyDown(e) {
+        e.preventDefault();
+
+        if (answerState === AnswerState.ANSWERED && (e.key === ' ' || e.key === 'ArrowRight')) {
+            moveToNextPrompt();
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDownCallback);
+
+        return function cleanup() {
+            window.removeEventListener('keydown', handleKeyDownCallback);
+        }
+
+    }, [handleKeyDownCallback]);
 
     const handleUserAnswer = async (answer, idx) => {
         if (answerState === AnswerState.WAITING_RESPONSE) {
@@ -202,7 +221,7 @@ export default function VisuallySimilarReview() {
                                             <div className="flex flex-col items-center p-10">
                                                 <button
                                                     className='
-                                                    w-24
+                                                    w-20
                                                     bg-pink-500 text-white 
                                                     p-2 
                                                     rounded-md
