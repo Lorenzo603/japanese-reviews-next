@@ -158,9 +158,6 @@ export default function VisuallySimilarReview() {
     return (
         <main className="h-full flex-grow">
             <div className="h-full flex-grow overflow-hidden">
-                <div className="w-full bg-pink-100 h-2">
-                    <div className="bg-red-600 h-2" style={{ width: '45%' }}></div>
-                </div>
                 <div className="w-full p-1 flex justify-center">
                     <Confetti active={isExploding} config={confettiConfig} />
                 </div>
