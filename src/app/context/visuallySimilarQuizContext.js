@@ -10,7 +10,6 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
     const [guessKanji, setGuessKanji] = useState(true);
 
     const [multichoiceInput, setMultichoiceInput] = useState(true);
-    const [typingInput, setTypingInput] = useState(false);
 
     // Go directly to next question upon clicking without seeing the success/wrong result
     const [quickMode, setQuickMode] = useState(false);
@@ -24,7 +23,6 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
     useEffect(() => {
         loadInitialValue('guessKanji', true, setGuessKanji);
         loadInitialValue('multichoiceInput', true, setMultichoiceInput);
-        loadInitialValue('typingInput', false, setTypingInput);
         loadInitialValue('quickMode', false, setQuickMode);
     }, [])
 
@@ -35,9 +33,6 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
         localStorage.setItem('multichoiceInput', multichoiceInput)
     }, [multichoiceInput])
     useEffect(() => {
-        localStorage.setItem('typingInput', typingInput)
-    }, [typingInput])
-    useEffect(() => {
         localStorage.setItem('quickMode', quickMode)
     }, [quickMode])
 
@@ -46,10 +41,9 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
 
         guessKanji, setGuessKanji,
         multichoiceInput, setMultichoiceInput,
-        typingInput, setTypingInput,
         quickMode, setQuickMode
         
-    }), [promptSet, guessKanji, multichoiceInput, typingInput, quickMode]);
+    }), [promptSet, guessKanji, multichoiceInput, quickMode]);
 
     return (
         <VisuallySimilarQuizContext.Provider value={providerValue}>
