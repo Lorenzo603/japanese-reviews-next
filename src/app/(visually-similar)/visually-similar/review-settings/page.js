@@ -93,7 +93,7 @@ export default function VisuallySimilarReviewSettings() {
                             <h1 className="text-2xl">Review Settings</h1>
                             <div className="flex flex-col">
                                 <div className="flex flex-row">
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col py-4">
                                         <div className="p-2">
                                             Guess Mode:
                                         </div>
@@ -117,7 +117,7 @@ export default function VisuallySimilarReviewSettings() {
                                     </div>
                                 </div>
                                 <div className="flex flex-row">
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col py-4">
                                         <div className="p-2">
                                             Input Method:
                                         </div>
@@ -140,8 +140,8 @@ export default function VisuallySimilarReviewSettings() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-row items-center p-2">
-                                    <div className="mr-2">
+                                <div className="flex flex-row items-center pt-6 pb-8">
+                                    <div className="pr-4">
                                         Enable Quick Mode:
                                     </div>
                                     <div className="inline-flex items-center justify-center">
@@ -149,10 +149,18 @@ export default function VisuallySimilarReviewSettings() {
                                             <div className="relative">
                                                 <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true" type="checkbox" onChange={() => setQuickMode(!quickMode)} name="switch" />
                                                 <div
-                                                    className="block cursor-pointer rounded-full border border-slate-300 bg-slate-50 transition duration-300 peer-checked:border-blue-700 peer-checked:bg-blue-700 peer-disabled:cursor-not-allowed peer-disabled:border-slate-100 peer-disabled:bg-slate-100 h-6 w-12">
+                                                    className="block cursor-pointer rounded-full 
+                                                        border border-slate-300 bg-slate-50 
+                                                        transition duration-300 
+                                                        peer-checked:border-pink-500 peer-checked:bg-pink-500 
+                                                        peer-disabled:cursor-not-allowed peer-disabled:border-slate-100 peer-disabled:bg-slate-100 h-6 w-12">
                                                 </div>
                                                 <div
-                                                    className="absolute top-0.5 z-10 cursor-pointer rounded-full border border-slate-50 bg-blue-700 transition duration-300 peer-checked:translate-x-5 peer-checked:border-blue-700 peer-checked:bg-white peer-disabled:cursor-not-allowed peer-disabled:border-slate-100 peer-disabled:bg-slate-400 left-[3px] size-5 peer-checked:left-[5px]">
+                                                    className="absolute top-0.5 z-10 cursor-pointer rounded-full border border-slate-50 
+                                                        bg-pink-500 transition duration-300 
+                                                        peer-checked:translate-x-5 peer-checked:border-pink-500 peer-checked:bg-white 
+                                                        peer-disabled:cursor-not-allowed peer-disabled:border-slate-100 peer-disabled:bg-slate-400 
+                                                        left-[3px] size-5 peer-checked:left-[5px]">
                                                 </div>
                                             </div>
                                             {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
