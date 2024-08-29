@@ -8,16 +8,24 @@ export default function VisuallySimilarReviewSettings() {
     const router = useRouter();
 
     const { setPromptSet, guessKanji, setGuessKanji,
-        guessMeaning,
         multichoiceInput, setMultichoiceInput,
         typingInput,
         quickMode, setQuickMode } = useVisuallySimilarQuizContext();
 
-
     const inactiveTabClassName = "bg-transparent";
     const activeTabClassName = "rounded-md bg-white shadow";
 
+    const guessKanjiModeToButtonMap = {
+        true: "guess-mode-kanji",
+        false: "guess-mode-meaning",
+    }
+
     const handleSegmentControlClick = (buttonId) => {
+        updateSegmentControlDisplay(buttonId);
+        setGuessKanji(guessKanjiModeToButtonMap[buttonId] === "guess-mode-kanji");
+    }
+
+    const updateSegmentControlDisplay = (activeButtonId) => {
         const buttons = document.getElementById("vis-sim-guess-mode-segment-control").children;
         // Remove active styles from all buttons
         for (let i = 0; i < buttons.length; i++) {
@@ -25,11 +33,14 @@ export default function VisuallySimilarReviewSettings() {
             buttons[i].classList.add(...inactiveTabClassName.split(/\s+/));
         };
 
-        const button = document.getElementById(buttonId);
+        const button = document.getElementById(activeButtonId);
         // Set the selected button as active
         button.classList.add(...activeTabClassName.split(/\s+/));
         button.classList.remove(...inactiveTabClassName.split(/\s+/));
     }
+    
+
+
 
     const handleLevelNumberClick = async (selectedLevel) => {
 
@@ -41,7 +52,6 @@ export default function VisuallySimilarReviewSettings() {
             body: JSON.stringify({
                 selectedLevel: selectedLevel,
                 guessKanji: guessKanji,
-                guessMeaning: guessMeaning,
                 multichoiceInput: multichoiceInput,
                 typingInput: typingInput
             })
@@ -63,8 +73,8 @@ export default function VisuallySimilarReviewSettings() {
                         <section>
                             <h1 className="text-2xl">Review Settings</h1>
                             <div className="flex flex-col">
-                                <div className="flex flex-row">
-                                    <div>
+                                <div className="flex flex-col">
+                                    <div className="p-2">
                                         Guess Mode:
                                     </div>
                                     <div id="vis-sim-guess-mode-segment-control" className="inline-flex h-9 w-full items-baseline justify-start rounded-lg bg-gray-100 p-1 sm:w-auto">
@@ -76,10 +86,6 @@ export default function VisuallySimilarReviewSettings() {
                                             className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle font-semibold transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] gap-1.5 text-xs disabled:stroke-slate-400 disabled:text-slate-400 hover:stroke-blue-950 hover:text-blue-950 h-7 w-full bg-transparent px-3 text-slate-600 sm:w-auto">
                                             <span>Guess Meaning</span>
                                         </button>
-                                    </div>
-
-                                    <div>
-                                        <input type="checkbox" checked={guessKanji} onChange={() => setGuessKanji(!guessKanji)} />
                                     </div>
                                 </div>
                                 <div className="flex flex-row">
@@ -109,7 +115,6 @@ export default function VisuallySimilarReviewSettings() {
                                                 <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span>
                                             </label>
                                         </div>
-                                        <input type="checkbox" checked={quickMode} onChange={() => setQuickMode(!quickMode)} />
                                     </div>
                                 </div>
 
@@ -131,3 +136,4 @@ export default function VisuallySimilarReviewSettings() {
         </main>
     )
 }
+
