@@ -13,7 +13,7 @@ export default function VisuallySimilarReview() {
         FINISHED: 2,
     };
 
-    const { promptSet, guessKanji, multichoiceInput, typingInput, quickMode } = useVisuallySimilarQuizContext();
+    const { promptSet, guessKanji, multichoiceInput, quickMode } = useVisuallySimilarQuizContext();
 
     const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
     const [currentPrompt, setCurrentPrompt] = useState(promptSet[currentPromptIndex]);
@@ -48,8 +48,6 @@ export default function VisuallySimilarReview() {
                 moveToNextPrompt();
                 return;
             }
-        } else {
-            moveToNextPrompt();
         }
 
     }
@@ -199,6 +197,25 @@ export default function VisuallySimilarReview() {
                                                 })
                                             }
                                         </ul>
+                                        {
+                                            !quickMode &&
+                                            <div className="flex flex-col items-center p-10">
+                                                <button
+                                                    className='
+                                                    w-24
+                                                    bg-pink-500 text-white 
+                                                    p-2 
+                                                    rounded-md
+                                                    border-2 border-pink-700 
+                                                    hover:bg-pink-700 hover:text-white'
+                                                    onClick={() => moveToNextPrompt()}>
+                                                    Next&nbsp;&gt;
+                                                </button>
+                                                <div className="italic p-2">
+                                                    Hint: press space to hit next
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 )
                             }
