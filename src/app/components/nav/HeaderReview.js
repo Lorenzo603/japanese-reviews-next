@@ -21,7 +21,8 @@ const HeaderReview = () => {
                 </div>
             </nav>
             <div className="relative w-full transition-opacity duration-fast bg-pink-100 h-2 overflow-hidden">
-                <div className="bg-red-600 h-2" style={{ width: '45%' }}></div>
+                <div className="absolute bottom-0 left-0 top-0 h-full shadow-progress-bar-fill transition-all bg-red-500"
+                    role="progressbar" style={{ width: '100%' }}></div>
             </div>
 
         </header>
