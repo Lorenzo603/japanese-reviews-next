@@ -98,7 +98,7 @@ export default function VisuallySimilarReviewSettings() {
                                             Guess Mode:
                                         </div>
                                         <div id={GUESS_MODE_SEGMENT_CONTROL_ID}
-                                            className="inline-flex w-full items-baseline justify-start border border-gray-400 bg-pink-50 sm:w-auto">
+                                            className="inline-flex w-full items-baseline justify-start border border-gray-400 bg-slate-50 sm:w-auto">
                                             <button id="guess-mode-kanji" type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick("guess-mode-kanji")}
                                                 className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
@@ -122,7 +122,7 @@ export default function VisuallySimilarReviewSettings() {
                                             Input Method:
                                         </div>
                                         <div id={INPUT_METHOD_SEGMENT_CONTROL_ID}
-                                            className="inline-flex w-full items-baseline justify-start border border-gray-400 bg-pink-50 sm:w-auto">
+                                            className="inline-flex w-full items-baseline justify-start border border-gray-400 bg-slate-50 sm:w-auto">
                                             <button id="input-method-multichoice" type="button" aria-disabled="false" onClick={() => handleInputMethodSegmentControlClick("input-method-multichoice")}
                                                 className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
