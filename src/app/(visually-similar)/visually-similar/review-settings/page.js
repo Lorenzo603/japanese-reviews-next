@@ -1,7 +1,9 @@
 'use client'
 
+import { useReviewSessionContext } from "@/app/context/reviewSessionContext";
 import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function VisuallySimilarReviewSettings() {
 
@@ -10,6 +12,8 @@ export default function VisuallySimilarReviewSettings() {
     const { setPromptSet, guessKanji, setGuessKanji,
         multichoiceInput, setMultichoiceInput,
         quickMode, setQuickMode } = useVisuallySimilarQuizContext();
+
+    const { setTotalAnswers, setTotalCorrect } = useReviewSessionContext();
 
     const inactiveTabClassName = "bg-transparent";
     const activeTabClassName = "rounded-md bg-white shadow";
@@ -22,6 +26,11 @@ export default function VisuallySimilarReviewSettings() {
         true: "input-method-multichoice",
         false: "input-method-typing",
     }
+
+    useEffect(() => {
+        setTotalAnswers(0);
+        setTotalCorrect(0);
+    }, []);
 
     const handleSegmentControlClick = (segmentControlId, buttonId) => {
         updateSegmentControlDisplay(segmentControlId, buttonId);

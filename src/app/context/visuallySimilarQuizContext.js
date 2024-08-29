@@ -8,13 +8,12 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
     const [promptSet, setPromptSet] = useState([]);
 
     const [guessKanji, setGuessKanji] = useState(true);
-
     const [multichoiceInput, setMultichoiceInput] = useState(true);
 
     // Go directly to next question upon clicking without seeing the success/wrong result
     const [quickMode, setQuickMode] = useState(false);
 
-
+    
     function loadInitialValue(localStorageKey, defaultvalue, setterCallback) {
         const storedValue = JSON.parse(localStorage.getItem(localStorageKey));
         setterCallback(storedValue !== null ? storedValue : defaultvalue);

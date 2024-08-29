@@ -1,5 +1,6 @@
 'use client'
 
+import { useReviewSessionContext } from "@/app/context/reviewSessionContext";
 import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -14,14 +15,14 @@ export default function VisuallySimilarReview() {
     };
 
     const { promptSet, guessKanji, multichoiceInput, quickMode } = useVisuallySimilarQuizContext();
+    const { totalAnswers, setTotalAnswers, totalCorrect, setTotalCorrect } = useReviewSessionContext();
 
     const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
     const [currentPrompt, setCurrentPrompt] = useState(promptSet[currentPromptIndex]);
 
     const [answerState, setAnswerState] = useState(AnswerState.WAITING_RESPONSE);
 
-    const totalAnswers = promptSet.length;
-    const [totalCorrect, setTotalCorrect] = useState(0);
+    const totalReviews = promptSet.length;
 
     const handleKeyDownCallback = useCallback(handleKeyDown, [answerState]);
 
@@ -45,6 +46,7 @@ export default function VisuallySimilarReview() {
     const handleUserAnswer = async (answer, idx) => {
         if (answerState === AnswerState.WAITING_RESPONSE) {
             setAnswerState(AnswerState.ANSWERED);
+            setTotalAnswers(totalAnswers + 1);
             if (answer === currentPrompt["correctAnswer"]) {
                 console.log("Correct answer!");
                 setTotalCorrect(totalCorrect + 1);
@@ -100,14 +102,14 @@ export default function VisuallySimilarReview() {
             setCurrentPrompt(promptSet[currentPromptIndex + 1]);
         } else {
             setAnswerState(AnswerState.FINISHED);
-            if (totalCorrect === totalAnswers) {
+            if (totalCorrect === totalReviews) {
                 setIsExploding(true);
             }
         }
     }
 
     function getCorrectPercentage() {
-        return Math.round(totalCorrect / totalAnswers * 100)
+        return Math.round(totalCorrect / totalReviews * 100)
     }
 
     function getCongratulationsStatement() {
@@ -176,7 +178,7 @@ export default function VisuallySimilarReview() {
                                             </div>
                                         </div>
                                         <div className="text-2xl pb-2">
-                                            {`You got ${totalCorrect} out of ${totalAnswers}`}
+                                            {`You got ${totalCorrect} out of ${totalReviews}`}
                                         </div>
                                         <div className="text-2xl">
                                             {getCorrectPercentage()}&#37; correct
