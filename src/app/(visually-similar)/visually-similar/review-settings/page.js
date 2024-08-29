@@ -7,6 +7,9 @@ import { useEffect } from "react";
 
 export default function VisuallySimilarReviewSettings() {
 
+    const GUESS_MODE_SEGMENT_CONTROL_ID = "guess-mode-segment-control";
+    const INPUT_METHOD_SEGMENT_CONTROL_ID = "input-method-segment-control";
+
     const router = useRouter();
 
     const { setPromptSet, guessKanji, setGuessKanji,
@@ -32,10 +35,14 @@ export default function VisuallySimilarReviewSettings() {
         setTotalCorrect(0);
     }, []);
 
-    const handleSegmentControlClick = (segmentControlId, buttonId) => {
-        updateSegmentControlDisplay(segmentControlId, buttonId);
-        setGuessKanji(guessKanjiModeToButtonMap[buttonId] === "guess-mode-kanji");
-        setMultichoiceInput(inputMethodToButtonMap[buttonId] === "input-method-multichoice");
+    const handleGuessModeSegmentControlClick = (buttonId) => {
+        updateSegmentControlDisplay(GUESS_MODE_SEGMENT_CONTROL_ID, buttonId);
+        setGuessKanji(buttonId === "guess-mode-kanji");
+    }
+
+    const handleInputMethodSegmentControlClick = (buttonId) => {
+        updateSegmentControlDisplay(INPUT_METHOD_SEGMENT_CONTROL_ID, buttonId);
+        setMultichoiceInput(buttonId === "input-method-multichoice");
     }
 
     const updateSegmentControlDisplay = (segmentControlId, activeButtonId) => {
@@ -85,19 +92,28 @@ export default function VisuallySimilarReviewSettings() {
                         <section>
                             <h1 className="text-2xl">Review Settings</h1>
                             <div className="flex flex-col">
-                                <div className="flex flex-col">
-                                    <div className="p-2">
-                                        Guess Mode:
-                                    </div>
-                                    <div id="vis-sim-guess-mode-segment-control" className="inline-flex h-9 w-full items-baseline justify-start rounded-lg bg-gray-100 p-1 sm:w-auto">
-                                        <button id="guess-mode-kanji" type="button" aria-disabled="false" onClick={() => handleSegmentControlClick("vis-sim-guess-mode-segment-control", "guess-mode-kanji")}
-                                            className="group inline-flex items-center justify-center whitespace-nowrap py-2 align-middle font-semibold transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] gap-1.5 text-xs disabled:stroke-slate-400 disabled:text-slate-400 hover:stroke-blue-950 hover:text-blue-950 h-7 text-slate-950 w-full rounded-md bg-white px-3 drop-shadow sm:w-auto">
-                                            <span>Guess Kanji</span>
-                                        </button>
-                                        <button id="guess-mode-meaning" type="button" aria-disabled="false" onClick={() => handleSegmentControlClick("vis-sim-guess-mode-segment-control", "guess-mode-meaning")}
-                                            className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle font-semibold transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] gap-1.5 text-xs disabled:stroke-slate-400 disabled:text-slate-400 hover:stroke-blue-950 hover:text-blue-950 h-7 w-full bg-transparent px-3 text-slate-600 sm:w-auto">
-                                            <span>Guess Meaning</span>
-                                        </button>
+                                <div className="flex flex-row">
+                                    <div className="flex flex-col">
+                                        <div className="p-2">
+                                            Guess Mode:
+                                        </div>
+                                        <div id={GUESS_MODE_SEGMENT_CONTROL_ID}
+                                            className="inline-flex h-9 w-full items-baseline justify-start rounded-lg bg-gray-100 p-1 sm:w-auto">
+                                            <button id="guess-mode-kanji" type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick("guess-mode-kanji")}
+                                                className="group inline-flex items-center justify-center whitespace-nowrap px-3 py-2 align-middle font-semibold 
+                                                    transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
+                                                    gap-1.5 text-xs disabled:stroke-slate-400 disabled:text-slate-400 hover:stroke-blue-950 hover:text-blue-950 
+                                                    h-7 text-slate-950 w-full sm:w-auto rounded-md bg-white drop-shadow">
+                                                <span>Guess Kanji</span>
+                                            </button>
+                                            <button id="guess-mode-meaning" type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick("guess-mode-meaning")}
+                                                className="group inline-flex items-center justify-center whitespace-nowrap px-3 py-2 align-middle font-semibold 
+                                                    transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
+                                                    gap-1.5 text-xs disabled:stroke-slate-400 disabled:text-slate-400 hover:stroke-blue-950 hover:text-blue-950 
+                                                    h-7 text-slate-600 w-full sm:w-auto rounded-lg bg-transparent">
+                                                <span>Guess Meaning</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="flex flex-row">
@@ -105,12 +121,13 @@ export default function VisuallySimilarReviewSettings() {
                                         <div className="p-2">
                                             Input Method:
                                         </div>
-                                        <div id="vis-sim-input-method-segment-control" className="inline-flex h-9 w-full items-baseline justify-start rounded-lg bg-gray-100 p-1 sm:w-auto">
-                                            <button id="input-method-multichoice" type="button" aria-disabled="false" onClick={() => handleSegmentControlClick("vis-sim-input-method-segment-control", "input-method-multichoice")}
+                                        <div id={INPUT_METHOD_SEGMENT_CONTROL_ID}
+                                            className="inline-flex h-9 w-full items-baseline justify-start rounded-lg bg-gray-100 p-1 sm:w-auto">
+                                            <button id="input-method-multichoice" type="button" aria-disabled="false" onClick={() => handleInputMethodSegmentControlClick("input-method-multichoice")}
                                                 className="group inline-flex items-center justify-center whitespace-nowrap py-2 align-middle font-semibold transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] gap-1.5 text-xs disabled:stroke-slate-400 disabled:text-slate-400 hover:stroke-blue-950 hover:text-blue-950 h-7 text-slate-950 w-full rounded-md bg-white px-3 drop-shadow sm:w-auto">
                                                 <span>Multichoice</span>
                                             </button>
-                                            <button id="input-method-typing" type="button" aria-disabled="false" onClick={() => handleSegmentControlClick("vis-sim-input-method-segment-control", "input-method-typing")}
+                                            <button id="input-method-typing" type="button" aria-disabled="false" onClick={() => handleInputMethodSegmentControlClick("input-method-typing")}
                                                 className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle font-semibold transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] gap-1.5 text-xs disabled:stroke-slate-400 disabled:text-slate-400 hover:stroke-blue-950 hover:text-blue-950 h-7 w-full bg-transparent px-3 text-slate-600 sm:w-auto">
                                                 <span>Typing</span>
                                             </button>
