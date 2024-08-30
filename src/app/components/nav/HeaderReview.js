@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const HeaderReview = () => {
 
-    const { promptSet } = useVisuallySimilarQuizContext();
+    const { promptSet, focusModeEnabled, setFocusModeEnabled } = useVisuallySimilarQuizContext();
     const { setAnswerState, totalAnswers, totalCorrect } = useReviewSessionContext();
 
     const totalReviews = promptSet.length;
@@ -14,7 +14,7 @@ const HeaderReview = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const [focusModeEnabled, setFocusModeEnabled] = useState(false);
+    
     function toggleFocusMode() {
         setFocusModeEnabled(!focusModeEnabled);
         toggleMenu();

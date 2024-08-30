@@ -8,7 +8,7 @@ import Confetti from 'react-dom-confetti';
 
 export default function VisuallySimilarReview() {
 
-    const { promptSet, guessKanji, multichoiceInput, quickMode } = useVisuallySimilarQuizContext();
+    const { promptSet, guessKanji, multichoiceInput, quickMode, focusModeEnabled } = useVisuallySimilarQuizContext();
     const { answerState, setAnswerState,
         totalAnswers, setTotalAnswers,
         totalCorrect, setTotalCorrect } = useReviewSessionContext();
@@ -224,9 +224,12 @@ export default function VisuallySimilarReview() {
                                                     onClick={() => moveToNextPrompt()}>
                                                     Next&nbsp;&gt;
                                                 </button>
-                                                <div className="italic p-2">
-                                                    Hint: press space to hit next
-                                                </div>
+                                                {
+                                                    !focusModeEnabled &&
+                                                    <div className="italic p-2">
+                                                        Hint: press space to hit next
+                                                    </div>
+                                                }
                                             </div>
                                         }
                                     </div>
