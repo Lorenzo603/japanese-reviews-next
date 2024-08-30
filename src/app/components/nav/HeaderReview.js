@@ -80,22 +80,22 @@ const HeaderReview = () => {
                 </div>
 
                 <div className="flex">
-                    <div className="flex gap-x-4">
-                        <div className="select-none" title="Current count of correct answers vs. total answered so far">
+                    <div className="flex gap-x-6">
+                        <div className="flex flex-row gap-x-1 select-none" title="Current count of correct answers vs. total answered so far">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                             </svg>
 
                             {totalCorrect}/{totalAnswers}
                         </div>
-                        <div className="select-none" title="Current count of correct answers vs. total reviews">
+                        <div className="flex flex-row gap-x-1 select-none" title="Current count of correct answers vs. total reviews">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
 
                             {Math.round(totalCorrect / totalReviews * 100)}&#37;
                         </div>
-                        <div className="select-none" title="Total reviews of this batch">
+                        <div className="flex flex-row gap-x-1 select-none" title="Total reviews of this batch">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 3.75H6.912a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859M12 3v8.25m0 0-3-3m3 3 3-3" />
                             </svg>
