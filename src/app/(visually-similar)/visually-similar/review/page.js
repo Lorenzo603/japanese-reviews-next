@@ -1,6 +1,6 @@
 'use client'
 
-import { useReviewSessionContext } from "@/app/context/reviewSessionContext";
+import { AnswerState, useReviewSessionContext } from "@/app/context/reviewSessionContext";
 import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -8,19 +8,13 @@ import Confetti from 'react-dom-confetti';
 
 export default function VisuallySimilarReview() {
 
-    const AnswerState = {
-        WAITING_RESPONSE: 0,
-        ANSWERED: 1,
-        FINISHED: 2,
-    };
-
     const { promptSet, guessKanji, multichoiceInput, quickMode } = useVisuallySimilarQuizContext();
-    const { totalAnswers, setTotalAnswers, totalCorrect, setTotalCorrect } = useReviewSessionContext();
+    const { answerState, setAnswerState,
+        totalAnswers, setTotalAnswers,
+        totalCorrect, setTotalCorrect } = useReviewSessionContext();
 
     const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
     const [currentPrompt, setCurrentPrompt] = useState(promptSet[currentPromptIndex]);
-
-    const [answerState, setAnswerState] = useState(AnswerState.WAITING_RESPONSE);
 
     const totalReviews = promptSet.length;
 
@@ -42,6 +36,7 @@ export default function VisuallySimilarReview() {
         }
 
     }, [handleKeyDownCallback]);
+
 
     const handleUserAnswer = async (answer, idx) => {
         if (answerState === AnswerState.WAITING_RESPONSE) {

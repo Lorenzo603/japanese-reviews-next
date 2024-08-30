@@ -6,14 +6,19 @@ const ReviewSessionContext = createContext({})
 
 export const ReviewSessionContextProvider = ({ children }) => {
 
+
+
+    const [answerState, setAnswerState] = useState(AnswerState.WAITING_RESPONSE);
+
     const [totalAnswers, setTotalAnswers] = useState(0);
     const [totalCorrect, setTotalCorrect] = useState(0);
 
     const providerValue = useMemo(() => ({
+        answerState, setAnswerState,
         totalAnswers, setTotalAnswers,
         totalCorrect, setTotalCorrect
 
-    }), [totalAnswers, totalCorrect]);
+    }), [answerState, totalAnswers, totalCorrect]);
 
     return (
         <ReviewSessionContext.Provider value={providerValue}>
@@ -22,4 +27,11 @@ export const ReviewSessionContextProvider = ({ children }) => {
     )
 };
 
+export const AnswerState = {
+    WAITING_RESPONSE: 0,
+    ANSWERED: 1,
+    FINISHED: 2,
+};
+
 export const useReviewSessionContext = () => useContext(ReviewSessionContext);
+
