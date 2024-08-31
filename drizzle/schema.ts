@@ -14,6 +14,9 @@ export const userSettings = pgTable("user_settings", {
 	id: serial("id").primaryKey().notNull(),
 	userId: char("user_id", { length: 36 }).notNull(),
 	guessKanji: boolean("guess_kanji").default(true).notNull(),
+	multichoiceInput: boolean("multichoice_input").default(true).notNull(),
+	quickMode: boolean("quick_mode").default(false).notNull(),
+	focusModeEnabled: boolean("focus_mode_enabled").default(false).notNull(),
 });
 
 export const supertokensRoles = pgTable("supertokens_roles", {

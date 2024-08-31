@@ -23,11 +23,11 @@ export async function GET(request) {
                 .where(eq(userSettings.userId, userId));
 
             if (result.length === 0) {
-                console.warn('No records found');
+                console.warn('No records found when getting userSettings of user: ' + userId);
                 return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
             }
             if (result.length > 1) {
-                console.warn('Multiple records found');
+                console.warn('Multiple records found when getting userSettings of user: ' + userId);
                 return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
             }
 

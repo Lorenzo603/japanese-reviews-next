@@ -108,9 +108,22 @@ export default function VisuallySimilarReviewSettings() {
         }
     }
 
-    const handleInputMethodSegmentControlClick = (buttonId) => {
+    const handleInputMethodSegmentControlClick = async (buttonId) => {
         updateSegmentControlDisplay(INPUT_METHOD_SEGMENT_CONTROL_ID, buttonId);
         setMultichoiceInput(buttonId === INPUT_METHOD_MULTICHOICE_BUTTON_ID);
+
+        const sessionExists = await doesSessionExist();
+        if (sessionExists) {
+            await fetch('/api/visually-similar/user/settings', {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    multichoiceInput: buttonId === INPUT_METHOD_MULTICHOICE_BUTTON_ID,
+                })
+            })
+        }
     }
 
     const updateSegmentControlDisplay = (segmentControlId, activeButtonId) => {
@@ -127,7 +140,21 @@ export default function VisuallySimilarReviewSettings() {
         button.classList.remove(...inactiveTabClassName.split(/\s+/));
     }
 
-
+    const toggleQuickMode = async () => {
+        setQuickMode(!quickMode);
+        const sessionExists = await doesSessionExist();
+        if (sessionExists) {
+            await fetch('/api/visually-similar/user/settings', {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    quickMode: !quickMode,
+                })
+            })
+        }
+    }
 
 
     const handleLevelNumberClick = async (selectedLevel) => {
@@ -215,7 +242,9 @@ export default function VisuallySimilarReviewSettings() {
                                     <div className="inline-flex items-center justify-center">
                                         <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
                                             <div className="relative">
-                                                <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true" type="checkbox" onChange={() => setQuickMode(!quickMode)} name="switch" />
+                                                <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true" 
+                                                    checked={quickMode ? 'checked' : ''}
+                                                    type="checkbox" onChange={() => toggleQuickMode()} name="switch" />
                                                 <div
                                                     className="block cursor-pointer rounded-full 
                                                         border border-slate-300 bg-slate-50 
