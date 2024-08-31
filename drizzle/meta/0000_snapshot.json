@@ -1,0 +1,3849 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.supertokens_apps": {
+      "name": "supertokens_apps",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "created_at_time": {
+          "name": "created_at_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.user_settings": {
+      "name": "user_settings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "guess_kanji": {
+          "name": "guess_kanji",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_roles": {
+      "name": "supertokens_roles",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "roles_app_id_index": {
+          "name": "roles_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_roles_app_id_fkey": {
+          "name": "supertokens_roles_app_id_fkey",
+          "tableFrom": "supertokens_roles",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_roles_pkey": {
+          "name": "supertokens_roles_pkey",
+          "columns": [
+            "app_id",
+            "role"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_totp_users": {
+      "name": "supertokens_totp_users",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "totp_users_app_id_index": {
+          "name": "totp_users_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_totp_users_app_id_fkey": {
+          "name": "supertokens_totp_users_app_id_fkey",
+          "tableFrom": "supertokens_totp_users",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_totp_users_pkey": {
+          "name": "supertokens_totp_users_pkey",
+          "columns": [
+            "app_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_tenants": {
+      "name": "supertokens_tenants",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "created_at_time": {
+          "name": "created_at_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "tenants_app_id_index": {
+          "name": "tenants_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_tenants_app_id_fkey": {
+          "name": "supertokens_tenants_app_id_fkey",
+          "tableFrom": "supertokens_tenants",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_tenants_pkey": {
+          "name": "supertokens_tenants_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_user_last_active": {
+      "name": "supertokens_user_last_active",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_active_time": {
+          "name": "last_active_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "user_last_active_app_id_index": {
+          "name": "user_last_active_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_user_last_active_app_id_fkey": {
+          "name": "supertokens_user_last_active_app_id_fkey",
+          "tableFrom": "supertokens_user_last_active",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_user_last_active_pkey": {
+          "name": "supertokens_user_last_active_pkey",
+          "columns": [
+            "app_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_session_access_token_signing_keys": {
+      "name": "supertokens_session_access_token_signing_keys",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "created_at_time": {
+          "name": "created_at_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "access_token_signing_keys_app_id_index": {
+          "name": "access_token_signing_keys_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_session_access_token_signing_keys_app_id_fkey": {
+          "name": "supertokens_session_access_token_signing_keys_app_id_fkey",
+          "tableFrom": "supertokens_session_access_token_signing_keys",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_session_access_token_signing_keys_pkey": {
+          "name": "supertokens_session_access_token_signing_keys_pkey",
+          "columns": [
+            "app_id",
+            "created_at_time"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_emailverification_verified_emails": {
+      "name": "supertokens_emailverification_verified_emails",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "emailverification_verified_emails_app_id_index": {
+          "name": "emailverification_verified_emails_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_emailverification_verified_emails_app_id_fkey": {
+          "name": "supertokens_emailverification_verified_emails_app_id_fkey",
+          "tableFrom": "supertokens_emailverification_verified_emails",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_emailverification_verified_emails_pkey": {
+          "name": "supertokens_emailverification_verified_emails_pkey",
+          "columns": [
+            "app_id",
+            "user_id",
+            "email"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_user_metadata": {
+      "name": "supertokens_user_metadata",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_metadata": {
+          "name": "user_metadata",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "user_metadata_app_id_index": {
+          "name": "user_metadata_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_user_metadata_app_id_fkey": {
+          "name": "supertokens_user_metadata_app_id_fkey",
+          "tableFrom": "supertokens_user_metadata",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_user_metadata_pkey": {
+          "name": "supertokens_user_metadata_pkey",
+          "columns": [
+            "app_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_role_permissions": {
+      "name": "supertokens_role_permissions",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "permission": {
+          "name": "permission",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "role_permissions_permission_index": {
+          "name": "role_permissions_permission_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "permission",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "role_permissions_role_index": {
+          "name": "role_permissions_role_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "role",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_role_permissions_role_fkey": {
+          "name": "supertokens_role_permissions_role_fkey",
+          "tableFrom": "supertokens_role_permissions",
+          "tableTo": "supertokens_roles",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "role"
+          ],
+          "columnsTo": [
+            "app_id",
+            "role"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_role_permissions_pkey": {
+          "name": "supertokens_role_permissions_pkey",
+          "columns": [
+            "app_id",
+            "role",
+            "permission"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_tenant_first_factors": {
+      "name": "supertokens_tenant_first_factors",
+      "schema": "",
+      "columns": {
+        "connection_uri_domain": {
+          "name": "connection_uri_domain",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "factor_id": {
+          "name": "factor_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "tenant_first_factors_tenant_id_index": {
+          "name": "tenant_first_factors_tenant_id_index",
+          "columns": [
+            {
+              "expression": "connection_uri_domain",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_tenant_first_factors_tenant_id_fkey": {
+          "name": "supertokens_tenant_first_factors_tenant_id_fkey",
+          "tableFrom": "supertokens_tenant_first_factors",
+          "tableTo": "supertokens_tenant_configs",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_tenant_first_factors_pkey": {
+          "name": "supertokens_tenant_first_factors_pkey",
+          "columns": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id",
+            "factor_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_tenant_required_secondary_factors": {
+      "name": "supertokens_tenant_required_secondary_factors",
+      "schema": "",
+      "columns": {
+        "connection_uri_domain": {
+          "name": "connection_uri_domain",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "factor_id": {
+          "name": "factor_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "tenant_default_required_factor_ids_tenant_id_index": {
+          "name": "tenant_default_required_factor_ids_tenant_id_index",
+          "columns": [
+            {
+              "expression": "connection_uri_domain",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_tenant_required_secondary_factors_tenant_id_fkey": {
+          "name": "supertokens_tenant_required_secondary_factors_tenant_id_fkey",
+          "tableFrom": "supertokens_tenant_required_secondary_factors",
+          "tableTo": "supertokens_tenant_configs",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_tenant_required_secondary_factors_pkey": {
+          "name": "supertokens_tenant_required_secondary_factors_pkey",
+          "columns": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id",
+            "factor_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_emailpassword_user_to_tenant": {
+      "name": "supertokens_emailpassword_user_to_tenant",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "supertokens_emailpassword_user_to_tenant_user_id_fkey": {
+          "name": "supertokens_emailpassword_user_to_tenant_user_id_fkey",
+          "tableFrom": "supertokens_emailpassword_user_to_tenant",
+          "tableTo": "supertokens_all_auth_recipe_users",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_emailpassword_user_to_tenant_pkey": {
+          "name": "supertokens_emailpassword_user_to_tenant_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "supertokens_emailpassword_user_to_tenant_email_key": {
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "email"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_emailpassword_user_to_tenant_email_key"
+        }
+      }
+    },
+    "public.supertokens_user_roles": {
+      "name": "supertokens_user_roles",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "user_roles_app_id_role_index": {
+          "name": "user_roles_app_id_role_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "role",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_roles_role_index": {
+          "name": "user_roles_role_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "role",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_roles_tenant_id_index": {
+          "name": "user_roles_tenant_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_user_roles_tenant_id_fkey": {
+          "name": "supertokens_user_roles_tenant_id_fkey",
+          "tableFrom": "supertokens_user_roles",
+          "tableTo": "supertokens_tenants",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_user_roles_pkey": {
+          "name": "supertokens_user_roles_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "user_id",
+            "role"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_userid_mapping": {
+      "name": "supertokens_userid_mapping",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "supertokens_user_id": {
+          "name": "supertokens_user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "external_user_id": {
+          "name": "external_user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "external_user_id_info": {
+          "name": "external_user_id_info",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "userid_mapping_supertokens_user_id_index": {
+          "name": "userid_mapping_supertokens_user_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "supertokens_user_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_userid_mapping_supertokens_user_id_fkey": {
+          "name": "supertokens_userid_mapping_supertokens_user_id_fkey",
+          "tableFrom": "supertokens_userid_mapping",
+          "tableTo": "supertokens_app_id_to_user_id",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "supertokens_user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_userid_mapping_pkey": {
+          "name": "supertokens_userid_mapping_pkey",
+          "columns": [
+            "app_id",
+            "supertokens_user_id",
+            "external_user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "supertokens_userid_mapping_supertokens_user_id_key": {
+          "columns": [
+            "app_id",
+            "supertokens_user_id"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_userid_mapping_supertokens_user_id_key"
+        },
+        "supertokens_userid_mapping_external_user_id_key": {
+          "columns": [
+            "app_id",
+            "external_user_id"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_userid_mapping_external_user_id_key"
+        }
+      }
+    },
+    "public.supertokens_key_value": {
+      "name": "supertokens_key_value",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at_time": {
+          "name": "created_at_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "key_value_tenant_id_index": {
+          "name": "key_value_tenant_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_key_value_tenant_id_fkey": {
+          "name": "supertokens_key_value_tenant_id_fkey",
+          "tableFrom": "supertokens_key_value",
+          "tableTo": "supertokens_tenants",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_key_value_pkey": {
+          "name": "supertokens_key_value_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "name"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_app_id_to_user_id": {
+      "name": "supertokens_app_id_to_user_id",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recipe_id": {
+          "name": "recipe_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "primary_or_recipe_user_id": {
+          "name": "primary_or_recipe_user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_linked_or_is_a_primary_user": {
+          "name": "is_linked_or_is_a_primary_user",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {
+        "app_id_to_user_id_app_id_index": {
+          "name": "app_id_to_user_id_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "app_id_to_user_id_primary_user_id_index": {
+          "name": "app_id_to_user_id_primary_user_id_index",
+          "columns": [
+            {
+              "expression": "primary_or_recipe_user_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_app_id_to_user_id_primary_or_recipe_user_id_fkey": {
+          "name": "supertokens_app_id_to_user_id_primary_or_recipe_user_id_fkey",
+          "tableFrom": "supertokens_app_id_to_user_id",
+          "tableTo": "supertokens_app_id_to_user_id",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "primary_or_recipe_user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "supertokens_app_id_to_user_id_app_id_fkey": {
+          "name": "supertokens_app_id_to_user_id_app_id_fkey",
+          "tableFrom": "supertokens_app_id_to_user_id",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_app_id_to_user_id_pkey": {
+          "name": "supertokens_app_id_to_user_id_pkey",
+          "columns": [
+            "app_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_emailpassword_users": {
+      "name": "supertokens_emailpassword_users",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_joined": {
+          "name": "time_joined",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "supertokens_emailpassword_users_user_id_fkey": {
+          "name": "supertokens_emailpassword_users_user_id_fkey",
+          "tableFrom": "supertokens_emailpassword_users",
+          "tableTo": "supertokens_app_id_to_user_id",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_emailpassword_users_pkey": {
+          "name": "supertokens_emailpassword_users_pkey",
+          "columns": [
+            "app_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_emailpassword_pswd_reset_tokens": {
+      "name": "supertokens_emailpassword_pswd_reset_tokens",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_expiry": {
+          "name": "token_expiry",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "emailpassword_password_reset_token_expiry_index": {
+          "name": "emailpassword_password_reset_token_expiry_index",
+          "columns": [
+            {
+              "expression": "token_expiry",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "emailpassword_pswd_reset_tokens_user_id_index": {
+          "name": "emailpassword_pswd_reset_tokens_user_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "user_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_emailpassword_pswd_reset_tokens_user_id_fkey": {
+          "name": "supertokens_emailpassword_pswd_reset_tokens_user_id_fkey",
+          "tableFrom": "supertokens_emailpassword_pswd_reset_tokens",
+          "tableTo": "supertokens_app_id_to_user_id",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_emailpassword_pswd_reset_tokens_pkey": {
+          "name": "supertokens_emailpassword_pswd_reset_tokens_pkey",
+          "columns": [
+            "app_id",
+            "user_id",
+            "token"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "supertokens_emailpassword_pswd_reset_tokens_token_key": {
+          "columns": [
+            "token"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_emailpassword_pswd_reset_tokens_token_key"
+        }
+      }
+    },
+    "public.supertokens_thirdparty_user_to_tenant": {
+      "name": "supertokens_thirdparty_user_to_tenant",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "third_party_id": {
+          "name": "third_party_id",
+          "type": "varchar(28)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "third_party_user_id": {
+          "name": "third_party_user_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "supertokens_thirdparty_user_to_tenant_user_id_fkey": {
+          "name": "supertokens_thirdparty_user_to_tenant_user_id_fkey",
+          "tableFrom": "supertokens_thirdparty_user_to_tenant",
+          "tableTo": "supertokens_all_auth_recipe_users",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_thirdparty_user_to_tenant_pkey": {
+          "name": "supertokens_thirdparty_user_to_tenant_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "supertokens_thirdparty_user_to_tenant_third_party_user_id_key": {
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "third_party_id",
+            "third_party_user_id"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_thirdparty_user_to_tenant_third_party_user_id_key"
+        }
+      }
+    },
+    "public.supertokens_jwt_signing_keys": {
+      "name": "supertokens_jwt_signing_keys",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "key_id": {
+          "name": "key_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "key_string": {
+          "name": "key_string",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "algorithm": {
+          "name": "algorithm",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "jwt_signing_keys_app_id_index": {
+          "name": "jwt_signing_keys_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_jwt_signing_keys_app_id_fkey": {
+          "name": "supertokens_jwt_signing_keys_app_id_fkey",
+          "tableFrom": "supertokens_jwt_signing_keys",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_jwt_signing_keys_pkey": {
+          "name": "supertokens_jwt_signing_keys_pkey",
+          "columns": [
+            "app_id",
+            "key_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_passwordless_users": {
+      "name": "supertokens_passwordless_users",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "time_joined": {
+          "name": "time_joined",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "supertokens_passwordless_users_user_id_fkey": {
+          "name": "supertokens_passwordless_users_user_id_fkey",
+          "tableFrom": "supertokens_passwordless_users",
+          "tableTo": "supertokens_app_id_to_user_id",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_passwordless_users_pkey": {
+          "name": "supertokens_passwordless_users_pkey",
+          "columns": [
+            "app_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_passwordless_user_to_tenant": {
+      "name": "supertokens_passwordless_user_to_tenant",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "supertokens_passwordless_user_to_tenant_user_id_fkey": {
+          "name": "supertokens_passwordless_user_to_tenant_user_id_fkey",
+          "tableFrom": "supertokens_passwordless_user_to_tenant",
+          "tableTo": "supertokens_all_auth_recipe_users",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_passwordless_user_to_tenant_pkey": {
+          "name": "supertokens_passwordless_user_to_tenant_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "supertokens_passwordless_user_to_tenant_email_key": {
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "email"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_passwordless_user_to_tenant_email_key"
+        },
+        "supertokens_passwordless_user_to_tenant_phone_number_key": {
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "phone_number"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_passwordless_user_to_tenant_phone_number_key"
+        }
+      }
+    },
+    "public.supertokens_dashboard_users": {
+      "name": "supertokens_dashboard_users",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_joined": {
+          "name": "time_joined",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "dashboard_users_app_id_index": {
+          "name": "dashboard_users_app_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_dashboard_users_app_id_fkey": {
+          "name": "supertokens_dashboard_users_app_id_fkey",
+          "tableFrom": "supertokens_dashboard_users",
+          "tableTo": "supertokens_apps",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id"
+          ],
+          "columnsTo": [
+            "app_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_dashboard_users_pkey": {
+          "name": "supertokens_dashboard_users_pkey",
+          "columns": [
+            "app_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "supertokens_dashboard_users_email_key": {
+          "columns": [
+            "app_id",
+            "email"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_dashboard_users_email_key"
+        }
+      }
+    },
+    "public.supertokens_dashboard_user_sessions": {
+      "name": "supertokens_dashboard_user_sessions",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "session_id": {
+          "name": "session_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_created": {
+          "name": "time_created",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expiry": {
+          "name": "expiry",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "dashboard_user_sessions_expiry_index": {
+          "name": "dashboard_user_sessions_expiry_index",
+          "columns": [
+            {
+              "expression": "expiry",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "dashboard_user_sessions_user_id_index": {
+          "name": "dashboard_user_sessions_user_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "user_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_dashboard_user_sessions_user_id_fkey": {
+          "name": "supertokens_dashboard_user_sessions_user_id_fkey",
+          "tableFrom": "supertokens_dashboard_user_sessions",
+          "tableTo": "supertokens_dashboard_users",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_dashboard_user_sessions_pkey": {
+          "name": "supertokens_dashboard_user_sessions_pkey",
+          "columns": [
+            "app_id",
+            "session_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_emailverification_tokens": {
+      "name": "supertokens_emailverification_tokens",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_expiry": {
+          "name": "token_expiry",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "emailverification_tokens_index": {
+          "name": "emailverification_tokens_index",
+          "columns": [
+            {
+              "expression": "token_expiry",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "emailverification_tokens_tenant_id_index": {
+          "name": "emailverification_tokens_tenant_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_emailverification_tokens_tenant_id_fkey": {
+          "name": "supertokens_emailverification_tokens_tenant_id_fkey",
+          "tableFrom": "supertokens_emailverification_tokens",
+          "tableTo": "supertokens_tenants",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_emailverification_tokens_pkey": {
+          "name": "supertokens_emailverification_tokens_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "user_id",
+            "email",
+            "token"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "supertokens_emailverification_tokens_token_key": {
+          "columns": [
+            "token"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_emailverification_tokens_token_key"
+        }
+      }
+    },
+    "public.supertokens_thirdparty_users": {
+      "name": "supertokens_thirdparty_users",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "third_party_id": {
+          "name": "third_party_id",
+          "type": "varchar(28)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "third_party_user_id": {
+          "name": "third_party_user_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_joined": {
+          "name": "time_joined",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "thirdparty_users_email_index": {
+          "name": "thirdparty_users_email_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "email",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "thirdparty_users_thirdparty_user_id_index": {
+          "name": "thirdparty_users_thirdparty_user_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "third_party_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "third_party_user_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_thirdparty_users_user_id_fkey": {
+          "name": "supertokens_thirdparty_users_user_id_fkey",
+          "tableFrom": "supertokens_thirdparty_users",
+          "tableTo": "supertokens_app_id_to_user_id",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_thirdparty_users_pkey": {
+          "name": "supertokens_thirdparty_users_pkey",
+          "columns": [
+            "app_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_passwordless_codes": {
+      "name": "supertokens_passwordless_codes",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "code_id": {
+          "name": "code_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "device_id_hash": {
+          "name": "device_id_hash",
+          "type": "char(44)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "link_code_hash": {
+          "name": "link_code_hash",
+          "type": "char(44)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "passwordless_codes_created_at_index": {
+          "name": "passwordless_codes_created_at_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "created_at",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "passwordless_codes_device_id_hash_index": {
+          "name": "passwordless_codes_device_id_hash_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "device_id_hash",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_passwordless_codes_device_id_hash_fkey": {
+          "name": "supertokens_passwordless_codes_device_id_hash_fkey",
+          "tableFrom": "supertokens_passwordless_codes",
+          "tableTo": "supertokens_passwordless_devices",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id",
+            "device_id_hash"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id",
+            "device_id_hash"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_passwordless_codes_pkey": {
+          "name": "supertokens_passwordless_codes_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "code_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "supertokens_passwordless_codes_link_code_hash_key": {
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "link_code_hash"
+          ],
+          "nullsNotDistinct": false,
+          "name": "supertokens_passwordless_codes_link_code_hash_key"
+        }
+      }
+    },
+    "public.supertokens_passwordless_devices": {
+      "name": "supertokens_passwordless_devices",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "device_id_hash": {
+          "name": "device_id_hash",
+          "type": "char(44)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "link_code_salt": {
+          "name": "link_code_salt",
+          "type": "char(44)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "failed_attempts": {
+          "name": "failed_attempts",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "passwordless_devices_email_index": {
+          "name": "passwordless_devices_email_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "email",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "passwordless_devices_phone_number_index": {
+          "name": "passwordless_devices_phone_number_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "phone_number",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "passwordless_devices_tenant_id_index": {
+          "name": "passwordless_devices_tenant_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_passwordless_devices_tenant_id_fkey": {
+          "name": "supertokens_passwordless_devices_tenant_id_fkey",
+          "tableFrom": "supertokens_passwordless_devices",
+          "tableTo": "supertokens_tenants",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_passwordless_devices_pkey": {
+          "name": "supertokens_passwordless_devices_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "device_id_hash"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_totp_used_codes": {
+      "name": "supertokens_totp_used_codes",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_valid": {
+          "name": "is_valid",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expiry_time_ms": {
+          "name": "expiry_time_ms",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_time_ms": {
+          "name": "created_time_ms",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "totp_used_codes_expiry_time_ms_index": {
+          "name": "totp_used_codes_expiry_time_ms_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "expiry_time_ms",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "totp_used_codes_tenant_id_index": {
+          "name": "totp_used_codes_tenant_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "totp_used_codes_user_id_index": {
+          "name": "totp_used_codes_user_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "user_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_totp_used_codes_user_id_fkey": {
+          "name": "supertokens_totp_used_codes_user_id_fkey",
+          "tableFrom": "supertokens_totp_used_codes",
+          "tableTo": "supertokens_totp_users",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "supertokens_totp_used_codes_tenant_id_fkey": {
+          "name": "supertokens_totp_used_codes_tenant_id_fkey",
+          "tableFrom": "supertokens_totp_used_codes",
+          "tableTo": "supertokens_tenants",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_totp_used_codes_pkey": {
+          "name": "supertokens_totp_used_codes_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "user_id",
+            "created_time_ms"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_all_auth_recipe_users": {
+      "name": "supertokens_all_auth_recipe_users",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "primary_or_recipe_user_id": {
+          "name": "primary_or_recipe_user_id",
+          "type": "char(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_linked_or_is_a_primary_user": {
+          "name": "is_linked_or_is_a_primary_user",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "recipe_id": {
+          "name": "recipe_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_joined": {
+          "name": "time_joined",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "primary_or_recipe_user_time_joined": {
+          "name": "primary_or_recipe_user_time_joined",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "all_auth_recipe_tenant_id_index": {
+          "name": "all_auth_recipe_tenant_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "all_auth_recipe_user_id_index": {
+          "name": "all_auth_recipe_user_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "user_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "all_auth_recipe_users_pagination_index1": {
+          "name": "all_auth_recipe_users_pagination_index1",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "primary_or_recipe_user_time_joined",
+              "asc": false,
+              "nulls": "first",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "primary_or_recipe_user_id",
+              "asc": false,
+              "nulls": "first",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "all_auth_recipe_users_pagination_index2": {
+          "name": "all_auth_recipe_users_pagination_index2",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "primary_or_recipe_user_time_joined",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "primary_or_recipe_user_id",
+              "asc": false,
+              "nulls": "first",
+              "opclass": "int8_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "all_auth_recipe_users_pagination_index3": {
+          "name": "all_auth_recipe_users_pagination_index3",
+          "columns": [
+            {
+              "expression": "recipe_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "primary_or_recipe_user_time_joined",
+              "asc": false,
+              "nulls": "first",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "primary_or_recipe_user_id",
+              "asc": false,
+              "nulls": "first",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "all_auth_recipe_users_pagination_index4": {
+          "name": "all_auth_recipe_users_pagination_index4",
+          "columns": [
+            {
+              "expression": "recipe_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "bpchar_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "primary_or_recipe_user_time_joined",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "primary_or_recipe_user_id",
+              "asc": false,
+              "nulls": "first",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "all_auth_recipe_users_primary_user_id_index": {
+          "name": "all_auth_recipe_users_primary_user_id_index",
+          "columns": [
+            {
+              "expression": "primary_or_recipe_user_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "all_auth_recipe_users_recipe_id_index": {
+          "name": "all_auth_recipe_users_recipe_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "recipe_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_all_auth_recipe_users_tenant_id_fkey": {
+          "name": "supertokens_all_auth_recipe_users_tenant_id_fkey",
+          "tableFrom": "supertokens_all_auth_recipe_users",
+          "tableTo": "supertokens_tenants",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "supertokens_all_auth_recipe_users_primary_or_recipe_user_id_fke": {
+          "name": "supertokens_all_auth_recipe_users_primary_or_recipe_user_id_fke",
+          "tableFrom": "supertokens_all_auth_recipe_users",
+          "tableTo": "supertokens_app_id_to_user_id",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "primary_or_recipe_user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "supertokens_all_auth_recipe_users_user_id_fkey": {
+          "name": "supertokens_all_auth_recipe_users_user_id_fkey",
+          "tableFrom": "supertokens_all_auth_recipe_users",
+          "tableTo": "supertokens_app_id_to_user_id",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_all_auth_recipe_users_pkey": {
+          "name": "supertokens_all_auth_recipe_users_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_tenant_configs": {
+      "name": "supertokens_tenant_configs",
+      "schema": "",
+      "columns": {
+        "connection_uri_domain": {
+          "name": "connection_uri_domain",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "core_config": {
+          "name": "core_config",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email_password_enabled": {
+          "name": "email_password_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "passwordless_enabled": {
+          "name": "passwordless_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "third_party_enabled": {
+          "name": "third_party_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_first_factors_null": {
+          "name": "is_first_factors_null",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "supertokens_tenant_configs_pkey": {
+          "name": "supertokens_tenant_configs_pkey",
+          "columns": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_totp_user_devices": {
+      "name": "supertokens_totp_user_devices",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "device_name": {
+          "name": "device_name",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "secret_key": {
+          "name": "secret_key",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "period": {
+          "name": "period",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "skew": {
+          "name": "skew",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "name": "verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "totp_user_devices_user_id_index": {
+          "name": "totp_user_devices_user_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "user_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_totp_user_devices_user_id_fkey": {
+          "name": "supertokens_totp_user_devices_user_id_fkey",
+          "tableFrom": "supertokens_totp_user_devices",
+          "tableTo": "supertokens_totp_users",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_totp_user_devices_pkey": {
+          "name": "supertokens_totp_user_devices_pkey",
+          "columns": [
+            "app_id",
+            "user_id",
+            "device_name"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_session_info": {
+      "name": "supertokens_session_info",
+      "schema": "",
+      "columns": {
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "session_handle": {
+          "name": "session_handle",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refresh_token_hash_2": {
+          "name": "refresh_token_hash_2",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "session_data": {
+          "name": "session_data",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at_time": {
+          "name": "created_at_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "jwt_user_payload": {
+          "name": "jwt_user_payload",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "use_static_key": {
+          "name": "use_static_key",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "session_expiry_index": {
+          "name": "session_expiry_index",
+          "columns": [
+            {
+              "expression": "expires_at",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int8_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "session_info_tenant_id_index": {
+          "name": "session_info_tenant_id_index",
+          "columns": [
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_session_info_tenant_id_fkey": {
+          "name": "supertokens_session_info_tenant_id_fkey",
+          "tableFrom": "supertokens_session_info",
+          "tableTo": "supertokens_tenants",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_session_info_pkey": {
+          "name": "supertokens_session_info_pkey",
+          "columns": [
+            "app_id",
+            "tenant_id",
+            "session_handle"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_tenant_thirdparty_provider_clients": {
+      "name": "supertokens_tenant_thirdparty_provider_clients",
+      "schema": "",
+      "columns": {
+        "connection_uri_domain": {
+          "name": "connection_uri_domain",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "third_party_id": {
+          "name": "third_party_id",
+          "type": "varchar(28)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "client_type": {
+          "name": "client_type",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "client_id": {
+          "name": "client_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "client_secret": {
+          "name": "client_secret",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "varchar(128)[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "force_pkce": {
+          "name": "force_pkce",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "additional_config": {
+          "name": "additional_config",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "tenant_thirdparty_provider_clients_third_party_id_index": {
+          "name": "tenant_thirdparty_provider_clients_third_party_id_index",
+          "columns": [
+            {
+              "expression": "connection_uri_domain",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "third_party_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_tenant_thirdparty_provider_clients_third_party_id_f": {
+          "name": "supertokens_tenant_thirdparty_provider_clients_third_party_id_f",
+          "tableFrom": "supertokens_tenant_thirdparty_provider_clients",
+          "tableTo": "supertokens_tenant_thirdparty_providers",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id",
+            "third_party_id"
+          ],
+          "columnsTo": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id",
+            "third_party_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_tenant_thirdparty_provider_clients_pkey": {
+          "name": "supertokens_tenant_thirdparty_provider_clients_pkey",
+          "columns": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id",
+            "third_party_id",
+            "client_type"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.supertokens_tenant_thirdparty_providers": {
+      "name": "supertokens_tenant_thirdparty_providers",
+      "schema": "",
+      "columns": {
+        "connection_uri_domain": {
+          "name": "connection_uri_domain",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "app_id": {
+          "name": "app_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "tenant_id": {
+          "name": "tenant_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'public'"
+        },
+        "third_party_id": {
+          "name": "third_party_id",
+          "type": "varchar(28)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "authorization_endpoint": {
+          "name": "authorization_endpoint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "authorization_endpoint_query_params": {
+          "name": "authorization_endpoint_query_params",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_endpoint": {
+          "name": "token_endpoint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_endpoint_body_params": {
+          "name": "token_endpoint_body_params",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_info_endpoint": {
+          "name": "user_info_endpoint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_info_endpoint_query_params": {
+          "name": "user_info_endpoint_query_params",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_info_endpoint_headers": {
+          "name": "user_info_endpoint_headers",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jwks_uri": {
+          "name": "jwks_uri",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "oidc_discovery_endpoint": {
+          "name": "oidc_discovery_endpoint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "require_email": {
+          "name": "require_email",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_info_map_from_id_token_payload_user_id": {
+          "name": "user_info_map_from_id_token_payload_user_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_info_map_from_id_token_payload_email": {
+          "name": "user_info_map_from_id_token_payload_email",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_info_map_from_id_token_payload_email_verified": {
+          "name": "user_info_map_from_id_token_payload_email_verified",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_info_map_from_user_info_endpoint_user_id": {
+          "name": "user_info_map_from_user_info_endpoint_user_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_info_map_from_user_info_endpoint_email": {
+          "name": "user_info_map_from_user_info_endpoint_email",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_info_map_from_user_info_endpoint_email_verified": {
+          "name": "user_info_map_from_user_info_endpoint_email_verified",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "tenant_thirdparty_providers_tenant_id_index": {
+          "name": "tenant_thirdparty_providers_tenant_id_index",
+          "columns": [
+            {
+              "expression": "connection_uri_domain",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "app_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            },
+            {
+              "expression": "tenant_id",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "supertokens_tenant_thirdparty_providers_tenant_id_fkey": {
+          "name": "supertokens_tenant_thirdparty_providers_tenant_id_fkey",
+          "tableFrom": "supertokens_tenant_thirdparty_providers",
+          "tableTo": "supertokens_tenant_configs",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "supertokens_tenant_thirdparty_providers_pkey": {
+          "name": "supertokens_tenant_thirdparty_providers_pkey",
+          "columns": [
+            "connection_uri_domain",
+            "app_id",
+            "tenant_id",
+            "third_party_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {
+      "supertokens_tenant_thirdparty_provider_clients": {
+        "columns": {
+          "scope": {
+            "isArray": true,
+            "dimensions": 1,
+            "rawType": "character varying(128)"
+          }
+        }
+      }
+    }
+  }
+}
