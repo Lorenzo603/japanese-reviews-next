@@ -16,6 +16,8 @@ export default function VisuallySimilarReview() {
     const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
     const [currentPrompt, setCurrentPrompt] = useState(promptSet[currentPromptIndex]);
 
+    const [wrongAnswers] = useState([]);
+
     const totalReviews = promptSet.length;
 
     const handleKeyDownCallback = useCallback(handleKeyDown, [answerState]);
@@ -49,6 +51,7 @@ export default function VisuallySimilarReview() {
                 colorItemCorrect(correctAnswerItem);
             } else {
                 console.log("Wrong answer");
+                wrongAnswers.push(currentPrompt);
                 const answersListItem = document.getElementById("answers-list");
                 for (let i = 0; i < answersListItem.children.length; i++) {
                     const answerItem = answersListItem.children[i].children[0];
@@ -164,7 +167,7 @@ export default function VisuallySimilarReview() {
                             {
                                 answerState === AnswerState.FINISHED ? (
                                     <div>
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col pb-4">
                                             <div className="text-4xl pb-2">
                                                 {getCongratulationsStatement()}
                                             </div>
@@ -178,6 +181,23 @@ export default function VisuallySimilarReview() {
                                         <div className="text-2xl">
                                             {getCorrectPercentage()}&#37; correct
                                         </div>
+                                        {
+                                            wrongAnswers.length > 0 &&
+                                            <div className="pt-4">
+                                                <div className="text-xl">
+                                                    Incorrect answers
+                                                </div>
+                                                <ul>
+                                                    {wrongAnswers.map(wrongAnswer =>
+                                                        <li key={wrongAnswer['prompt']}>
+                                                            <span className={guessKanji ? "" : "japanese-font"}>{wrongAnswer['prompt']}</span>
+                                                            &nbsp;:&nbsp;
+                                                            <span className={guessKanji ? "japanese-font" : ""}>{wrongAnswer['correctAnswer']}</span>
+                                                        </li>
+                                                    )}
+                                                </ul>
+                                            </div>
+                                        }
                                         <div className="p-10">
                                             <Link href="/visually-similar/review-settings"
                                                 className="bg-pink-500 hover:bg-pink-400 
