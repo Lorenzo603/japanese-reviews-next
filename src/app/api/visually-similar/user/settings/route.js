@@ -1,6 +1,5 @@
 import SuperTokens from "supertokens-node";
 import { NextResponse } from "next/server";
-import pool from "../../../../../lib/postgresDb.js";
 import db from "../../../../../lib/drizzleOrmDb.js";
 import { withSession } from "supertokens-node/nextjs";
 import { backendConfig } from "@/app/(auth)/auth/config/backend.js";
@@ -12,12 +11,9 @@ SuperTokens.init(backendConfig());
 export async function PATCH(request) {
     const reqJson = await request.json();
 
-    // ADD FIELD MAPPING
-    const field = "guess_kanji";
+    const updateFieldsObject = reqJson;
 
-    const newValue = reqJson.guessKanji;
-
-    if (!reqJson || newValue === undefined) {
+    if (!updateFieldsObject) {
         return NextResponse.json({ message: 'Missing field or value' }, { status: 400 })
     }
 
@@ -32,7 +28,7 @@ export async function PATCH(request) {
         const userId = session.getUserId();
         try {
             const result = await db.update(userSettings)
-                .set({ guessKanji: newValue })
+                .set(updateFieldsObject)
                 .where(eq(userSettings.userId, userId));
             if (result.rowCount === 0) {
                 console.warn('Record not found');
