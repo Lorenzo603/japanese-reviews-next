@@ -4,6 +4,7 @@ import { AnswerState, useReviewSessionContext } from "@/app/context/reviewSessio
 import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 
 export default function VisuallySimilarReviewSettings() {
 
@@ -36,9 +37,22 @@ export default function VisuallySimilarReviewSettings() {
         setAnswerState(AnswerState.WAITING_RESPONSE);
     }, []);
 
-    const handleGuessModeSegmentControlClick = (buttonId) => {
+    const handleGuessModeSegmentControlClick = async (buttonId) => {
         updateSegmentControlDisplay(GUESS_MODE_SEGMENT_CONTROL_ID, buttonId);
         setGuessKanji(buttonId === "guess-mode-kanji");
+
+        const sessionExists = await doesSessionExist();
+        if (sessionExists) {
+            await fetch('/api/visually-similar/user/settings', {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    guessKanji: buttonId === "guess-mode-kanji",
+                })
+            })
+        }
     }
 
     const handleInputMethodSegmentControlClick = (buttonId) => {
