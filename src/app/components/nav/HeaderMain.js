@@ -18,18 +18,32 @@ const HeaderMain = () => {
                         </div>
                     </Link>
                 </div>
-                <div className="flex flex-1 items-center justify-end gap-x-6">
-                    <div>
+                <div className="flex flex-1 items-center justify-end gap-x-4">
+                    <div className="flex items-center">
                         <Link
                             className="no-underline 
-                            font-bold text-md text-blue-900
+                            font-bold text-blue-900
                             items-baseline 
-                            hidden sm:inline"
+                            hidden md:inline 
+                            rounded-md px-2 py-2.5
+                            hover:bg-slate-50"
+                            href="/visually-similar/review-settings">
+                            Start Reviews
+                        </Link>
+                    </div>
+                    <div className="flex items-center">
+                        <Link
+                            className="no-underline 
+                            font-bold text-blue-900
+                            items-baseline 
+                            hidden md:inline 
+                            rounded-md px-2 py-2.5
+                            hover:bg-slate-50"
                             href="/#browse-by-jlpt-level">
                             Browse by JLPT level
                         </Link>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center">
                         <LoginButton />
                     </div>
                 </div>

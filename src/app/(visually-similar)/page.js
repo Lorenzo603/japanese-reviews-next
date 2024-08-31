@@ -26,8 +26,20 @@ export default function Home() {
 
           <div className="max-w-2xl py-4">
             <section>
-              <h1 className="text-2xl">Reviews Settings</h1>
-              <Link className="underline" href="/visually-similar/review-settings">Go to review settings</Link>
+              <h1 className="sr-only text-2xl">Reviews Settings</h1>
+              <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
+                    bg-pink-500 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
+                    hover:bg-pink-700 no-underline" 
+                    href="/visually-similar/review-settings">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                </svg>
+                <span>Start reviews</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                  <path fillRule="evenodd" d="M13.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clipRule="evenodd" />
+                  <path fillRule="evenodd" d="M19.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clipRule="evenodd" />
+                </svg>
+              </Link>
             </section>
           </div>
 
