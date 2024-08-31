@@ -5,7 +5,7 @@ const FooterComponent = () => {
         <div className="flex">
           <div className="container mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 
              px-4 py-6">
-            <p className="m-0">© {new Date().getFullYear()} Lorenzo Furrer. All rights reserved.</p>
+            <p className="text-sm">© {new Date().getFullYear()} Lorenzo Furrer. All rights reserved.</p>
           </div>
         </div>
       </footer>

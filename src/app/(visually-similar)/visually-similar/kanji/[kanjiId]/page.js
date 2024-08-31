@@ -1,5 +1,6 @@
 import { getDictionary } from "@/app/components/backend/DictionaryLoaderComponent";
 import KanjiCardLinkComponent from "@/app/components/visually-similar/KanjiCardLinkComponent";
+import Link from "next/link";
 var wanakana = require('wanakana');
 
 export default async function VisuallySimilarKanji({ params }) {
@@ -12,8 +13,18 @@ export default async function VisuallySimilarKanji({ params }) {
     const readingsKun = readings.filter(reading => !reading.hasOwnProperty('type') || reading['type'] === 'kunyomi');
     const readingsOn = readings.filter(reading => reading['type'] === 'onyomi');
     const readingsNames = readings.filter(reading => reading['type'] === 'nanori');
+    const jlptLevel = getJlptLevel(kanji);
 
     const visuallySimilarKanjiIds = kanji['visually_similar_subject_ids'];
+
+    function getJlptLevel(kanji) {
+        const jlptCagtegories = kanji['categories'].filter(cat => cat.startsWith('jlpt'));
+        if (jlptCagtegories.length > 0) {
+            return jlptCagtegories[0].replace('jlpt', '');
+        } else {
+            return null;
+        }
+    }
 
     return (
         <main>
@@ -106,6 +117,19 @@ export default async function VisuallySimilarKanji({ params }) {
                                                     })
                                             }
                                         </ul>
+                                    </div>
+                                </section>
+                            }
+
+                            {
+                                jlptLevel &&
+                                <section>
+                                    <div className="py-2">
+                                        <Link href={`/visually-similar/jlpt-level-${jlptLevel}`}>
+                                            <span className="bg-gray-300 font-bold p-2 rounded-lg">
+                                                JLPT Level N{jlptLevel}
+                                            </span>
+                                        </Link>
                                     </div>
                                 </section>
                             }
