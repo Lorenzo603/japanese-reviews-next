@@ -9,7 +9,11 @@ import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 export default function VisuallySimilarReviewSettings() {
 
     const GUESS_MODE_SEGMENT_CONTROL_ID = "guess-mode-segment-control";
+    const GUESS_MODE_KANJI_BUTTON_ID = "guess-mode-kanji";
+    const GUESS_MODE_MEANING_BUTTON_ID = "guess-mode-meaning";
     const INPUT_METHOD_SEGMENT_CONTROL_ID = "input-method-segment-control";
+    const INPUT_METHOD_MULTICHOICE_BUTTON_ID = "input-method-multichoice";
+    const INPUT_METHOD_TYPING_BUTTON_ID = "input-method-typing";
 
     const router = useRouter();
 
@@ -23,23 +27,72 @@ export default function VisuallySimilarReviewSettings() {
     const activeTabClassName = "bg-pink-500 text-slate-100 shadow";
 
     const guessKanjiModeToButtonMap = {
-        true: "guess-mode-kanji",
-        false: "guess-mode-meaning",
+        true: GUESS_MODE_KANJI_BUTTON_ID,
+        false: GUESS_MODE_MEANING_BUTTON_ID,
     }
     const inputMethodToButtonMap = {
-        true: "input-method-multichoice",
-        false: "input-method-typing",
+        true: INPUT_METHOD_MULTICHOICE_BUTTON_ID,
+        false: INPUT_METHOD_TYPING_BUTTON_ID,
+    }
+
+    function getGuessKanjiModeActiveButtonId() {
+        return (guessKanji !== null && guessKanji !== undefined && guessKanji !== 'undefined')
+            ? guessKanjiModeToButtonMap[guessKanji] : GUESS_MODE_KANJI_BUTTON_ID;
+    }
+    function getInputMethodActiveButtonId() {
+        return (multichoiceInput !== null && multichoiceInput !== undefined && multichoiceInput !== 'undefined')
+            ? inputMethodToButtonMap[multichoiceInput] : INPUT_METHOD_MULTICHOICE_BUTTON_ID;
     }
 
     useEffect(() => {
         setTotalAnswers(0);
         setTotalCorrect(0);
         setAnswerState(AnswerState.WAITING_RESPONSE);
+
+        async function loadUserSettings() {
+            const sessionExists = await doesSessionExist();
+            if (sessionExists) {
+                const userSettings = await loadUserSettingsFromDatabase();
+                if (userSettings) {
+                    setGuessKanji(userSettings.guessKanji);
+                    setMultichoiceInput(userSettings.multichoiceInput);
+                    setQuickMode(userSettings.quickMode);
+                }
+            }
+        }
+        loadUserSettings();
     }, []);
+
+    useEffect(() => {
+        updateSegmentControlDisplay(GUESS_MODE_SEGMENT_CONTROL_ID, getGuessKanjiModeActiveButtonId());
+    }, [guessKanji]);
+    useEffect(() => {
+        updateSegmentControlDisplay(INPUT_METHOD_SEGMENT_CONTROL_ID, getInputMethodActiveButtonId());
+    }, [multichoiceInput]);
+
+    const loadUserSettingsFromDatabase = async () => {
+        try {
+            const response = await fetch('/api/visually-similar/user/settings', {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error status: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Error loading user settings:', error);
+            return null;
+        }
+    }
 
     const handleGuessModeSegmentControlClick = async (buttonId) => {
         updateSegmentControlDisplay(GUESS_MODE_SEGMENT_CONTROL_ID, buttonId);
-        setGuessKanji(buttonId === "guess-mode-kanji");
+        setGuessKanji(buttonId === GUESS_MODE_KANJI_BUTTON_ID);
 
         const sessionExists = await doesSessionExist();
         if (sessionExists) {
@@ -49,7 +102,7 @@ export default function VisuallySimilarReviewSettings() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    guessKanji: buttonId === "guess-mode-kanji",
+                    guessKanji: buttonId === GUESS_MODE_KANJI_BUTTON_ID,
                 })
             })
         }
@@ -57,7 +110,7 @@ export default function VisuallySimilarReviewSettings() {
 
     const handleInputMethodSegmentControlClick = (buttonId) => {
         updateSegmentControlDisplay(INPUT_METHOD_SEGMENT_CONTROL_ID, buttonId);
-        setMultichoiceInput(buttonId === "input-method-multichoice");
+        setMultichoiceInput(buttonId === INPUT_METHOD_MULTICHOICE_BUTTON_ID);
     }
 
     const updateSegmentControlDisplay = (segmentControlId, activeButtonId) => {
@@ -114,14 +167,14 @@ export default function VisuallySimilarReviewSettings() {
                                         </div>
                                         <div id={GUESS_MODE_SEGMENT_CONTROL_ID}
                                             className="inline-flex w-full items-baseline justify-start border border-gray-400 bg-slate-50 sm:w-auto">
-                                            <button id="guess-mode-kanji" type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick("guess-mode-kanji")}
+                                            <button id={GUESS_MODE_KANJI_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick(GUESS_MODE_KANJI_BUTTON_ID)}
                                                 className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
                                                     gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400
                                                     h-7 w-full sm:w-auto text-slate-100 bg-pink-500">
                                                 <span>Guess Kanji</span>
                                             </button>
-                                            <button id="guess-mode-meaning" type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick("guess-mode-meaning")}
+                                            <button id={GUESS_MODE_MEANING_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick(GUESS_MODE_MEANING_BUTTON_ID)}
                                                 className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
                                                     gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400 
@@ -138,14 +191,14 @@ export default function VisuallySimilarReviewSettings() {
                                         </div>
                                         <div id={INPUT_METHOD_SEGMENT_CONTROL_ID}
                                             className="inline-flex w-full items-baseline justify-start border border-gray-400 bg-slate-50 sm:w-auto">
-                                            <button id="input-method-multichoice" type="button" aria-disabled="false" onClick={() => handleInputMethodSegmentControlClick("input-method-multichoice")}
+                                            <button id={INPUT_METHOD_MULTICHOICE_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleInputMethodSegmentControlClick(INPUT_METHOD_MULTICHOICE_BUTTON_ID)}
                                                 className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
                                                     gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400
                                                     h-7 w-full sm:w-auto text-slate-100 bg-pink-500">
                                                 <span>Multichoice</span>
                                             </button>
-                                            <button id="input-method-typing" type="button" aria-disabled="false" onClick={() => handleInputMethodSegmentControlClick("input-method-typing")}
+                                            <button id={INPUT_METHOD_TYPING_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleInputMethodSegmentControlClick(INPUT_METHOD_TYPING_BUTTON_ID)}
                                                 className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
                                                     gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400 

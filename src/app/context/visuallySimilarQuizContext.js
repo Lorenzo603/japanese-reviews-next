@@ -16,8 +16,9 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
     const [focusModeEnabled, setFocusModeEnabled] = useState(false);
     
     function loadInitialValue(localStorageKey, defaultvalue, setterCallback) {
-        const storedValue = JSON.parse(localStorage.getItem(localStorageKey));
-        setterCallback(storedValue !== null ? storedValue : defaultvalue);
+        const storedValue = localStorage.getItem(localStorageKey);
+        const storedValueJson = storedValue !== undefined && storedValue !== 'undefined' ? JSON.parse(storedValue) : null;
+        setterCallback(storedValueJson !== null ? storedValueJson : defaultvalue);
     }
 
     useEffect(() => {

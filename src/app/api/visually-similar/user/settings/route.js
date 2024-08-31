@@ -8,6 +8,37 @@ import { eq } from "drizzle-orm";
 
 SuperTokens.init(backendConfig());
 
+export async function GET(request) {
+    return withSession(request, async (err, session) => {
+        if (err) {
+            console.error(err);
+            return NextResponse.json(err, { status: 500 });
+        }
+        
+        const userId = session.getUserId();
+        try {
+            const result = await db
+                .select()
+                .from(userSettings)
+                .where(eq(userSettings.userId, userId));
+
+            if (result.length === 0) {
+                console.warn('No records found');
+                return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+            }
+            if (result.length > 1) {
+                console.warn('Multiple records found');
+                return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+            }
+
+            return NextResponse.json(result[0], { status: 200 })
+        } catch (error) {
+            console.error(error);
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        }
+    });
+}
+
 export async function PATCH(request) {
     const reqJson = await request.json();
 
