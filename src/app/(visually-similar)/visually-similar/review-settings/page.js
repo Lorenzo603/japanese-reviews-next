@@ -14,8 +14,9 @@ export default function VisuallySimilarReviewSettings() {
     const INPUT_METHOD_SEGMENT_CONTROL_ID = "input-method-segment-control";
     const INPUT_METHOD_MULTICHOICE_BUTTON_ID = "input-method-multichoice";
     const INPUT_METHOD_TYPING_BUTTON_ID = "input-method-typing";
+    const SELECT_CONTROL_INACTIVE_TAB_CLASS_NAME = "bg-transparent text-slate-600";
+    const SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME = "bg-pink-500 text-slate-100 shadow";
 
-    const router = useRouter();
 
     const { setPromptSet, guessKanji, setGuessKanji,
         multichoiceInput, setMultichoiceInput,
@@ -23,26 +24,7 @@ export default function VisuallySimilarReviewSettings() {
 
     const { setAnswerState, setTotalAnswers, setTotalCorrect } = useReviewSessionContext();
 
-    const inactiveTabClassName = "bg-transparent text-slate-600";
-    const activeTabClassName = "bg-pink-500 text-slate-100 shadow";
-
-    const guessKanjiModeToButtonMap = {
-        true: GUESS_MODE_KANJI_BUTTON_ID,
-        false: GUESS_MODE_MEANING_BUTTON_ID,
-    }
-    const inputMethodToButtonMap = {
-        true: INPUT_METHOD_MULTICHOICE_BUTTON_ID,
-        false: INPUT_METHOD_TYPING_BUTTON_ID,
-    }
-
-    function getGuessKanjiModeActiveButtonId() {
-        return (guessKanji !== null && guessKanji !== undefined && guessKanji !== 'undefined')
-            ? guessKanjiModeToButtonMap[guessKanji] : GUESS_MODE_KANJI_BUTTON_ID;
-    }
-    function getInputMethodActiveButtonId() {
-        return (multichoiceInput !== null && multichoiceInput !== undefined && multichoiceInput !== 'undefined')
-            ? inputMethodToButtonMap[multichoiceInput] : INPUT_METHOD_MULTICHOICE_BUTTON_ID;
-    }
+    const router = useRouter();
 
     useEffect(() => {
         setTotalAnswers(0);
@@ -60,15 +42,8 @@ export default function VisuallySimilarReviewSettings() {
                 }
             }
         }
-        loadUserSettings();
+        // loadUserSettings();
     }, []);
-
-    useEffect(() => {
-        updateSegmentControlDisplay(GUESS_MODE_SEGMENT_CONTROL_ID, getGuessKanjiModeActiveButtonId());
-    }, [guessKanji]);
-    useEffect(() => {
-        updateSegmentControlDisplay(INPUT_METHOD_SEGMENT_CONTROL_ID, getInputMethodActiveButtonId());
-    }, [multichoiceInput]);
 
     const loadUserSettingsFromDatabase = async () => {
         try {
@@ -91,7 +66,6 @@ export default function VisuallySimilarReviewSettings() {
     }
 
     const handleGuessModeSegmentControlClick = async (buttonId) => {
-        updateSegmentControlDisplay(GUESS_MODE_SEGMENT_CONTROL_ID, buttonId);
         setGuessKanji(buttonId === GUESS_MODE_KANJI_BUTTON_ID);
 
         const sessionExists = await doesSessionExist();
@@ -109,7 +83,6 @@ export default function VisuallySimilarReviewSettings() {
     }
 
     const handleInputMethodSegmentControlClick = async (buttonId) => {
-        updateSegmentControlDisplay(INPUT_METHOD_SEGMENT_CONTROL_ID, buttonId);
         setMultichoiceInput(buttonId === INPUT_METHOD_MULTICHOICE_BUTTON_ID);
 
         const sessionExists = await doesSessionExist();
@@ -124,20 +97,6 @@ export default function VisuallySimilarReviewSettings() {
                 })
             })
         }
-    }
-
-    const updateSegmentControlDisplay = (segmentControlId, activeButtonId) => {
-        const buttons = document.getElementById(segmentControlId).children;
-        // Remove active styles from all buttons
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].classList.remove(...activeTabClassName.split(/\s+/));
-            buttons[i].classList.add(...inactiveTabClassName.split(/\s+/));
-        };
-
-        const button = document.getElementById(activeButtonId);
-        // Set the selected button as active
-        button.classList.add(...activeTabClassName.split(/\s+/));
-        button.classList.remove(...inactiveTabClassName.split(/\s+/));
     }
 
     const toggleQuickMode = async () => {
@@ -195,17 +154,17 @@ export default function VisuallySimilarReviewSettings() {
                                         <div id={GUESS_MODE_SEGMENT_CONTROL_ID}
                                             className="inline-flex w-full items-baseline justify-start border border-gray-400 bg-slate-50 sm:w-auto">
                                             <button id={GUESS_MODE_KANJI_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick(GUESS_MODE_KANJI_BUTTON_ID)}
-                                                className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
+                                                className={`group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
-                                                    gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400
-                                                    h-7 w-full sm:w-auto text-slate-100 bg-pink-500">
+                                                    gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400 
+                                                    h-7 w-full sm:w-auto ${guessKanji ? SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME : SELECT_CONTROL_INACTIVE_TAB_CLASS_NAME}`}>
                                                 <span>Guess Kanji</span>
                                             </button>
                                             <button id={GUESS_MODE_MEANING_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick(GUESS_MODE_MEANING_BUTTON_ID)}
-                                                className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
+                                                className={`group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
                                                     gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400 
-                                                    h-7 w-full sm:w-auto text-slate-600 bg-transparent">
+                                                    h-7 w-full sm:w-auto ${guessKanji ? SELECT_CONTROL_INACTIVE_TAB_CLASS_NAME : SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME}`}>
                                                 <span>Guess Meaning</span>
                                             </button>
                                         </div>
@@ -219,17 +178,17 @@ export default function VisuallySimilarReviewSettings() {
                                         <div id={INPUT_METHOD_SEGMENT_CONTROL_ID}
                                             className="inline-flex w-full items-baseline justify-start border border-gray-400 bg-slate-50 sm:w-auto">
                                             <button id={INPUT_METHOD_MULTICHOICE_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleInputMethodSegmentControlClick(INPUT_METHOD_MULTICHOICE_BUTTON_ID)}
-                                                className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
+                                                className={`group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
-                                                    gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400
-                                                    h-7 w-full sm:w-auto text-slate-100 bg-pink-500">
+                                                    gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400 
+                                                    h-7 w-full sm:w-auto ${multichoiceInput ? SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME : SELECT_CONTROL_INACTIVE_TAB_CLASS_NAME}`}>
                                                 <span>Multichoice</span>
                                             </button>
                                             <button id={INPUT_METHOD_TYPING_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleInputMethodSegmentControlClick(INPUT_METHOD_TYPING_BUTTON_ID)}
-                                                className="group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
+                                                className={`group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
                                                     gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400 
-                                                    h-7 w-full sm:w-auto text-slate-600 bg-transparent">
+                                                    h-7 w-full sm:w-auto ${multichoiceInput ? SELECT_CONTROL_INACTIVE_TAB_CLASS_NAME : SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME}`}>
                                                 <span>Typing</span>
                                             </button>
                                         </div>
@@ -242,7 +201,7 @@ export default function VisuallySimilarReviewSettings() {
                                     <div className="inline-flex items-center justify-center">
                                         <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
                                             <div className="relative">
-                                                <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true" 
+                                                <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
                                                     checked={quickMode ? 'checked' : ''}
                                                     type="checkbox" onChange={() => toggleQuickMode()} name="switch" />
                                                 <div

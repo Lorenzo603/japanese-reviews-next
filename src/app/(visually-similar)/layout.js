@@ -24,9 +24,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <SuperTokensProvider>
-        <VisuallySimilarQuizContextProvider>
-          <ReviewSessionContextProvider>
-            <body className={`${inter.className} ${notoSansJp.variable} h-screen bg-pink-50 text-slate-900`}>
+        <body className={`${inter.className} ${notoSansJp.variable} h-screen bg-pink-50 text-slate-900`}>
+          <VisuallySimilarQuizContextProvider>
+            <ReviewSessionContextProvider>
               <div className="relative flex flex-col h-full">
                 <div>
                   <HeaderComponent />
@@ -38,9 +38,9 @@ export default function RootLayout({ children }) {
                   <FooterComponent />
                 </div>
               </div>
-            </body>
-          </ReviewSessionContextProvider>
-        </VisuallySimilarQuizContextProvider>
+            </ReviewSessionContextProvider>
+          </VisuallySimilarQuizContextProvider>
+        </body>
       </SuperTokensProvider>
     </html>
   )

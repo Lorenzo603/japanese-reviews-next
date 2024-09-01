@@ -5,10 +5,12 @@ import { createContext, useContext, useMemo, useState, useEffect } from "react";
 const VisuallySimilarQuizContext = createContext({})
 
 export const VisuallySimilarQuizContextProvider = ({ children }) => {
+    const [isReady, setIsReady] = useState(false);
+
     const [promptSet, setPromptSet] = useState([]);
 
     const [guessKanji, setGuessKanji] = useState(true);
-    const [multichoiceInput, setMultichoiceInput] = useState(true);
+    const [multichoiceInput, setMultichoiceInput] = useState(null);
 
     // Go directly to next question upon clicking without seeing the success/wrong result
     const [quickMode, setQuickMode] = useState(false);
@@ -26,6 +28,8 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
         loadInitialValue('multichoiceInput', true, setMultichoiceInput);
         loadInitialValue('quickMode', false, setQuickMode);
         loadInitialValue('focusModeEnabled', false, setFocusModeEnabled);
+
+        setIsReady(true);
     }, [])
 
     useEffect(() => {
@@ -53,7 +57,7 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
 
     return (
         <VisuallySimilarQuizContext.Provider value={providerValue}>
-            {children}
+            {isReady ? children : null}
         </VisuallySimilarQuizContext.Provider>
     )
 };
