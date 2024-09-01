@@ -5,6 +5,8 @@ import { createContext, useContext, useMemo, useState, useEffect } from "react";
 const QuizContext = createContext({})
 
 export const QuizContextProvider = ({ children }) => {
+    const [isReady, setIsReady] = useState(false);
+
     const [promptSet, setPromptSet] = useState([]);
 
     const [guessMeaningSelected, setGuessMeaningSelected] = useState(null);
@@ -29,22 +31,34 @@ export const QuizContextProvider = ({ children }) => {
         loadInitialValue('guessKanjiSelected', false, setGuessKanjiSelected);
         loadInitialValue('kanjiSetSelected', true, setKanjiSetSelected);
         loadInitialValue('vocabularySetSelected', false, setVocabularySetSelected);
+
+        setIsReady(true);
     }, [])
 
     useEffect(() => {
-        localStorage.setItem('guessMeaningSelected', guessMeaningSelected)
+        if (isReady) {
+            localStorage.setItem('guessMeaningSelected', guessMeaningSelected)
+        }
     }, [guessMeaningSelected])
     useEffect(() => {
-        localStorage.setItem('guessReadingSelected', guessReadingSelected)
+        if (isReady) {
+            localStorage.setItem('guessReadingSelected', guessReadingSelected)
+        }
     }, [guessReadingSelected])
     useEffect(() => {
-        localStorage.setItem('guessKanjiSelected', guessKanjiSelected)
+        if (isReady) {
+            localStorage.setItem('guessKanjiSelected', guessKanjiSelected)
+        }
     }, [guessKanjiSelected])
     useEffect(() => {
-        localStorage.setItem('kanjiSetSelected', kanjiSetSelected)
+        if (isReady) {
+            localStorage.setItem('kanjiSetSelected', kanjiSetSelected)
+        }
     }, [kanjiSetSelected])
     useEffect(() => {
-        localStorage.setItem('vocabularySetSelected', vocabularySetSelected)
+        if (isReady) {
+            localStorage.setItem('vocabularySetSelected', vocabularySetSelected)
+        }
     }, [vocabularySetSelected])
 
     const providerValue = useMemo(() => ({
@@ -67,7 +81,7 @@ export const QuizContextProvider = ({ children }) => {
 
     return (
         <QuizContext.Provider value={providerValue}>
-            {children}
+            {isReady ? children : null}
         </QuizContext.Provider>
     )
 };
