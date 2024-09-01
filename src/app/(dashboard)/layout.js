@@ -4,7 +4,6 @@ import '../globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { QuizContextProvider } from '@/app/context/quizContext'
 import { SessionAuth } from 'supertokens-auth-react/recipe/session'
-import { SSRProvider } from 'react-bootstrap';
 import { SuperTokensProvider } from '@/app/components/supertokens/supertokensProvider';
 import { AccessDeniedScreen } from 'supertokens-auth-react/recipe/session/prebuiltui';
 import { UserRoleClaim } from 'supertokens-auth-react/recipe/userroles';
@@ -22,9 +21,7 @@ export default function DashboardLayout({ children }) {
                         ]}
                     >
                         <QuizContextProvider>
-                            <SSRProvider>
-                                {children}
-                            </SSRProvider>
+                            {children}
                         </QuizContextProvider>
                     </SessionAuth>
                 </body>
