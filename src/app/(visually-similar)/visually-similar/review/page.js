@@ -111,6 +111,9 @@ export default function VisuallySimilarReview() {
     }
 
     function getCongratulationsStatement() {
+        if (totalAnswers === 0) {
+            return "No worries!"
+        }
         const correctPercentage = getCorrectPercentage();
         if (correctPercentage === 100) {
             return "Absolutely perfect!"
@@ -127,6 +130,9 @@ export default function VisuallySimilarReview() {
 
     function getCongratulationsSubStatement() {
         const correctPercentage = getCorrectPercentage();
+        if (totalAnswers === 0) {
+            return "When you're ready, dive in!"
+        }
         if (correctPercentage === 100) {
             return "You aced it! You're a true quiz master. Keep shining!"
         } else if (correctPercentage >= 80) {
