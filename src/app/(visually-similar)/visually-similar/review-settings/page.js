@@ -20,7 +20,9 @@ export default function VisuallySimilarReviewSettings() {
 
     const { setPromptSet, guessKanji, setGuessKanji,
         multichoiceInput, setMultichoiceInput,
-        quickMode, setQuickMode } = useVisuallySimilarQuizContext();
+        quickMode, setQuickMode,
+        setFocusModeEnabled,
+     } = useVisuallySimilarQuizContext();
 
     const { setAnswerState, setTotalAnswers, setTotalCorrect } = useReviewSessionContext();
 
@@ -39,6 +41,7 @@ export default function VisuallySimilarReviewSettings() {
                     setGuessKanji(userSettings.guessKanji);
                     setMultichoiceInput(userSettings.multichoiceInput);
                     setQuickMode(userSettings.quickMode);
+                    setFocusModeEnabled(userSettings.focusModeEnabled);
                 }
             }
         }
@@ -58,7 +61,9 @@ export default function VisuallySimilarReviewSettings() {
                 throw new Error(`HTTP error status: ${response.status}`);
             }
 
-            return await response.json();
+            const resJson = await response.json();
+            // console.log('User Settings from DB:', resJson);
+            return resJson;
         } catch (error) {
             console.error('Error loading user settings:', error);
             return null;

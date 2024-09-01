@@ -1,6 +1,7 @@
 import { AnswerState, useReviewSessionContext } from "@/app/context/reviewSessionContext";
 import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import { useState } from "react";
+import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 
 const HeaderReview = () => {
 
@@ -15,8 +16,21 @@ const HeaderReview = () => {
     };
 
     
-    function toggleFocusMode() {
+    async function toggleFocusMode() {
         setFocusModeEnabled(!focusModeEnabled);
+        const sessionExists = await doesSessionExist();
+        if (sessionExists) {
+            await fetch('/api/visually-similar/user/settings', {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    focusModeEnabled: !focusModeEnabled,
+                })
+            })
+        }
+        
         toggleMenu();
     }
 
