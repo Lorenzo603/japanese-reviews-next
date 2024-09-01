@@ -34,45 +34,34 @@ export default async function VisuallySimilarKanji({ params }) {
                     <div>
                         <section>
                             <h1 className="sr-only">Kanji</h1>
-                            <div className="japanese-font text-6xl pb-4">{kanji['slug']}</div>
+                            <div className="japanese-font text-9xl pb-4">{kanji['slug']}</div>
                         </section>
 
                         <section>
-                            <div className="py-2">
-                                <h2 className="text-2xl">Meanings</h2>
-                                <ul>
+                            <div className="py-4">
+                                <h2 className="sr-only text-2xl">Meanings</h2>
+                                <ul className="text-2xl">
                                     {
                                         kanji['meanings']
                                             .map(meaning => meaning['meaning'])
-                                            .map(meaning => {
-                                                return (
-                                                    <li key={meaning}>
-                                                        {meaning}
-                                                    </li>
-                                                )
-                                            })
+                                            .join(', ')
                                     }
                                 </ul>
                             </div>
                         </section>
 
                         <section>
-                            <h2 className="text-2xl">Readings</h2>
+                            <h2 className="sr-only text-2xl">Readings</h2>
                             {readingsKun.length > 0 &&
                                 <section>
-                                    <div className="py-2">
-                                        <h3 className="text-lg">Kun'yomi</h3>
-                                        <ul>
+                                    <div className="flex items-center py-2">
+                                        <h3 className="text-2xl font-bold">Kun:</h3>
+                                        <ul className="japanese-font text-2xl px-2">
                                             {
                                                 readingsKun
                                                     .map(reading => reading['reading'])
-                                                    .map(reading => {
-                                                        return (
-                                                            <li key={reading} className="japanese-font">
-                                                                {reading}
-                                                            </li>
-                                                        )
-                                                    })
+                                                    .join(', ')
+
                                             }
                                         </ul>
                                     </div>
@@ -81,19 +70,14 @@ export default async function VisuallySimilarKanji({ params }) {
 
                             {readingsOn.length > 0 &&
                                 <section>
-                                    <div className="py-2">
-                                        <h3 className="text-lg">On'yomi</h3>
-                                        <ul>
+                                    <div className="flex items-center py-2">
+                                        <h3 className="text-2xl font-bold">On:</h3>
+                                        <ul className="japanese-font text-2xl px-2">
                                             {
                                                 readingsOn
                                                     .map(reading => reading['reading'])
-                                                    .map(reading => {
-                                                        return (
-                                                            <li key={reading} className="japanese-font">
-                                                                {wanakana.toKatakana(reading)}
-                                                            </li>
-                                                        )
-                                                    })
+                                                    .map(wanakana.toKatakana)
+                                                    .join(', ')
                                             }
                                         </ul>
                                     </div>
@@ -102,19 +86,13 @@ export default async function VisuallySimilarKanji({ params }) {
 
                             {readingsNames.length > 0 &&
                                 <section>
-                                    <div className="py-2">
-                                        <h3 className="text-lg">Nanori</h3>
-                                        <ul>
+                                    <div className="flex items-center py-2">
+                                        <h3 className="text-2xl font-bold">Nanori:</h3>
+                                        <ul className="japanese-font text-2xl px-2">
                                             {
                                                 readingsNames
                                                     .map(reading => reading['reading'])
-                                                    .map(reading => {
-                                                        return (
-                                                            <li key={reading} className="japanese-font">
-                                                                {reading}
-                                                            </li>
-                                                        )
-                                                    })
+                                                    .join(', ')
                                             }
                                         </ul>
                                     </div>
@@ -124,7 +102,7 @@ export default async function VisuallySimilarKanji({ params }) {
                             {
                                 jlptLevel &&
                                 <section>
-                                    <div className="py-2">
+                                    <div className="py-4">
                                         <Link href={`/visually-similar/jlpt-level-${jlptLevel}`}>
                                             <span className="bg-gray-300 font-bold p-2 rounded-lg">
                                                 JLPT Level N{jlptLevel}
@@ -142,7 +120,7 @@ export default async function VisuallySimilarKanji({ params }) {
                         {
                             visuallySimilarKanjiIds.length > 0 &&
                             <section>
-                                <h1 className="text-2xl py-2">Visually Similar Kanji</h1>
+                                <h1 className="text-3xl pt-6 pb-4 font-bold">Visually Similar Kanji</h1>
                                 <ul className='flex flex-row flex-wrap m-0 p-0 gap-2'>
                                     {
                                         Array.from(visuallySimilarKanjiIds)

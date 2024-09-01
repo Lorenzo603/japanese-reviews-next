@@ -11,7 +11,7 @@ export const JlptLevelGroupComponent = async (props) => {
         <section>
             <div className='w-full'>
                 <div className="mx-auto max-w-7xl p-6">
-                    <h1 className='text-2xl py-4'>JLPT Level {props.jlptLevelNumber}</h1>
+                    <h1 className='text-4xl py-4'>JLPT Level {props.jlptLevelNumber}</h1>
                     <div className='flex flex-row 
                 mb-4
                 border-2 border-blue-900 rounded-md p-2
