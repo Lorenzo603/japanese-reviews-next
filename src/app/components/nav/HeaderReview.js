@@ -15,7 +15,7 @@ const HeaderReview = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    
+
     async function toggleFocusMode() {
         setFocusModeEnabled(!focusModeEnabled);
         const sessionExists = await doesSessionExist();
@@ -30,7 +30,7 @@ const HeaderReview = () => {
                 })
             })
         }
-        
+
         toggleMenu();
     }
 
@@ -63,23 +63,18 @@ const HeaderReview = () => {
                 >
                     <div className="p-4 flex flex-col h-full">
                         {/* Close Button */}
-                        <div className="flex">
-                            <button
-                                onClick={toggleMenu}
-                                className="bg-red-500 hover:bg-red-700 text-white font-bold rounded p-2 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                                </svg>
+                        <button onClick={toggleMenu} className="self-end text-pink-600 hover:text-pink-800 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
 
-                            </button>
-                        </div>
-
-                        <h2 className="text-xl font-bold mb-4">Menu</h2>
+                        <h2 className="text-xl font-bold mb-4 text-pink-800">Review Session</h2>
 
 
                         <ul className="flex-grow">
-                            <li className="flex items-center text-xl hover:bg-pink-50">
-                                <button className="w-full text-gray-800 py-2" onClick={toggleFocusMode}>
+                            <li className="flex items-center text-lg hover:bg-pink-50 text-gray-800 hover:text-pink-600 transition-colors duration-20">
+                                <button className="w-full py-2" onClick={toggleFocusMode}>
                                     <div className="flex flex-row gap-x-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
@@ -89,8 +84,8 @@ const HeaderReview = () => {
                                 </button>
                             </li>
                             <div aria-hidden="false" className="w-full h-1"><hr className="block bg-rim w-full h-1" /></div>
-                            <li className="flex items-center text-xl hover:bg-pink-50">
-                                <button className="w-full text-gray-800 py-2" onClick={endSession}>
+                            <li className="flex items-center text-lg hover:bg-pink-50 text-gray-800 hover:text-pink-600 transition-colors duration-20">
+                                <button className="w-full py-2" onClick={endSession}>
                                     <div className="flex flex-row gap-x-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
