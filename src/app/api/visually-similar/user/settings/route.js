@@ -2,7 +2,7 @@ import SuperTokens from "supertokens-node";
 import { NextResponse } from "next/server";
 import db from "../../../../../lib/drizzleOrmDb.js";
 import { withSession } from "supertokens-node/nextjs";
-import { backendConfig } from "@/app/(auth)/auth/config/backend.js";
+import { backendConfig } from "@/app/(auth)/sign-in/config/backend.js";
 import { userSettings } from "../../../../../../drizzle/schema.ts";
 import { eq } from "drizzle-orm";
 

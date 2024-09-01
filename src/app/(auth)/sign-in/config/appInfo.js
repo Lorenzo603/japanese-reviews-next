@@ -5,5 +5,5 @@ export const appInfo = {
   apiDomain: process.env.NEXT_PUBLIC_WEBSITE_DOMAIN,
   websiteDomain: process.env.NEXT_PUBLIC_WEBSITE_DOMAIN,
   apiBasePath: "/api/auth",
-  websiteBasePath: "/auth"
+  websiteBasePath: "/sign-in", // default: "/auth"
 }

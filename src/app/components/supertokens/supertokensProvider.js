@@ -2,7 +2,7 @@
 import React from 'react';
 import { SuperTokensWrapper } from 'supertokens-auth-react';
 import SuperTokensReact from 'supertokens-auth-react';
-import { frontendConfig, setRouter } from '../../(auth)/auth/config/frontend';
+import { frontendConfig, setRouter } from '../../(auth)/sign-in/config/frontend';
 import { usePathname, useRouter } from 'next/navigation';
 
 if (typeof window !== 'undefined') {
