@@ -15,7 +15,7 @@ export default function Home() {
       <div className="w-full">
         <section>
           <div className="bg-gradient-to-b from-sky-100 to-slate-50">
-            <h1 className="sr-only">Search</h1>
+            <h1 id="search" className="sr-only">Search</h1>
             <div className="flex justify-center p-4">
               <div>
                 <SearchComponent />

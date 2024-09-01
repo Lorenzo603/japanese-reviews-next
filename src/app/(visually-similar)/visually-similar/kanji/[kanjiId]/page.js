@@ -18,6 +18,9 @@ export default async function VisuallySimilarKanji({ params }) {
     const visuallySimilarKanjiIds = kanji['visually_similar_subject_ids'];
 
     function getJlptLevel(kanji) {
+        if (!kanji.hasOwnProperty('categories')) {
+            return null;
+        }
         const jlptCagtegories = kanji['categories'].filter(cat => cat.startsWith('jlpt'));
         if (jlptCagtegories.length > 0) {
             return jlptCagtegories[0].replace('jlpt', '');
