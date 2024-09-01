@@ -42,7 +42,7 @@ export default function VisuallySimilarReviewSettings() {
                 }
             }
         }
-        // loadUserSettings();
+        loadUserSettings();
     }, []);
 
     const loadUserSettingsFromDatabase = async () => {

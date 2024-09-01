@@ -9,17 +9,23 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
 
     const [promptSet, setPromptSet] = useState([]);
 
-    const [guessKanji, setGuessKanji] = useState(true);
+    const [guessKanji, setGuessKanji] = useState(null);
     const [multichoiceInput, setMultichoiceInput] = useState(null);
 
     // Go directly to next question upon clicking without seeing the success/wrong result
-    const [quickMode, setQuickMode] = useState(false);
+    const [quickMode, setQuickMode] = useState(null);
 
-    const [focusModeEnabled, setFocusModeEnabled] = useState(false);
-    
+    const [focusModeEnabled, setFocusModeEnabled] = useState(null);
+
     function loadInitialValue(localStorageKey, defaultvalue, setterCallback) {
         const storedValue = localStorage.getItem(localStorageKey);
+        // if (localStorageKey === 'multichoiceInput') {
+        //     console.log('multichoiceInput storedValue:', storedValue)
+        // }
         const storedValueJson = storedValue !== undefined && storedValue !== 'undefined' ? JSON.parse(storedValue) : null;
+        // if (localStorageKey === 'multichoiceInput') {
+        //     console.log('multichoiceInput localstorage:', storedValueJson)
+        // }
         setterCallback(storedValueJson !== null ? storedValueJson : defaultvalue);
     }
 
@@ -33,16 +39,24 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        localStorage.setItem('guessKanji', guessKanji)
+        if (isReady) {
+            localStorage.setItem('guessKanji', guessKanji)
+        }
     }, [guessKanji])
     useEffect(() => {
-        localStorage.setItem('multichoiceInput', multichoiceInput)
+        if (isReady) {
+            localStorage.setItem('multichoiceInput', multichoiceInput)
+        }
     }, [multichoiceInput])
     useEffect(() => {
-        localStorage.setItem('quickMode', quickMode)
+        if (isReady) {
+            localStorage.setItem('quickMode', quickMode)
+        }
     }, [quickMode])
     useEffect(() => {
-        localStorage.setItem('focusModeEnabled', focusModeEnabled)
+        if (isReady) {
+            localStorage.setItem('focusModeEnabled', focusModeEnabled)
+        }
     }, [focusModeEnabled])
 
     const providerValue = useMemo(() => ({
@@ -52,7 +66,7 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
         multichoiceInput, setMultichoiceInput,
         quickMode, setQuickMode,
         focusModeEnabled, setFocusModeEnabled
-        
+
     }), [promptSet, guessKanji, multichoiceInput, quickMode, focusModeEnabled]);
 
     return (
