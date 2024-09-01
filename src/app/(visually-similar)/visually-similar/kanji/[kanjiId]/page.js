@@ -104,7 +104,8 @@ export default async function VisuallySimilarKanji({ params }) {
                                 <section>
                                     <div className="py-4">
                                         <Link href={`/visually-similar/jlpt-level-${jlptLevel}`}>
-                                            <span className="bg-gray-300 font-bold p-2 rounded-lg">
+                                            <span className="bg-gray-300 font-bold p-2 rounded-lg
+                                                hover:bg-gray-200">
                                                 JLPT Level N{jlptLevel}
                                             </span>
                                         </Link>
