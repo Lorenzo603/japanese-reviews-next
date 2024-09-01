@@ -15,12 +15,12 @@ export const JlptLevelGroupComponent = async (props) => {
                     <div className='flex flex-row 
                 mb-4
                 border-2 border-blue-900 rounded-md p-2
-                bg-slate-50 text-blue-900
+                bg-blue-50 text-blue-900
                 items-center'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 mr-2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                         </svg>
-                        <p className='m-0'>Kanjis that have no visual similarities with any other kanji have been dimmed out</p>
+                        <p className='m-0'>Kanjis that have no visual similarities with any other kanji have been dimmed out.</p>
                     </div>
 
                     <div>
