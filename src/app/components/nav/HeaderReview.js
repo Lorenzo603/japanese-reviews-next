@@ -70,8 +70,6 @@ const HeaderReview = () => {
                         </button>
 
                         <h2 className="text-xl font-bold mb-4 text-pink-800">Review Session</h2>
-
-
                         <ul className="flex-grow">
                             <li className="flex items-center text-lg hover:bg-pink-50 text-gray-800 hover:text-pink-600 transition-colors duration-20">
                                 <button className="w-full py-2" onClick={toggleFocusMode}>
@@ -83,7 +81,7 @@ const HeaderReview = () => {
                                     </div>
                                 </button>
                             </li>
-                            <div aria-hidden="false" className="w-full h-1"><hr className="block bg-rim w-full h-1" /></div>
+                            <div aria-hidden="false" className="w-full h-1 py-2"><hr className="block bg-rim w-full h-1" /></div>
                             <li className="flex items-center text-lg hover:bg-pink-50 text-gray-800 hover:text-pink-600 transition-colors duration-20">
                                 <button className="w-full py-2" onClick={endSession}>
                                     <div className="flex flex-row gap-x-2">
