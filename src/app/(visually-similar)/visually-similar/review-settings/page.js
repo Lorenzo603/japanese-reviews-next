@@ -22,7 +22,7 @@ export default function VisuallySimilarReviewSettings() {
         multichoiceInput, setMultichoiceInput,
         quickMode, setQuickMode,
         setFocusModeEnabled,
-     } = useVisuallySimilarQuizContext();
+    } = useVisuallySimilarQuizContext();
 
     const { setAnswerState, setTotalAnswers, setTotalCorrect } = useReviewSessionContext();
 
@@ -148,6 +148,19 @@ export default function VisuallySimilarReviewSettings() {
             <div className="w-full">
                 <div className="mx-auto max-w-7xl p-6">
                     <div className="max-w-2xl py-4">
+                        <section>
+                            <div className="pb-6">
+                                <h1 className="sr-only">Resume Batch</h1>
+                                <p className="text-sm py-2">A previews unfinished review batch has been found, you can continue or start a new one:</p>
+                                <button className='bg-pink-500 text-white rounded-md p-2 hover:bg-pink-600 flex items-center justify-center gap-2'
+                                    onClick={() => handleLevelNumberClick(index)}>
+                                    <span className="inline">Resume Batch</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                        <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </section>
                         <section>
                             <h1 className="text-2xl">Review Settings</h1>
                             <div className="flex flex-col">
