@@ -4,7 +4,6 @@ import { SuperTokensProvider } from "../components/supertokens/supertokensProvid
 import HeaderComponent from '../components/nav/HeaderComponent';
 import FooterComponent from '../components/nav/FooterComponent';
 import { VisuallySimilarQuizContextProvider } from '../context/visuallySimilarQuizContext';
-import { ReviewSessionContextProvider } from '../context/reviewSessionContext';
 
 const inter = Inter({ subsets: ['latin'] })
 const notoSansJp = Noto_Sans_JP({
@@ -26,19 +25,17 @@ export default function RootLayout({ children }) {
       <SuperTokensProvider>
         <body className={`${inter.className} ${notoSansJp.variable} h-screen bg-slate-50 text-slate-900`}>
           <VisuallySimilarQuizContextProvider>
-            <ReviewSessionContextProvider>
-              <div className="relative flex flex-col h-full">
-                <div>
-                  <HeaderComponent />
-                </div>
-                <div className='flex-grow'>
-                  {children}
-                </div>
-                <div>
-                  <FooterComponent />
-                </div>
+            <div className="relative flex flex-col h-full">
+              <div>
+                <HeaderComponent />
               </div>
-            </ReviewSessionContextProvider>
+              <div className='flex-grow'>
+                {children}
+              </div>
+              <div>
+                <FooterComponent />
+              </div>
+            </div>
           </VisuallySimilarQuizContextProvider>
         </body>
       </SuperTokensProvider>

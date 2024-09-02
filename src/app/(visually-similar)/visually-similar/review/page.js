@@ -1,17 +1,18 @@
 'use client'
 
-import { AnswerState, useReviewSessionContext } from "@/app/context/reviewSessionContext";
-import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
+import { AnswerState, useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import Confetti from 'react-dom-confetti';
 
 export default function VisuallySimilarReview() {
 
-    const { promptSet, guessKanji, multichoiceInput, quickMode, focusModeEnabled } = useVisuallySimilarQuizContext();
-    const { answerState, setAnswerState,
+    const { promptSet, guessKanji, multichoiceInput, quickMode, focusModeEnabled,
+        answerState, setAnswerState,
         totalAnswers, setTotalAnswers,
-        totalCorrect, setTotalCorrect } = useReviewSessionContext();
+        totalCorrect, setTotalCorrect
+    } = useVisuallySimilarQuizContext();
+
 
     const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
     const [currentPrompt, setCurrentPrompt] = useState(promptSet[currentPromptIndex]);

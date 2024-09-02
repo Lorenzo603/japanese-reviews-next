@@ -4,6 +4,12 @@ import { createContext, useContext, useMemo, useState, useEffect } from "react";
 
 const VisuallySimilarQuizContext = createContext({})
 
+export const AnswerState = {
+    WAITING_RESPONSE: 0,
+    ANSWERED: 1,
+    FINISHED: 2,
+};
+
 export const VisuallySimilarQuizContextProvider = ({ children }) => {
     const [isReady, setIsReady] = useState(false);
 
@@ -16,6 +22,10 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
     const [quickMode, setQuickMode] = useState(null);
 
     const [focusModeEnabled, setFocusModeEnabled] = useState(null);
+
+    const [answerState, setAnswerState] = useState(AnswerState.WAITING_RESPONSE);
+    const [totalAnswers, setTotalAnswers] = useState(0);
+    const [totalCorrect, setTotalCorrect] = useState(0);
 
     function loadInitialValue(localStorageKey, defaultvalue, setterCallback) {
         const storedValue = localStorage.getItem(localStorageKey);
@@ -65,9 +75,15 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
         guessKanji, setGuessKanji,
         multichoiceInput, setMultichoiceInput,
         quickMode, setQuickMode,
-        focusModeEnabled, setFocusModeEnabled
+        focusModeEnabled, setFocusModeEnabled,
+        answerState, setAnswerState,
+        totalAnswers, setTotalAnswers,
+        totalCorrect, setTotalCorrect
 
-    }), [promptSet, guessKanji, multichoiceInput, quickMode, focusModeEnabled]);
+    }), [
+        promptSet, guessKanji, multichoiceInput, quickMode, focusModeEnabled,
+        answerState, totalAnswers, totalCorrect
+    ]);
 
     return (
         <VisuallySimilarQuizContext.Provider value={providerValue}>

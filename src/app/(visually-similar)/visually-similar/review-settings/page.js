@@ -1,7 +1,6 @@
 'use client'
 
-import { AnswerState, useReviewSessionContext } from "@/app/context/reviewSessionContext";
-import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
+import { AnswerState, useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { doesSessionExist } from "supertokens-auth-react/recipe/session";
@@ -22,9 +21,8 @@ export default function VisuallySimilarReviewSettings() {
         multichoiceInput, setMultichoiceInput,
         quickMode, setQuickMode,
         setFocusModeEnabled,
+        setAnswerState, setTotalAnswers, setTotalCorrect
     } = useVisuallySimilarQuizContext();
-
-    const { setAnswerState, setTotalAnswers, setTotalCorrect } = useReviewSessionContext();
 
     const router = useRouter();
 

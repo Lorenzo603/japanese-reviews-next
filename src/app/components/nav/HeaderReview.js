@@ -1,12 +1,12 @@
-import { AnswerState, useReviewSessionContext } from "@/app/context/reviewSessionContext";
-import { useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
+import { AnswerState, useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import { useState } from "react";
 import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 
 const HeaderReview = () => {
 
-    const { promptSet, focusModeEnabled, setFocusModeEnabled } = useVisuallySimilarQuizContext();
-    const { setAnswerState, totalAnswers, totalCorrect } = useReviewSessionContext();
+    const { promptSet, focusModeEnabled, setFocusModeEnabled,
+        setAnswerState, totalAnswers, totalCorrect
+     } = useVisuallySimilarQuizContext();
 
     const totalReviews = promptSet.length;
 
