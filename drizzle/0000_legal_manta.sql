@@ -9,7 +9,19 @@ CREATE TABLE IF NOT EXISTS "supertokens_apps" (
 CREATE TABLE IF NOT EXISTS "user_settings" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" char(36) NOT NULL,
-	"guess_kanji" boolean DEFAULT true NOT NULL
+	"guess_kanji" boolean DEFAULT true NOT NULL,
+	"multichoice_input" boolean DEFAULT true NOT NULL,
+	"quick_mode" boolean DEFAULT false NOT NULL,
+	"focus_mode_enabled" boolean DEFAULT false NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "user_reviews_active" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"user_id" char(36) NOT NULL,
+	"active" boolean DEFAULT true NOT NULL,
+	"created_at" TIMESTAMP,
+	"prompt_ids" VARCHAR(24)[],
+	"guess_kanji" boolean
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supertokens_roles" (

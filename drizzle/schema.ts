@@ -1,4 +1,4 @@
-import { pgTable, varchar, bigint, serial, char, boolean, index, foreignKey, primaryKey, text, unique, integer } from "drizzle-orm/pg-core"
+import { pgTable, varchar, bigint, serial, char, boolean, timestamp, index, foreignKey, primaryKey, text, unique, integer } from "drizzle-orm/pg-core"
   import { sql } from "drizzle-orm"
 
 
@@ -17,6 +17,15 @@ export const userSettings = pgTable("user_settings", {
 	multichoiceInput: boolean("multichoice_input").default(true).notNull(),
 	quickMode: boolean("quick_mode").default(false).notNull(),
 	focusModeEnabled: boolean("focus_mode_enabled").default(false).notNull(),
+});
+
+export const userReviewsActive = pgTable("user_reviews_active", {
+	id: serial("id").primaryKey().notNull(),
+	userId: char("user_id", { length: 36 }).notNull(),
+	active: boolean("active").default(true).notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }),
+	promptIds: varchar("prompt_ids", { length: 24 }).array(),
+	guessKanji: boolean("guess_kanji"),
 });
 
 export const supertokensRoles = pgTable("supertokens_roles", {
