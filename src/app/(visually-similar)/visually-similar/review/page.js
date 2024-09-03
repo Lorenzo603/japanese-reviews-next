@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import Confetti from 'react-dom-confetti';
 import AnswerButton from "./AnswerButton";
+import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 
 export default function VisuallySimilarReview() {
 
@@ -65,6 +66,23 @@ export default function VisuallySimilarReview() {
             }
         }
 
+    }
+
+    const updateUserReviewActive = async () => {
+        const sessionExists = await doesSessionExist();
+        if (sessionExists) {
+            await fetch('/api/visually-similar/quiz/prompts', {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    totalCorrect: totalCorrect,
+                    totalAnswers: totalAnswers,
+                    wrongAnswersIds: wrongAnswers.map(wrongAnswer => wrongAnswer['id']),
+                })
+            });
+        }
     }
 
     const moveToNextPrompt = () => {

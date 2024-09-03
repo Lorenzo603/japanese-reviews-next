@@ -21,7 +21,10 @@ CREATE TABLE IF NOT EXISTS "user_reviews_active" (
 	"active" boolean DEFAULT true NOT NULL,
 	"created_at" TIMESTAMP,
 	"prompt_ids" VARCHAR(24)[],
-	"guess_kanji" boolean
+	"guess_kanji" boolean,
+	"total_correct" integer DEFAULT 0,
+	"total_answers" integer DEFAULT 0,
+	"wrong_answers_ids" VARCHAR(24)[]
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supertokens_roles" (

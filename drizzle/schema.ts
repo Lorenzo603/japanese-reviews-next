@@ -1,4 +1,4 @@
-import { pgTable, varchar, bigint, serial, char, boolean, timestamp, index, foreignKey, primaryKey, text, unique, integer } from "drizzle-orm/pg-core"
+import { pgTable, varchar, bigint, serial, char, boolean, timestamp, integer, index, foreignKey, primaryKey, text, unique } from "drizzle-orm/pg-core"
   import { sql } from "drizzle-orm"
 
 
@@ -10,15 +10,6 @@ export const supertokensApps = pgTable("supertokens_apps", {
 	createdAtTime: bigint("created_at_time", { mode: "number" }),
 });
 
-export const userSettings = pgTable("user_settings", {
-	id: serial("id").primaryKey().notNull(),
-	userId: char("user_id", { length: 36 }).notNull(),
-	guessKanji: boolean("guess_kanji").default(true).notNull(),
-	multichoiceInput: boolean("multichoice_input").default(true).notNull(),
-	quickMode: boolean("quick_mode").default(false).notNull(),
-	focusModeEnabled: boolean("focus_mode_enabled").default(false).notNull(),
-});
-
 export const userReviewsActive = pgTable("user_reviews_active", {
 	id: serial("id").primaryKey().notNull(),
 	userId: char("user_id", { length: 36 }).notNull(),
@@ -26,6 +17,18 @@ export const userReviewsActive = pgTable("user_reviews_active", {
 	createdAt: timestamp("created_at", { mode: 'string' }),
 	promptIds: varchar("prompt_ids", { length: 24 }).array(),
 	guessKanji: boolean("guess_kanji"),
+	totalCorrect: integer("total_correct").default(0),
+	totalAnswers: integer("total_answers").default(0),
+	wrongAnswersIds: varchar("wrong_answers_ids", { length: 24 }).array(),
+});
+
+export const userSettings = pgTable("user_settings", {
+	id: serial("id").primaryKey().notNull(),
+	userId: char("user_id", { length: 36 }).notNull(),
+	guessKanji: boolean("guess_kanji").default(true).notNull(),
+	multichoiceInput: boolean("multichoice_input").default(true).notNull(),
+	quickMode: boolean("quick_mode").default(false).notNull(),
+	focusModeEnabled: boolean("focus_mode_enabled").default(false).notNull(),
 });
 
 export const supertokensRoles = pgTable("supertokens_roles", {

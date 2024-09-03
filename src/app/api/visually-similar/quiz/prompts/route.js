@@ -1,43 +1,54 @@
 import { getDictionary } from '@/app/components/backend/DictionaryLoaderComponent';
 import { NextResponse } from 'next/server'
 import db from "../../../../../lib/drizzleOrmDb.js";
-import { withSession } from 'supertokens-node/nextjs/index.js';
+import { withPreParsedRequestResponse, withSession } from 'supertokens-node/nextjs/index.js';
 import { ensureSuperTokensInit } from '@/app/(auth)/sign-in/config/backend.js';
 import { userReviewsActive } from '../../../../../../drizzle/schema.ts';
+import Session from "supertokens-node/recipe/session";
 
 ensureSuperTokensInit();
 
 export async function POST(request) {
-    console.log("Calculating Visually Similar PromptSet...");
-    const reqJson = await request.json();
-    const selectedLevel = reqJson.selectedLevel;
-    const guessKanji = reqJson.guessKanji;
+    return withPreParsedRequestResponse(request, async (baseRequest, baseResponse) => {
+        console.log("Calculating Visually Similar PromptSet...");
+        const session = await Session.getSession(baseRequest, baseResponse, { sessionRequired: false });
+        const reqJson = await request.json();
+        const selectedLevel = reqJson.selectedLevel;
+        const guessKanji = reqJson.guessKanji;
 
-    const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
-    let promptSet = fullKanjiDictionary
-        .filter(kanji => kanji['data']['level'] === selectedLevel)
-        .filter(kanji => kanji['data']['visually_similar_subject_ids'].length > 0)
-        .map(kanji => ({
-            id: kanji['id'],
-            prompt: guessKanji ? getFirstMeaning(kanji) : kanji['data']['slug'],
-            answers: buildAnswers(kanji, guessKanji, fullKanjiDictionary),
-            correctAnswer: guessKanji ? kanji['data']['slug'] : getFirstMeaning(kanji),
-        }));
+        const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
+        let promptSet = fullKanjiDictionary
+            .filter(kanji => kanji['data']['level'] === selectedLevel)
+            .filter(kanji => kanji['data']['visually_similar_subject_ids'].length > 0)
+            .map(kanji => ({
+                id: kanji['id'],
+                prompt: guessKanji ? getFirstMeaning(kanji) : kanji['data']['slug'],
+                answers: buildAnswers(kanji, guessKanji, fullKanjiDictionary),
+                correctAnswer: guessKanji ? kanji['data']['slug'] : getFirstMeaning(kanji),
+            }));
 
-    promptSet = shuffle(promptSet);
+        promptSet = shuffle(promptSet);
 
-    await db.insert(userReviewsActive)
-        .values(
-            {
-                userId: await getUserId(request),
-                active: true,
-                createdAt: new Date(),
-                promptIds: promptSet.map(kanji => kanji['id']),
-                guessKanji: guessKanji,
-            }
-        );
+        if (session !== undefined) {
+            await db.insert(userReviewsActive)
+                .values(
+                    {
+                        userId: session.getUserId(),
+                        active: true,
+                        createdAt: new Date(),
 
-    return NextResponse.json(promptSet);
+                        promptIds: promptSet.map(kanji => kanji['id']),
+                        guessKanji: guessKanji,
+                        totalAnswers: 0,
+                        totalCorrect: 0,
+                        wrongAnswersIds: [],
+                    }
+                );
+
+        }
+
+        return NextResponse.json(promptSet);
+    });
 }
 
 function buildAnswers(kanji, guessKanji, fullKanjiDictionary) {
@@ -62,7 +73,7 @@ function getFirstMeaning(kanji) {
     return kanji['data']['meanings'][0]['meaning']
 }
 
-async function getUserId(request) {
+export async function PATCH(request) {
     return withSession(request, async (err, session) => {
         if (err) {
             console.error(err);
@@ -70,9 +81,37 @@ async function getUserId(request) {
         }
 
         if (!session) {
-            return null;
+            return new NextResponse("Authentication required", { status: 401 });
         }
 
-        return session.getUserId();
+        const userId = session.getUserId();
+        console.log(`Updating active reviews for user: ${userId}`);
+
+        /**
+         * totalCorrect,
+         * totalAnswers,
+         * wrongAnswersIds,
+         */
+        const updatedFieldsObject = await request.json();
+        try {
+            const result = await db.update(userReviewsActive)
+                .set(updatedFieldsObject)
+                .where(
+                    and(
+                        eq(userReviewsActive.userId, userId),
+                        eq(userReviewsActive.active, true),
+                    )
+                );
+            if (result.rowCount === 0) {
+                console.warn('Record not found');
+                return NextResponse.json({ error: 'Bad request' }, { status: 400 })
+            }
+            return NextResponse.json({ message: 'OK' }, { status: 200 })
+        } catch (error) {
+            console.error(error);
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        }
+
     })
+
 }
