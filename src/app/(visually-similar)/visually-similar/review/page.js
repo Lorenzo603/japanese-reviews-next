@@ -4,21 +4,26 @@ import { AnswerState, useVisuallySimilarQuizContext } from "@/app/context/visual
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import Confetti from 'react-dom-confetti';
+import AnswerButton from "./AnswerButton";
 
 export default function VisuallySimilarReview() {
 
-    const { promptSet, guessKanji, multichoiceInput, quickMode, focusModeEnabled,
+    const NEUTRAL_COLOR_CLASSES = "bg-slate-50 text-black border-pink-400 hover:bg-pink-400 hover:text-white";
+    const CORRECT_COLOR_CLASSES = "bg-green-500 text-white border-green-700";
+    const WRONG_COLOR_CLASSES = "bg-red-500 text-white border-red-700";
+
+    const { promptSet, promptIndex, setPromptIndex,
+        guessKanji, quickMode, focusModeEnabled,
         answerState, setAnswerState,
         totalAnswers, setTotalAnswers,
-        totalCorrect, setTotalCorrect
+        totalCorrect, setTotalCorrect,
+        wrongAnswers, setWrongAnswers,
     } = useVisuallySimilarQuizContext();
-
-
-    const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
-    const [currentPrompt, setCurrentPrompt] = useState(promptSet[currentPromptIndex]);
-
-    const [wrongAnswers] = useState([]);
-
+    
+    const [currentPrompt, setCurrentPrompt] = useState(promptSet[promptIndex]);
+    
+    const [clickedButtonIdx, setClickedButtonIdx] = useState(null);
+    
     const totalReviews = promptSet.length;
 
     const handleKeyDownCallback = useCallback(handleKeyDown, [answerState]);
@@ -45,24 +50,13 @@ export default function VisuallySimilarReview() {
         if (answerState === AnswerState.WAITING_RESPONSE) {
             setAnswerState(AnswerState.ANSWERED);
             setTotalAnswers(totalAnswers + 1);
+            setClickedButtonIdx(idx);
             if (answer === currentPrompt["correctAnswer"]) {
                 console.log("Correct answer!");
                 setTotalCorrect(totalCorrect + 1);
-                const correctAnswerItem = document.getElementById(`answer-button-${idx}`);
-                colorItemCorrect(correctAnswerItem);
             } else {
                 console.log("Wrong answer");
-                wrongAnswers.push(currentPrompt);
-                const answersListItem = document.getElementById("answers-list");
-                for (let i = 0; i < answersListItem.children.length; i++) {
-                    const answerItem = answersListItem.children[i].children[0];
-                    if (answerItem.id === `answer-button-${idx}`) {
-                        colorItemWrong(answerItem);
-                    }
-                    if (answerItem.children[0].innerText === currentPrompt["correctAnswer"]) {
-                        colorItemCorrect(answerItem);
-                    }
-                }
+                setWrongAnswers([...wrongAnswers, currentPrompt]);
             }
             if (quickMode) {
                 moveToNextPrompt();
@@ -72,39 +66,33 @@ export default function VisuallySimilarReview() {
 
     }
 
-    function colorItemCorrect(item) {
-        item.classList.remove("bg-slate-50", "text-black", "border-pink-400", "hover:bg-pink-400", "hover:text-white");
-        item.classList.add("bg-green-500", "text-white", "border-green-700");
-    }
-
-    function colorItemWrong(item) {
-        item.classList.remove("bg-slate-50", "text-black", "border-pink-400", "hover:bg-pink-400", "hover:text-white");
-        item.classList.add("bg-red-500", "text-white", "border-red-700");
-    }
-
-    function colorItemNeutral(item) {
-        item.classList.remove("bg-green-500", "text-white", "border-green-700");
-        item.classList.remove("bg-red-500", "text-white", "border-red-700");
-        item.classList.add("bg-slate-50", "text-black", "border-pink-400", "hover:bg-pink-400", "hover:text-white");
-    }
-
-
     const moveToNextPrompt = () => {
-        if (currentPromptIndex < promptSet.length - 1) {
-            const answersListItem = document.getElementById("answers-list");
-            for (let i = 0; i < answersListItem.children.length; i++) {
-                const answerItem = answersListItem.children[i].children[0];
-                colorItemNeutral(answerItem);
-            }
+        if (promptIndex < promptSet.length - 1) {
             setAnswerState(AnswerState.WAITING_RESPONSE);
-            setCurrentPromptIndex(currentPromptIndex + 1);
-            setCurrentPrompt(promptSet[currentPromptIndex + 1]);
+            setPromptIndex(promptIndex + 1);
+            setCurrentPrompt(promptSet[promptIndex + 1]);
         } else {
             setAnswerState(AnswerState.FINISHED);
             if (totalCorrect === totalReviews) {
                 setIsExploding(true);
             }
         }
+    }
+
+    
+    function getCurrentColor(answerIdx) {
+        const correctAnswerIdx = currentPrompt["answers"].indexOf(currentPrompt["correctAnswer"]);
+        if (answerState === AnswerState.ANSWERED) {
+            if (answerIdx === correctAnswerIdx) {
+                return CORRECT_COLOR_CLASSES;
+            } else {
+                if (answerIdx === clickedButtonIdx) {
+                    return WRONG_COLOR_CLASSES;
+                }
+                return NEUTRAL_COLOR_CLASSES;
+            }
+        }
+        return NEUTRAL_COLOR_CLASSES;
     }
 
     function getCorrectPercentage() {
@@ -161,6 +149,8 @@ export default function VisuallySimilarReview() {
         perspective: '500px',
         colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'],
     };
+
+
 
     return (
         <main className="h-full flex-grow">
@@ -223,16 +213,12 @@ export default function VisuallySimilarReview() {
                                             {
                                                 currentPrompt["answers"].map((answer, idx) => {
                                                     return <li key={idx}>
-                                                        <button id={`answer-button-${idx}`}
-                                                            className='
-                                                    w-full bg-slate-50 text-black 
-                                                    p-2 
-                                                    rounded-md
-                                                    border-2 border-pink-400 
-                                                    hover:bg-pink-400 hover:text-white'
-                                                            onClick={() => handleUserAnswer(answer, idx)}>
-                                                            <span className={`${guessKanji ? "japanese-font text-4xl" : "text-2xl"}`}>{answer}</span>
-                                                        </button>
+                                                        <AnswerButton answer={answer}
+                                                            correctAnswer={currentPrompt["correctAnswer"]}
+                                                            answerState={answerState}
+                                                            guessKanji={guessKanji}
+                                                            handleUserAnswer={() => handleUserAnswer(answer, idx)}
+                                                            colorClass={getCurrentColor(idx)} />
                                                     </li>
                                                 })
                                             }

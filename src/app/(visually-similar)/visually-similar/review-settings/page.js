@@ -2,7 +2,7 @@
 
 import { AnswerState, useVisuallySimilarQuizContext } from "@/app/context/visuallySimilarQuizContext";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 
 export default function VisuallySimilarReviewSettings() {
@@ -17,45 +17,52 @@ export default function VisuallySimilarReviewSettings() {
     const SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME = "bg-pink-500 text-slate-100 shadow";
 
 
-    const { promptSet, setPromptSet,
+    const { setPromptSet,
+        setPromptIndex,
         guessKanji, setGuessKanji,
         multichoiceInput, setMultichoiceInput,
         quickMode, setQuickMode,
-        setFocusModeEnabled,
-        setAnswerState, setTotalAnswers, setTotalCorrect
+        setAnswerState, setTotalAnswers, setTotalCorrect, setWrongAnswers,
     } = useVisuallySimilarQuizContext();
+
+    const [canResumeBatch, setCanResumeBatch] = useState(false);
 
     const router = useRouter();
 
     useEffect(() => {
+        setPromptSet([]);
+        setPromptIndex(0);
         setTotalAnswers(0);
         setTotalCorrect(0);
         setAnswerState(AnswerState.WAITING_RESPONSE);
+        setWrongAnswers([]);
 
-        async function loadUserSettings() {
-            const sessionExists = await doesSessionExist();
-            if (sessionExists) {
-                const userSettings = await loadUserSettingsFromDatabase();
-                if (userSettings) {
-                    setGuessKanji(userSettings.guessKanji);
-                    setMultichoiceInput(userSettings.multichoiceInput);
-                    setQuickMode(userSettings.quickMode);
-                    setFocusModeEnabled(userSettings.focusModeEnabled);
-                }
-            }
-        }
-        loadUserSettings();
+        // async function loadUserSettings() {
+        //     const sessionExists = await doesSessionExist();
+        //     if (sessionExists) {
+        //         const userSettings = await loadUserSettingsFromDatabase();
+        //         if (userSettings) {
+        //             setGuessKanji(userSettings.guessKanji);
+        //             setMultichoiceInput(userSettings.multichoiceInput);
+        //             setQuickMode(userSettings.quickMode);
+        //             setFocusModeEnabled(userSettings.focusModeEnabled);
+        //         }
+        //     }
+        // }
+        // loadUserSettings();
 
-        async function loadActivePromptSet() {
-            const sessionExists = await doesSessionExist();
-            if (sessionExists) {
-                const activePrompSet = await loadActivePrompSetFromDatabase();
-                if (activePrompSet) {
-                    setPromptSet(activePrompSet);
-                }
-            }
-        }
-        loadActivePromptSet();
+        // async function loadActivePromptSet() {
+        //     const sessionExists = await doesSessionExist();
+        //     if (sessionExists) {
+        //         const activePrompSet = await loadActivePrompSetFromDatabase();
+        //         if (activePrompSet && activePrompSet.length > 0) {
+        //             setPromptSet(activePrompSet);
+        //             console.log('Active Prompt Set:', activePrompSet);
+        //             setCanResumeBatch(true);
+        //         }
+        //     }
+        // }
+        // loadActivePromptSet();
     }, []);
 
     const loadUserSettingsFromDatabase = async () => {
@@ -167,6 +174,7 @@ export default function VisuallySimilarReviewSettings() {
         })).json();
 
         console.log('promptSetResponse:', promptSetResponse);
+
         setPromptSet(promptSetResponse);
 
         router.push('/visually-similar/review');
@@ -184,7 +192,7 @@ export default function VisuallySimilarReviewSettings() {
                 <div className="mx-auto max-w-7xl p-6">
                     <div className="max-w-2xl py-4">
                         {
-                            promptSet.length > 0 &&
+                            canResumeBatch &&
                             <section>
                                 <div className="pb-6">
                                     <h1 className="sr-only">Resume Batch</h1>

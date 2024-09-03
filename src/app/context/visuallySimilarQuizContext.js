@@ -14,6 +14,7 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
     const [isReady, setIsReady] = useState(false);
 
     const [promptSet, setPromptSet] = useState([]);
+    const [promptIndex, setPromptIndex] = useState(0);
 
     const [guessKanji, setGuessKanji] = useState(null);
     const [multichoiceInput, setMultichoiceInput] = useState(null);
@@ -26,6 +27,7 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
     const [answerState, setAnswerState] = useState(AnswerState.WAITING_RESPONSE);
     const [totalAnswers, setTotalAnswers] = useState(0);
     const [totalCorrect, setTotalCorrect] = useState(0);
+    const [wrongAnswers, setWrongAnswers] = useState([]);
 
     function loadInitialValue(localStorageKey, defaultvalue, setterCallback) {
         const storedValue = localStorage.getItem(localStorageKey);
@@ -40,14 +42,32 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        loadInitialValue('promptSet', [], setPromptSet);
+        loadInitialValue('promptIndex', 0, setPromptIndex);
+
         loadInitialValue('guessKanji', true, setGuessKanji);
         loadInitialValue('multichoiceInput', true, setMultichoiceInput);
         loadInitialValue('quickMode', false, setQuickMode);
         loadInitialValue('focusModeEnabled', false, setFocusModeEnabled);
 
+        loadInitialValue('answerState', AnswerState.WAITING_RESPONSE, setAnswerState);
+        loadInitialValue('totalAnswers', 0, setTotalAnswers);
+        loadInitialValue('totalCorrect', 0, setTotalCorrect);
+        loadInitialValue('wrongAnswers', [], setWrongAnswers);
+
         setIsReady(true);
     }, [])
 
+    useEffect(() => {
+        if (isReady) {
+            localStorage.setItem('promptSet', JSON.stringify(promptSet))
+        }
+    }, [promptSet])
+    useEffect(() => {
+        if (isReady) {
+            localStorage.setItem('promptIndex', promptIndex)
+        }
+    }, [promptIndex])
     useEffect(() => {
         if (isReady) {
             localStorage.setItem('guessKanji', guessKanji)
@@ -69,8 +89,30 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
         }
     }, [focusModeEnabled])
 
+    useEffect(() => {
+        if (isReady) {
+            localStorage.setItem('answerState', answerState)
+        }
+    }, [answerState])
+    useEffect(() => {
+        if (isReady) {
+            localStorage.setItem('totalAnswers', totalAnswers)
+        }
+    }, [totalAnswers])
+    useEffect(() => {
+        if (isReady) {
+            localStorage.setItem('totalCorrect', totalCorrect)
+        }
+    }, [totalCorrect])
+    useEffect(() => {
+        if (isReady) {
+            localStorage.setItem('wrongAnswers', JSON.stringify(wrongAnswers))
+        }
+    }, [wrongAnswers])
+
     const providerValue = useMemo(() => ({
         promptSet, setPromptSet,
+        promptIndex, setPromptIndex,
 
         guessKanji, setGuessKanji,
         multichoiceInput, setMultichoiceInput,
@@ -78,11 +120,13 @@ export const VisuallySimilarQuizContextProvider = ({ children }) => {
         focusModeEnabled, setFocusModeEnabled,
         answerState, setAnswerState,
         totalAnswers, setTotalAnswers,
-        totalCorrect, setTotalCorrect
+        totalCorrect, setTotalCorrect,
+        wrongAnswers, setWrongAnswers,
 
     }), [
-        promptSet, guessKanji, multichoiceInput, quickMode, focusModeEnabled,
-        answerState, totalAnswers, totalCorrect
+        promptSet, promptIndex, 
+        guessKanji, multichoiceInput, quickMode, focusModeEnabled,
+        answerState, totalAnswers, totalCorrect, wrongAnswers,
     ]);
 
     return (
