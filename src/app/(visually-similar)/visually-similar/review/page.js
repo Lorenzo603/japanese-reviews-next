@@ -20,11 +20,11 @@ export default function VisuallySimilarReview() {
         totalCorrect, setTotalCorrect,
         wrongAnswers, setWrongAnswers,
     } = useVisuallySimilarQuizContext();
-    
+
     const [currentPrompt, setCurrentPrompt] = useState(promptSet[promptIndex]);
-    
+
     const [clickedButtonIdx, setClickedButtonIdx] = useState(null);
-    
+
     const totalReviews = promptSet.length;
 
     const handleKeyDownCallback = useCallback(handleKeyDown, [answerState]);
@@ -80,7 +80,7 @@ export default function VisuallySimilarReview() {
         }
     }
 
-    
+
     function getAnswerButtonColor(answerIdx) {
         const correctAnswerIdx = currentPrompt["answers"].indexOf(currentPrompt["correctAnswer"]);
         if (answerState === AnswerState.ANSWERED) {
@@ -228,14 +228,17 @@ export default function VisuallySimilarReview() {
                                             !quickMode &&
                                             <div className="flex flex-col items-center p-10">
                                                 <button
-                                                    className='
-                                                    w-20
-                                                    bg-pink-500 text-white 
-                                                    p-2 
-                                                    rounded-md
-                                                    border-2 border-pink-700 
-                                                    hover:bg-pink-700 hover:text-white'
-                                                    onClick={() => moveToNextPrompt()}>
+                                                    className={`
+                                                    w-20 text-white p-2 rounded-md border-2 
+                                                    ${answerState === AnswerState.WAITING_RESPONSE
+                                                            ? "bg-gray-300 border-gray-400 cursor-default"
+                                                            : "bg-pink-500 border-pink-700 hover:bg-pink-700 hover:text-white"}
+                                                    `}
+                                                    onClick={() => {
+                                                        if (answerState === AnswerState.ANSWERED) {
+                                                            moveToNextPrompt()
+                                                        }
+                                                    }}>
                                                     Next&nbsp;&gt;
                                                 </button>
                                                 {
