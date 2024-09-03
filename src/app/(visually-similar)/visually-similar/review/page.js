@@ -8,7 +8,8 @@ import AnswerButton from "./AnswerButton";
 
 export default function VisuallySimilarReview() {
 
-    const NEUTRAL_COLOR_CLASSES = "bg-slate-50 text-black border-pink-400 hover:bg-pink-400 hover:text-white";
+    const NEUTRAL_COLOR_CLASSES = "bg-slate-50 text-black border-pink-400";
+    const NEUTRAL_HOVER_COLOR_CLASSES = NEUTRAL_COLOR_CLASSES + " hover:bg-pink-400 hover:text-white";
     const CORRECT_COLOR_CLASSES = "bg-green-500 text-white border-green-700";
     const WRONG_COLOR_CLASSES = "bg-red-500 text-white border-red-700";
 
@@ -80,7 +81,7 @@ export default function VisuallySimilarReview() {
     }
 
     
-    function getCurrentColor(answerIdx) {
+    function getAnswerButtonColor(answerIdx) {
         const correctAnswerIdx = currentPrompt["answers"].indexOf(currentPrompt["correctAnswer"]);
         if (answerState === AnswerState.ANSWERED) {
             if (answerIdx === correctAnswerIdx) {
@@ -92,7 +93,7 @@ export default function VisuallySimilarReview() {
                 return NEUTRAL_COLOR_CLASSES;
             }
         }
-        return NEUTRAL_COLOR_CLASSES;
+        return NEUTRAL_HOVER_COLOR_CLASSES;
     }
 
     function getCorrectPercentage() {
@@ -218,7 +219,7 @@ export default function VisuallySimilarReview() {
                                                             answerState={answerState}
                                                             guessKanji={guessKanji}
                                                             handleUserAnswer={() => handleUserAnswer(answer, idx)}
-                                                            colorClass={getCurrentColor(idx)} />
+                                                            colorClass={getAnswerButtonColor(idx)} />
                                                     </li>
                                                 })
                                             }
