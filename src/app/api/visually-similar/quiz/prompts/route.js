@@ -9,6 +9,74 @@ import { and, eq } from 'drizzle-orm';
 
 ensureSuperTokensInit();
 
+export async function GET(request) {
+    return withSession(request, async (err, session) => {
+        if (err) {
+            console.error(err);
+            return NextResponse.json(err, { status: 500 });
+        }
+
+        const userId = session.getUserId();
+        console.log(`Getting active prompsets for user: ${userId}`);
+
+        try {
+            const queryResult = await db
+                .select()
+                .from(userReviewsActive)
+                .where(
+                    and(
+                        eq(userReviewsActive.userId, userId),
+                        eq(userReviewsActive.active, true),
+                    )
+                );
+
+            if (queryResult.length === 0) {
+                console.warn('No records found when getting userSettings of user: ' + userId);
+                return NextResponse.json({}, { status: 200 })
+            }
+            if (queryResult.length > 1) {
+                console.warn('Multiple active prompt sets found for user: ' + userId);
+            }
+
+            const result = queryResult[0];
+
+            const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
+
+            return NextResponse.json({
+                prompts: result.promptIds
+                    .map(id => fullKanjiDictionary.find(k => k['id'] === parseInt(id)))
+                    .map(kanji => {
+                        return {
+                            id: kanji['id'],
+                            prompt: result.guessKanji ? getFirstMeaning(kanji) : kanji['data']['slug'],
+                            answers: buildAnswers(kanji, result.guessKanji, fullKanjiDictionary),
+                            correctAnswer: result.guessKanji ? kanji['data']['slug'] : getFirstMeaning(kanji),
+                        }
+                    }),
+                guessKanji: result.guessKanji,
+                totalAnswers: result.totalAnswers,
+                totalCorrect: result.totalCorrect,
+                // TODO: improvement: only save prompt and correct answer
+                wrongAnswers: result.wrongAnswersIds
+                    .map(id => fullKanjiDictionary.find(k => k['id'] === parseInt(id)))
+                    .map(kanji => {
+                        return {
+                            id: kanji['id'],
+                            prompt: result.guessKanji ? getFirstMeaning(kanji) : kanji['data']['slug'],
+                            answers: buildAnswers(kanji, result.guessKanji, fullKanjiDictionary),
+                            correctAnswer: result.guessKanji ? kanji['data']['slug'] : getFirstMeaning(kanji),
+                        }
+                    }
+                    ),
+            }, { status: 200 })
+        } catch (error) {
+            console.error(error);
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        }
+    });
+}
+
+
 export async function POST(request) {
     return withPreParsedRequestResponse(request, async (baseRequest, baseResponse) => {
         console.log("Calculating Visually Similar PromptSet...");

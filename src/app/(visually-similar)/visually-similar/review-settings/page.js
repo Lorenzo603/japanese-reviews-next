@@ -64,6 +64,9 @@ export default function VisuallySimilarReviewSettings() {
         //     }
         // }
         // loadActivePromptSet();
+
+        //TODO: CHECK if batch exists: TRUE or FALSE
+        // TODO: spinner on Resume Batch button
     }, []);
 
     const loadUserSettingsFromDatabase = async () => {
@@ -88,9 +91,10 @@ export default function VisuallySimilarReviewSettings() {
         }
     }
 
+
     const loadActivePrompSetFromDatabase = async () => {
         try {
-            const response = await fetch('/api/visually-similar/user/active-prompt-set', {
+            const response = await fetch('/api/visually-similar/quiz/prompts', {
                 method: 'GET',
                 headers: {
                     "Content-Type": "application/json",
@@ -102,6 +106,7 @@ export default function VisuallySimilarReviewSettings() {
             }
 
             const resJson = await response.json();
+
             return resJson;
         } catch (error) {
             console.error('Error loading user settings:', error);
@@ -182,8 +187,31 @@ export default function VisuallySimilarReviewSettings() {
 
     }
 
-    const resumeBatch = () => {
-        router.push('/visually-similar/review');
+    const resumeBatch = async () => {
+
+        let activePromptSetResponse = await (await fetch('/api/visually-similar/quiz/prompts', {
+            method: 'get',
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })).json();
+
+        if (activePromptSetResponse
+                && activePromptSetResponse.hasOwnProperty('prompts') 
+                && activePromptSetResponse.prompts.length > 0) {
+            setPromptSet(activePromptSetResponse.prompts);
+            setGuessKanji(activePromptSetResponse.guessKanji);
+            setTotalAnswers(activePromptSetResponse.totalAnswers);
+            setTotalCorrect(activePromptSetResponse.totalCorrect);
+            setWrongAnswers(activePromptSetResponse.wrongAnswers);
+
+            setPromptIndex(activePromptSetResponse.totalAnswers);
+            
+            router.push('/visually-similar/review');
+        } else {
+            //TODO: show error banner
+        }
+
     }
 
 
@@ -193,13 +221,13 @@ export default function VisuallySimilarReviewSettings() {
                 <div className="mx-auto max-w-7xl p-6">
                     <div className="max-w-2xl py-4">
                         {
-                            canResumeBatch &&
+                            !canResumeBatch &&
                             <section>
                                 <div className="pb-6">
                                     <h1 className="sr-only">Resume Batch</h1>
                                     <p className="text-sm py-2">A previews unfinished review batch has been found, you can continue or start a new one:</p>
                                     <button className='bg-pink-500 text-white rounded-md p-2 hover:bg-pink-600 flex items-center justify-center gap-2'
-                                        onClick={() => resumeBatch(index)}>
+                                        onClick={() => resumeBatch()}>
                                         <span className="inline">Resume Batch</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                                             <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
