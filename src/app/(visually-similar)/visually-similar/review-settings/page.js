@@ -4,6 +4,7 @@ import { AnswerState, useVisuallySimilarQuizContext } from "@/app/context/visual
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { doesSessionExist } from "supertokens-auth-react/recipe/session";
+import LevelNumberButton from "./LevelNumberButton";
 
 export default function VisuallySimilarReviewSettings() {
 
@@ -293,9 +294,8 @@ export default function VisuallySimilarReviewSettings() {
                             <ol className='grid grid-cols-6 md:grid-cols-10 text-center gap-2'>
                                 {Array.from({ length: 60 }, (_, i) => i + 1).map(index => {
                                     return (
-                                        <li key={'level-number-' + index} >
-                                            <button className='bg-pink-500 text-white rounded-md p-2 hover:bg-pink-600 w-full'
-                                                onClick={() => handleLevelNumberClick(index)}>{index}</button>
+                                        <li key={`level-number-${index}`} >
+                                            <LevelNumberButton index={index} handleLevelNumberClick={handleLevelNumberClick} />
                                         </li>
                                     );
                                 })}
