@@ -49,17 +49,25 @@ export default function VisuallySimilarReview() {
 
 
     const handleUserAnswer = async (answer, idx) => {
+        let updatedTotalCorrect = totalCorrect;
+        let updatedTotalAnswers = totalAnswers;
+        let updatedWrongAnswers = wrongAnswers;
+
         if (answerState === AnswerState.WAITING_RESPONSE) {
             setAnswerState(AnswerState.ANSWERED);
-            setTotalAnswers(totalAnswers + 1);
+            updatedTotalAnswers = totalAnswers + 1;
+            setTotalAnswers(updatedTotalAnswers);
             setClickedButtonIdx(idx);
             if (answer === currentPrompt["correctAnswer"]) {
                 console.log("Correct answer!");
-                setTotalCorrect(totalCorrect + 1);
+                updatedTotalCorrect = totalCorrect + 1;
+                setTotalCorrect(updatedTotalCorrect);
             } else {
                 console.log("Wrong answer");
-                setWrongAnswers([...wrongAnswers, currentPrompt]);
+                updatedWrongAnswers = [...wrongAnswers, currentPrompt];
+                setWrongAnswers(updatedWrongAnswers);
             }
+            updateUserReviewActive(updatedTotalCorrect, updatedTotalAnswers, updatedWrongAnswers);
             if (quickMode) {
                 moveToNextPrompt();
                 return;
@@ -68,7 +76,7 @@ export default function VisuallySimilarReview() {
 
     }
 
-    const updateUserReviewActive = async () => {
+    const updateUserReviewActive = async (updatedTotalCorrect, updatedTotalAnswers, updatedWrongAnswers) => {
         const sessionExists = await doesSessionExist();
         if (sessionExists) {
             await fetch('/api/visually-similar/quiz/prompts', {
@@ -77,9 +85,9 @@ export default function VisuallySimilarReview() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    totalCorrect: totalCorrect,
-                    totalAnswers: totalAnswers,
-                    wrongAnswersIds: wrongAnswers.map(wrongAnswer => wrongAnswer['id']),
+                    totalCorrect: updatedTotalCorrect,
+                    totalAnswers: updatedTotalAnswers,
+                    wrongAnswersIds: updatedWrongAnswers.map(wrongAnswer => wrongAnswer['id']),
                 })
             });
         }

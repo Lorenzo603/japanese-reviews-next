@@ -5,6 +5,7 @@ import { withPreParsedRequestResponse, withSession } from 'supertokens-node/next
 import { ensureSuperTokensInit } from '@/app/(auth)/sign-in/config/backend.js';
 import { userReviewsActive } from '../../../../../../drizzle/schema.ts';
 import Session from "supertokens-node/recipe/session";
+import { and, eq } from 'drizzle-orm';
 
 ensureSuperTokensInit();
 
