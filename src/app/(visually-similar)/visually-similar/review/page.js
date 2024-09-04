@@ -15,7 +15,8 @@ export default function VisuallySimilarReview() {
     const WRONG_COLOR_CLASSES = "bg-red-500 text-white border-red-700";
 
     const { promptSet, promptIndex, setPromptIndex,
-        guessKanji, quickMode, focusModeEnabled,
+        guessKanji, multichoiceInput, 
+        quickMode, focusModeEnabled,
         answerState, setAnswerState,
         totalAnswers, setTotalAnswers,
         totalCorrect, setTotalCorrect,

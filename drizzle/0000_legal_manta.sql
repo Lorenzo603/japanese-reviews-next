@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS "user_reviews_active" (
 	"created_at" TIMESTAMP,
 	"prompt_ids" VARCHAR(24)[],
 	"guess_kanji" boolean,
+	"multichoice_input" boolean,
 	"total_correct" integer DEFAULT 0,
 	"total_answers" integer DEFAULT 0,
 	"wrong_answers_ids" VARCHAR(24)[]

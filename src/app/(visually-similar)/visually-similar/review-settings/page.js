@@ -201,6 +201,7 @@ export default function VisuallySimilarReviewSettings() {
                 && activePromptSetResponse.prompts.length > 0) {
             setPromptSet(activePromptSetResponse.prompts);
             setGuessKanji(activePromptSetResponse.guessKanji);
+            setMultichoiceInput(activePromptSetResponse.multichoiceInput);
             setTotalAnswers(activePromptSetResponse.totalAnswers);
             setTotalCorrect(activePromptSetResponse.totalCorrect);
             setWrongAnswers(activePromptSetResponse.wrongAnswers);

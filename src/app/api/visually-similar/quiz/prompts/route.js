@@ -54,6 +54,7 @@ export async function GET(request) {
                         }
                     }),
                 guessKanji: result.guessKanji,
+                multichoiceInput: result.multichoiceInput,
                 totalAnswers: result.totalAnswers,
                 totalCorrect: result.totalCorrect,
                 // TODO: improvement: only save prompt and correct answer
@@ -84,6 +85,7 @@ export async function POST(request) {
         const reqJson = await request.json();
         const selectedLevel = reqJson.selectedLevel;
         const guessKanji = reqJson.guessKanji;
+        const multichoiceInput = reqJson.multichoiceInput;
 
         const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
         let promptSet = fullKanjiDictionary
@@ -108,6 +110,7 @@ export async function POST(request) {
 
                         promptIds: promptSet.map(kanji => kanji['id']),
                         guessKanji: guessKanji,
+                        multichoiceInput: multichoiceInput,
                         totalAnswers: 0,
                         totalCorrect: 0,
                         wrongAnswersIds: [],
