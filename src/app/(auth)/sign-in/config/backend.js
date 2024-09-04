@@ -5,6 +5,7 @@ import SessionNode from 'supertokens-node/recipe/session'
 import { appInfo } from './appInfo'
 import Dashboard from "supertokens-node/recipe/dashboard";
 import UserRoles from "supertokens-node/recipe/userroles"
+import { addUserSettingsUponRegistration } from "@/app/components/visually-similar/registration/RegistrationHandler";
 
 export const backendConfig = () => {
   return {
@@ -17,7 +18,30 @@ export const backendConfig = () => {
     },
     appInfo,
     recipeList: [
-      EmailPasswordNode.init(),
+      EmailPasswordNode.init({
+        override: {
+          functions: (originalImplementation) => {
+            return {
+              ...originalImplementation,
+
+              // override the email password sign up function
+              signUp: async function (input) {
+                // some pre sign up logic
+
+                let response = await originalImplementation.signUp(input);
+                if (response.status === "OK" && response.user.loginMethods.length === 1 && input.session === undefined) {
+                  addUserSettingsUponRegistration(response.user.id);
+
+                  // TODO: registration email
+                }
+
+                return response;
+              },
+
+            }
+          }
+        }
+      }),
       ThirdPartyNode.init({
         // We have provided you with development keys which you can use for testing.
         // IMPORTANT: Please replace them with your own OAuth keys for production use.
