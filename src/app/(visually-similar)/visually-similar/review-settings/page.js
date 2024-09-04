@@ -23,6 +23,7 @@ export default function VisuallySimilarReviewSettings() {
         guessKanji, setGuessKanji,
         multichoiceInput, setMultichoiceInput,
         quickMode, setQuickMode,
+        setFocusModeEnabled,
         setAnswerState, setTotalAnswers, setTotalCorrect, setWrongAnswers,
     } = useVisuallySimilarQuizContext();
 
@@ -38,19 +39,19 @@ export default function VisuallySimilarReviewSettings() {
         setAnswerState(AnswerState.WAITING_RESPONSE);
         setWrongAnswers([]);
 
-        // async function loadUserSettings() {
-        //     const sessionExists = await doesSessionExist();
-        //     if (sessionExists) {
-        //         const userSettings = await loadUserSettingsFromDatabase();
-        //         if (userSettings) {
-        //             setGuessKanji(userSettings.guessKanji);
-        //             setMultichoiceInput(userSettings.multichoiceInput);
-        //             setQuickMode(userSettings.quickMode);
-        //             setFocusModeEnabled(userSettings.focusModeEnabled);
-        //         }
-        //     }
-        // }
-        // loadUserSettings();
+        async function loadUserSettings() {
+            const sessionExists = await doesSessionExist();
+            if (sessionExists) {
+                const userSettings = await loadUserSettingsFromDatabase();
+                if (userSettings) {
+                    setGuessKanji(userSettings.guessKanji);
+                    setMultichoiceInput(userSettings.multichoiceInput);
+                    setQuickMode(userSettings.quickMode);
+                    setFocusModeEnabled(userSettings.focusModeEnabled);
+                }
+            }
+        }
+        loadUserSettings();
 
         async function loadActivePromptSet() {
             const sessionExists = await doesSessionExist();
@@ -60,7 +61,6 @@ export default function VisuallySimilarReviewSettings() {
         }
         loadActivePromptSet();
 
-        // TODO: spinner on Resume Batch button
     }, []);
 
     const loadUserSettingsFromDatabase = async () => {
@@ -105,14 +105,6 @@ export default function VisuallySimilarReviewSettings() {
                 && activePromptSetResponseJson.hasOwnProperty('prompts')
                 && activePromptSetResponseJson.prompts.length > 0) {
                 setPromptSet(activePromptSetResponseJson.prompts);
-                setGuessKanji(activePromptSetResponseJson.guessKanji);
-                setMultichoiceInput(activePromptSetResponseJson.multichoiceInput);
-                setTotalAnswers(activePromptSetResponseJson.totalAnswers);
-                setTotalCorrect(activePromptSetResponseJson.totalCorrect);
-                setWrongAnswers(activePromptSetResponseJson.wrongAnswers);
-
-                setPromptIndex(activePromptSetResponseJson.totalAnswers);
-
                 setCanResumeBatch(true);
             }
 
@@ -197,7 +189,38 @@ export default function VisuallySimilarReviewSettings() {
     }
 
     const resumeBatch = async () => {
-        router.push('/visually-similar/review');
+        try {
+            const activePromptSetResponse = await fetch('/api/visually-similar/quiz/prompts', {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            if (!activePromptSetResponse.ok) {
+                throw new Error(`HTTP error status: ${activePromptSetResponse.status}`);
+            }
+
+            const activePromptSetResponseJson = await activePromptSetResponse.json();
+            if (activePromptSetResponseJson
+                && activePromptSetResponseJson.hasOwnProperty('prompts')
+                && activePromptSetResponseJson.prompts.length > 0) {
+                setPromptSet(activePromptSetResponseJson.prompts);
+                setGuessKanji(activePromptSetResponseJson.guessKanji);
+                setMultichoiceInput(activePromptSetResponseJson.multichoiceInput);
+                setTotalAnswers(activePromptSetResponseJson.totalAnswers);
+                setTotalCorrect(activePromptSetResponseJson.totalCorrect);
+                setWrongAnswers(activePromptSetResponseJson.wrongAnswers);
+
+                setPromptIndex(activePromptSetResponseJson.totalAnswers);
+
+            }
+
+            router.push('/visually-similar/review');
+        } catch (error) {
+            console.error('Error loading active prompt set:', error);
+            return null;
+        }
     }
 
 
@@ -228,7 +251,7 @@ export default function VisuallySimilarReviewSettings() {
                             <div className="flex flex-col">
                                 <div className="flex flex-row">
                                     <div className="flex flex-col py-4">
-                                        <div className="p-2">
+                                        <div className="py-2">
                                             Guess Mode:
                                         </div>
                                         <div id={GUESS_MODE_SEGMENT_CONTROL_ID}
@@ -252,7 +275,7 @@ export default function VisuallySimilarReviewSettings() {
                                 </div>
                                 <div className="flex flex-row">
                                     <div className="flex flex-col py-4">
-                                        <div className="p-2">
+                                        <div className="py-2">
                                             Input Method:
                                         </div>
                                         <div id={INPUT_METHOD_SEGMENT_CONTROL_ID}

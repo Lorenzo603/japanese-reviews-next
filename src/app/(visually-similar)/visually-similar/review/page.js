@@ -268,7 +268,7 @@ export default function VisuallySimilarReview() {
                                             }
                                         </ul>
                                         {
-                                            !quickMode &&
+                                            (!quickMode || (quickMode && answerState === AnswerState.ANSWERED)) &&
                                             <div className="flex flex-col items-center p-10">
                                                 <button
                                                     className={`
