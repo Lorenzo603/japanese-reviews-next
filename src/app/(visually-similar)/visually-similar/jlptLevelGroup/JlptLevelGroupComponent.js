@@ -1,5 +1,5 @@
 import { getDictionary } from '@/app/components/backend/DictionaryLoaderComponent';
-import KanjiCardLinkComponent from '../KanjiCardLinkComponent';
+import KanjiCardLinkComponent from './KanjiCardLinkComponent';
 
 export const JlptLevelGroupComponent = async (props) => {
 

@@ -1,5 +1,5 @@
 import { getDictionary } from "@/app/components/backend/DictionaryLoaderComponent";
-import KanjiCardLinkComponent from "@/app/components/visually-similar/KanjiCardLinkComponent";
+import KanjiCardLinkComponent from "@/app/(visually-similar)/visually-similar/jlptLevelGroup/KanjiCardLinkComponent";
 import Link from "next/link";
 var wanakana = require('wanakana');
 

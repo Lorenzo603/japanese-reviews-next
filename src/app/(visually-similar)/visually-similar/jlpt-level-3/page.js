@@ -1,4 +1,4 @@
-import JlptLevelGroupComponent from '@/app/components/visually-similar/jlptLevelGroup/JlptLevelGroupComponent';
+import JlptLevelGroupComponent from '@/app/(visually-similar)/visually-similar/jlptLevelGroup/JlptLevelGroupComponent';
 
 export default function VisuallySimilarJlptLevel3() {
 
