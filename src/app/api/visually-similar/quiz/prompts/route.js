@@ -163,6 +163,10 @@ export async function PATCH(request) {
          * totalCorrect,
          * totalAnswers,
          * wrongAnswersIds,
+         * 
+         * or 
+         * 
+         * active=false
          */
         const updatedFieldsObject = await request.json();
         try {

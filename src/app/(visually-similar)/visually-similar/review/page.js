@@ -101,11 +101,27 @@ export default function VisuallySimilarReview() {
             setCurrentPrompt(promptSet[promptIndex + 1]);
         } else {
             setAnswerState(AnswerState.FINISHED);
+            updateUserReviewAsInactive();
             if (totalCorrect === totalReviews) {
                 setIsExploding(true);
             }
         }
     }
+
+    const updateUserReviewAsInactive = async () => {
+        const sessionExists = await doesSessionExist();
+        if (sessionExists) {
+            await fetch('/api/visually-similar/quiz/prompts', {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    active: false,
+                })
+            });
+        }
+    }   
 
 
     function getAnswerButtonColor(answerIdx) {
