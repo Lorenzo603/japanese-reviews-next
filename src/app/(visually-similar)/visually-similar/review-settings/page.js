@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 import LevelNumberButton from "./LevelNumberButton";
+import ContinueModal from "@/app/components/modals/ContinueModal";
 
 export default function VisuallySimilarReviewSettings() {
 
@@ -28,6 +29,8 @@ export default function VisuallySimilarReviewSettings() {
     } = useVisuallySimilarQuizContext();
 
     const [canResumeBatch, setCanResumeBatch] = useState(false);
+    const [showContinueModal, setShowContinueModal] = useState(false);
+    const [selectedLevel, setSelectedLevel] = useState(1);
 
     const router = useRouter();
 
@@ -166,15 +169,27 @@ export default function VisuallySimilarReviewSettings() {
     }
 
 
-    const handleLevelNumberClick = async (selectedLevel) => {
+    // return false if modal is shown, so spinner must not start
+    const handleLevelNumberClick = (selectedLevel) => {
+        setSelectedLevel(selectedLevel);
+        if (canResumeBatch) {
+            setShowContinueModal(true);
+            return false;
+        }
+        startReviewBatch(selectedLevel);
+        return true;
+    }
 
-        let promptSetResponse = await (await fetch('/api/visually-similar/quiz/prompts', {
+
+    const startReviewBatch = async (temporaryLevel) => {
+        setShowContinueModal(false);
+        let promptSetResponse = await(await fetch('/api/visually-similar/quiz/prompts', {
             method: 'post',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                selectedLevel: selectedLevel,
+                selectedLevel: temporaryLevel !== 0 ? temporaryLevel : selectedLevel,
                 guessKanji: guessKanji,
                 multichoiceInput: multichoiceInput,
             })
@@ -185,7 +200,6 @@ export default function VisuallySimilarReviewSettings() {
         setPromptSet(promptSetResponse);
 
         router.push('/visually-similar/review');
-
     }
 
     const resumeBatch = async () => {
@@ -227,6 +241,9 @@ export default function VisuallySimilarReviewSettings() {
     return (
         <main>
             <div className="w-full">
+                <ContinueModal show={showContinueModal} onOk={() => startReviewBatch(0)} onCancel={() => setShowContinueModal(false)}
+                    title="Resume Batch" description="You will overwrite the unfinished review batch. Do you want to continue?"
+                    okText="Yes, continue!" cancelText="Cancel" />
                 <div className="mx-auto max-w-7xl p-6">
                     <div className="max-w-2xl py-4">
                         {
@@ -234,7 +251,7 @@ export default function VisuallySimilarReviewSettings() {
                             <section>
                                 <div className="pb-6">
                                     <h1 className="sr-only">Resume Batch</h1>
-                                    <p className="text-sm py-2">A previews unfinished review batch has been found, you can continue or start a new one:</p>
+                                    <p className="text-sm py-2">An unfinished review batch has been found, you can continue or start a new one:</p>
                                     <button className='bg-pink-500 text-white rounded-md p-2 hover:bg-pink-600 flex items-center justify-center gap-2'
                                         onClick={() => resumeBatch()}>
                                         <span className="inline">Resume Batch</span>

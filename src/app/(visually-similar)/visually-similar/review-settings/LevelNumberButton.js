@@ -12,8 +12,8 @@ export const LevelNumberButton = (props) => {
             flex justify-center items-center
             `}
             onClick={() => {
-                setIsLoading(true); 
-                props.handleLevelNumberClick(props.index);
+                const shouldStartLoading = props.handleLevelNumberClick(props.index);
+                setIsLoading(shouldStartLoading); 
             }}>
             {isLoading ? <LoadingSpinner className="loading-spinner" /> : props.index}
         </button>
