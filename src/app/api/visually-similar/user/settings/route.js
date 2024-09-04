@@ -61,7 +61,7 @@ export async function PATCH(request) {
                 .set(updateFieldsObject)
                 .where(eq(userSettings.userId, userId));
             if (result.rowCount === 0) {
-                console.warn('Record not found');
+                console.warn(`User Settings not found for user: ${userId}`);
                 return NextResponse.json({ message: 'OK' }, { status: 200 })
             }
             return NextResponse.json({ message: 'OK' }, { status: 200 })
