@@ -251,7 +251,7 @@ export default function VisuallySimilarReviewSettings() {
                             <section>
                                 <div className="pb-6">
                                     <h1 className="sr-only">Resume Batch</h1>
-                                    <p className="text-sm py-2">An unfinished review batch has been found, you can continue or start a new one:</p>
+                                    <p className="text-sm py-2">You have an unfinished review batch, you can continue from where you left off:</p>
                                     <button className='bg-pink-500 text-white rounded-md p-2 hover:bg-pink-600 flex items-center justify-center gap-2'
                                         onClick={() => resumeBatch()}>
                                         <span className="inline">Resume Batch</span>
