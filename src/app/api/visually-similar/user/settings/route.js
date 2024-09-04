@@ -13,6 +13,9 @@ export async function GET(request) {
             console.error(err);
             return NextResponse.json(err, { status: 500 });
         }
+        if (!session) {
+            return new NextResponse("Authentication required", { status: 401 });
+        }
         
         const userId = session.getUserId();
         try {
@@ -54,6 +57,9 @@ export async function PATCH(request) {
         }
         // let accessTokenPayload = session && session.getAccessTokenPayload();
         // let customClaimValue = accessTokenPayload.customClaim;
+        if (!session) {
+            return new NextResponse("Authentication required", { status: 401 });
+        }
 
         const userId = session.getUserId();
         try {

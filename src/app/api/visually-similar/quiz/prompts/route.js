@@ -16,6 +16,10 @@ export async function GET(request) {
             return NextResponse.json(err, { status: 500 });
         }
 
+        if (!session) {
+            return new NextResponse("Authentication required", { status: 401 });
+        }
+
         const userId = session.getUserId();
         console.log(`Getting active prompsets for user: ${userId}`);
 
@@ -32,7 +36,7 @@ export async function GET(request) {
 
             if (queryResult.length === 0) {
                 console.warn('No records found when getting userSettings of user: ' + userId);
-                return NextResponse.json({}, { status: 200 })
+                return NextResponse.json({}, { status: 200 });
             }
             if (queryResult.length > 1) {
                 console.warn('Multiple active prompt sets found for user: ' + userId);

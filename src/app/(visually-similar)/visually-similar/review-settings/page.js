@@ -52,20 +52,14 @@ export default function VisuallySimilarReviewSettings() {
         // }
         // loadUserSettings();
 
-        // async function loadActivePromptSet() {
-        //     const sessionExists = await doesSessionExist();
-        //     if (sessionExists) {
-        //         const activePrompSet = await loadActivePrompSetFromDatabase();
-        //         if (activePrompSet && activePrompSet.length > 0) {
-        //             setPromptSet(activePrompSet);
-        //             console.log('Active Prompt Set:', activePrompSet);
-        //             setCanResumeBatch(true);
-        //         }
-        //     }
-        // }
-        // loadActivePromptSet();
+        async function loadActivePromptSet() {
+            const sessionExists = await doesSessionExist();
+            if (sessionExists) {
+                loadActivePrompSetFromDatabase();
+            }
+        }
+        loadActivePromptSet();
 
-        //TODO: CHECK if batch exists: TRUE or FALSE
         // TODO: spinner on Resume Batch button
     }, []);
 
@@ -93,23 +87,38 @@ export default function VisuallySimilarReviewSettings() {
 
 
     const loadActivePrompSetFromDatabase = async () => {
+
         try {
-            const response = await fetch('/api/visually-similar/quiz/prompts', {
+            const activePromptSetResponse = await fetch('/api/visually-similar/quiz/prompts', {
                 method: 'GET',
                 headers: {
                     "Content-Type": "application/json",
                 }
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error status: ${response.status}`);
+            if (!activePromptSetResponse.ok) {
+                throw new Error(`HTTP error status: ${activePromptSetResponse.status}`);
             }
 
-            const resJson = await response.json();
+            const activePromptSetResponseJson = await activePromptSetResponse.json();
+            if (activePromptSetResponseJson
+                && activePromptSetResponseJson.hasOwnProperty('prompts')
+                && activePromptSetResponseJson.prompts.length > 0) {
+                setPromptSet(activePromptSetResponseJson.prompts);
+                setGuessKanji(activePromptSetResponseJson.guessKanji);
+                setMultichoiceInput(activePromptSetResponseJson.multichoiceInput);
+                setTotalAnswers(activePromptSetResponseJson.totalAnswers);
+                setTotalCorrect(activePromptSetResponseJson.totalCorrect);
+                setWrongAnswers(activePromptSetResponseJson.wrongAnswers);
 
-            return resJson;
+                setPromptIndex(activePromptSetResponseJson.totalAnswers);
+
+                setCanResumeBatch(true);
+            }
+
+            return activePromptSetResponseJson;
         } catch (error) {
-            console.error('Error loading user settings:', error);
+            console.error('Error loading active prompt set:', error);
             return null;
         }
     }
@@ -188,31 +197,7 @@ export default function VisuallySimilarReviewSettings() {
     }
 
     const resumeBatch = async () => {
-
-        let activePromptSetResponse = await (await fetch('/api/visually-similar/quiz/prompts', {
-            method: 'get',
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })).json();
-
-        if (activePromptSetResponse
-                && activePromptSetResponse.hasOwnProperty('prompts') 
-                && activePromptSetResponse.prompts.length > 0) {
-            setPromptSet(activePromptSetResponse.prompts);
-            setGuessKanji(activePromptSetResponse.guessKanji);
-            setMultichoiceInput(activePromptSetResponse.multichoiceInput);
-            setTotalAnswers(activePromptSetResponse.totalAnswers);
-            setTotalCorrect(activePromptSetResponse.totalCorrect);
-            setWrongAnswers(activePromptSetResponse.wrongAnswers);
-
-            setPromptIndex(activePromptSetResponse.totalAnswers);
-            
-            router.push('/visually-similar/review');
-        } else {
-            //TODO: show error banner
-        }
-
+        router.push('/visually-similar/review');
     }
 
 
@@ -222,7 +207,7 @@ export default function VisuallySimilarReviewSettings() {
                 <div className="mx-auto max-w-7xl p-6">
                     <div className="max-w-2xl py-4">
                         {
-                            !canResumeBatch &&
+                            canResumeBatch &&
                             <section>
                                 <div className="pb-6">
                                     <h1 className="sr-only">Resume Batch</h1>
