@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 import LevelNumberButton from "./LevelNumberButton";
 import ContinueModal from "@/app/components/modals/ContinueModal";
+import Link from "next/link";
 
 export default function VisuallySimilarReviewSettings() {
 
@@ -183,7 +184,7 @@ export default function VisuallySimilarReviewSettings() {
 
     const startReviewBatch = async (temporaryLevel) => {
         setShowContinueModal(false);
-        let promptSetResponse = await(await fetch('/api/visually-similar/quiz/prompts', {
+        let promptSetResponse = await (await fetch('/api/visually-similar/quiz/prompts', {
             method: 'post',
             headers: {
                 "Content-Type": "application/json",
@@ -247,20 +248,28 @@ export default function VisuallySimilarReviewSettings() {
                 <div className="mx-auto max-w-7xl p-6">
                     <div className="max-w-2xl py-4">
                         {
-                            canResumeBatch &&
-                            <section>
-                                <div className="pb-6">
-                                    <h1 className="sr-only">Resume Batch</h1>
-                                    <p className="text-sm py-2">You have an unfinished review batch, you can continue from where you left off:</p>
-                                    <button className='bg-pink-500 text-white rounded-md p-2 hover:bg-pink-600 flex items-center justify-center gap-2'
-                                        onClick={() => resumeBatch()}>
-                                        <span className="inline">Resume Batch</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                            <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </section>
+                            canResumeBatch ? (
+                                <section>
+                                    <div className="pb-6">
+                                        <h1 className="sr-only">Resume Batch</h1>
+                                        <p className="text-sm py-2">You have an unfinished review batch, you can continue from where you left off:</p>
+                                        <button className='bg-pink-500 text-white rounded-md p-2 hover:bg-pink-600 flex items-center justify-center gap-2'
+                                            onClick={() => resumeBatch()}>
+                                            <span className="inline">Resume Batch</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                                <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </section>
+
+                            ) : (
+                                <section>
+                                    <p className="text-sm py-2">
+                                        Remember to <Link href="/sign-in" className="underline font-bold text-blue-900">sign in</Link> if you want to have the possibility to resume your latest unfinished review batch.
+                                    </p>
+                                </section>
+                            )
 
                         }
                         <section>
