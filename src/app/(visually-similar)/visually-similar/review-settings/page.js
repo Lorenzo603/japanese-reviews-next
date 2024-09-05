@@ -266,7 +266,7 @@ export default function VisuallySimilarReviewSettings() {
                             ) : (
                                 <section>
                                     <p className="text-sm py-2">
-                                        Remember to <Link href="/sign-in" className="underline font-bold text-blue-900">sign in</Link> if you want to have the possibility to resume your latest unfinished review batch.
+                                        Remember to <Link href="/sign-in" className="underline font-bold text-md text-blue-900">sign in</Link> if you want to have the possibility to resume your latest unfinished review batch.
                                     </p>
                                 </section>
                             )
