@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SearchComponent from "../components/search/SearchComponent";
 import SvgArrows from "./SvgArrows";
+import JlptHomePageLinks from "./JlptHomePageLinks";
 
 export default function Home() {
 
@@ -18,8 +19,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <div className="mx-auto max-w-7xl p-6">
-          <div className="max-w-2xl py-4">
+        <div className="mx-auto max-w-7xl p-6 flex flex-col items-center">
+          <div className="max-w-3xl py-4">
             <section>
               <h1 className="sr-only text-2xl">Reviews Settings</h1>
               <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
@@ -35,61 +36,29 @@ export default function Home() {
             </section>
           </div>
 
-          <div className="max-w-2xl py-4">
+          <div className="max-w-3xl py-4">
             <section>
               <h1 className="sr-only text-2xl">Support us</h1>
               KoFI
             </section>
           </div>
 
-          <div className="max-w-2xl">
+          <div className="max-w-3xl py-4">
             <section>
-              <h1 id="browse-by-jlpt-level" className="text-2xl">Browse By JLPT Level</h1>
-              <div className="pt-2 pb-2">
-                <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
-                    bg-pink-500 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
-                    hover:bg-pink-700 no-underline"
-                  href="/visually-similar/jlpt-level-5">JLPT 5
-                  <SvgArrows />
-                </Link>
-              </div>
-              <div className="pt-2 pb-2">
-                <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
-                    bg-pink-500 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
-                    hover:bg-pink-700 no-underline"
-                  href="/visually-similar/jlpt-level-4">JLPT 4
-                  <SvgArrows />
-                </Link>
-              </div>
-              <div className="pt-2 pb-2">
-                <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
-                    bg-pink-500 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
-                    hover:bg-pink-700 no-underline"
-                  href="/visually-similar/jlpt-level-3">JLPT 3
-                  <SvgArrows />
-                </Link>
-              </div>
-              <div className="pt-2 pb-2">
-                <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
-                    bg-pink-500 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
-                    hover:bg-pink-700 no-underline"
-                  href="/visually-similar/jlpt-level-2">JLPT 2
-                  <SvgArrows />
-                </Link>
-              </div>
-              <div className="pt-2 pb-2">
-                <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
-                    bg-gray-300 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
-                    no-underline cursor-default"
-                  href="/">JLPT 1 &#40;Coming soon&#41;
-                </Link>
+              <h1 id="browse-by-jlpt-level" className="text-2xl mb-4 text-center">Browse By JLPT Level</h1>
+              <div className="flex flex-row flex-wrap gap-6 justify-center">
+                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-5" level="N5" />
+                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-4" level="N4" />
+                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-3" level="N3" />
+                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-2" level="N2" />
+                <JlptHomePageLinks enabled={false} href="/" level="N1" />
               </div>
             </section>
           </div>
 
         </div>
-      </div>
-    </main>
+      </div >
+    </main >
 
   )
 }

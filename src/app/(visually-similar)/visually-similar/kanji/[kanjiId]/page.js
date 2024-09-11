@@ -10,9 +10,9 @@ export default async function VisuallySimilarKanji({ params }) {
     const kanji = fullKanjiDictionary
         .filter(item => item['id'] === parseInt(params.kanjiId))?.[0]?.["data"];
     if (!kanji) {
-        return notFound();
+        notFound();
     }
-    
+
     const readings = kanji['readings'];
     const readingsKun = readings.filter(reading => !reading.hasOwnProperty('type') || reading['type'] === 'kunyomi');
     const readingsOn = readings.filter(reading => reading['type'] === 'onyomi');
