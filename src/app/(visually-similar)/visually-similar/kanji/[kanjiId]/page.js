@@ -1,14 +1,18 @@
 import { getDictionary } from "@/app/components/backend/DictionaryLoaderComponent";
 import KanjiCardLinkComponent from "@/app/(visually-similar)/visually-similar/jlptLevelGroup/KanjiCardLinkComponent";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 var wanakana = require('wanakana');
 
 export default async function VisuallySimilarKanji({ params }) {
 
     const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
     const kanji = fullKanjiDictionary
-        .filter(item => item['id'] === parseInt(params.kanjiId))[0]["data"];
-
+        .filter(item => item['id'] === parseInt(params.kanjiId))?.[0]?.["data"];
+    if (!kanji) {
+        return notFound();
+    }
+    
     const readings = kanji['readings'];
     const readingsKun = readings.filter(reading => !reading.hasOwnProperty('type') || reading['type'] === 'kunyomi');
     const readingsOn = readings.filter(reading => reading['type'] === 'onyomi');
