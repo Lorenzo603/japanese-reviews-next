@@ -35,17 +35,19 @@ export default async function VisuallySimilarKanji({ params }) {
 
     return (
         <main>
-            <div className="w-full">
-                <div className="mx-auto max-w-7xl p-6">
+            <div className="">
+                <div className="max-w-7xl p-6">
 
-                    <div>
-                        <section>
-                            <h1 className="sr-only">Kanji</h1>
-                            <div className="japanese-font text-9xl pb-4">{kanji['slug']}</div>
-                        </section>
-
-                        <section>
-                            <div className="py-4">
+                    <div className="min-w-64 inline-block
+                        rounded-md bg-slate-50 p-8 border-2 border-slate-300 shadow">
+                        <div className="flex shrink">
+                            <section>
+                                <h1 className="sr-only">Kanji</h1>
+                                <div className="japanese-font text-9xl pb-4">{kanji['slug']}</div>
+                            </section>
+                        </div>
+                        <div className="flex shrink py-4">
+                            <section>
                                 <h2 className="sr-only text-2xl">Meanings</h2>
                                 <ul className="text-2xl">
                                     {
@@ -54,73 +56,75 @@ export default async function VisuallySimilarKanji({ params }) {
                                             .join(', ')
                                     }
                                 </ul>
-                            </div>
-                        </section>
+                            </section>
+                        </div>
 
-                        <section>
-                            <h2 className="sr-only text-2xl">Readings</h2>
-                            {readingsKun.length > 0 &&
-                                <section>
-                                    <div className="flex items-center py-2">
-                                        <h3 className="text-2xl font-bold">Kun:</h3>
-                                        <ul className="japanese-font text-2xl px-2">
-                                            {
-                                                readingsKun
-                                                    .map(reading => reading['reading'])
-                                                    .join(', ')
+                        <div className="flex shrink">
+                            <section>
+                                <h2 className="sr-only text-2xl">Readings</h2>
+                                {readingsKun.length > 0 &&
+                                    <section>
+                                        <div className="flex items-center py-2">
+                                            <h3 className="text-2xl font-bold">Kun:</h3>
+                                            <ul className="japanese-font text-2xl px-2">
+                                                {
+                                                    readingsKun
+                                                        .map(reading => reading['reading'])
+                                                        .join(', ')
 
-                                            }
-                                        </ul>
-                                    </div>
-                                </section>
-                            }
+                                                }
+                                            </ul>
+                                        </div>
+                                    </section>
+                                }
 
-                            {readingsOn.length > 0 &&
-                                <section>
-                                    <div className="flex items-center py-2">
-                                        <h3 className="text-2xl font-bold">On:</h3>
-                                        <ul className="japanese-font text-2xl px-2">
-                                            {
-                                                readingsOn
-                                                    .map(reading => reading['reading'])
-                                                    .map(wanakana.toKatakana)
-                                                    .join(', ')
-                                            }
-                                        </ul>
-                                    </div>
-                                </section>
-                            }
+                                {readingsOn.length > 0 &&
+                                    <section>
+                                        <div className="flex items-center py-2">
+                                            <h3 className="text-2xl font-bold">On:</h3>
+                                            <ul className="japanese-font text-2xl px-2">
+                                                {
+                                                    readingsOn
+                                                        .map(reading => reading['reading'])
+                                                        .map(wanakana.toKatakana)
+                                                        .join(', ')
+                                                }
+                                            </ul>
+                                        </div>
+                                    </section>
+                                }
 
-                            {readingsNames.length > 0 &&
-                                <section>
-                                    <div className="flex items-center py-2">
-                                        <h3 className="text-2xl font-bold">Nanori:</h3>
-                                        <ul className="japanese-font text-2xl px-2">
-                                            {
-                                                readingsNames
-                                                    .map(reading => reading['reading'])
-                                                    .join(', ')
-                                            }
-                                        </ul>
-                                    </div>
-                                </section>
-                            }
+                                {readingsNames.length > 0 &&
+                                    <section>
+                                        <div className="flex items-center py-2">
+                                            <h3 className="text-2xl font-bold">Nanori:</h3>
+                                            <ul className="japanese-font text-2xl px-2">
+                                                {
+                                                    readingsNames
+                                                        .map(reading => reading['reading'])
+                                                        .join(', ')
+                                                }
+                                            </ul>
+                                        </div>
+                                    </section>
+                                }
 
-                            {
-                                jlptLevel &&
-                                <section>
-                                    <div className="py-4">
-                                        <Link href={`/visually-similar/jlpt-level-${jlptLevel}`}>
-                                            <span className="bg-gray-300 font-bold p-2 rounded-lg
+                                {
+                                    jlptLevel &&
+                                    <section>
+                                        <div className="py-4">
+                                            <Link href={`/visually-similar/jlpt-level-${jlptLevel}`}>
+                                                <span className="bg-gray-300 font-bold p-2 rounded-lg
                                                 hover:bg-gray-200">
-                                                JLPT Level N{jlptLevel}
-                                            </span>
-                                        </Link>
-                                    </div>
-                                </section>
-                            }
+                                                    JLPT Level N{jlptLevel}
+                                                </span>
+                                            </Link>
+                                        </div>
+                                    </section>
+                                }
 
-                        </section>
+                            </section>
+                        </div>
                     </div>
 
 
