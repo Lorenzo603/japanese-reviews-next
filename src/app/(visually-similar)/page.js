@@ -35,6 +35,13 @@ export default function Home() {
             </section>
           </div>
 
+          <div className="max-w-2xl py-4">
+            <section>
+              <h1 className="sr-only text-2xl">Support us</h1>
+              KoFI
+            </section>
+          </div>
+
           <div className="max-w-2xl">
             <section>
               <h1 id="browse-by-jlpt-level" className="text-2xl">Browse By JLPT Level</h1>
@@ -68,6 +75,13 @@ export default function Home() {
                     hover:bg-pink-700 no-underline"
                   href="/visually-similar/jlpt-level-2">JLPT 2
                   <SvgArrows />
+                </Link>
+              </div>
+              <div className="pt-2 pb-2">
+                <Link className="line-clamp-1 flex items-center justify-center gap-2 rounded-md 
+                    bg-gray-300 px-3.5 py-2.5 text-center text-base font-bold text-white shadow-sm 
+                    no-underline cursor-default"
+                  href="/">JLPT 1 &#40;Coming soon&#41;
                 </Link>
               </div>
             </section>
