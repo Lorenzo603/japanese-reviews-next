@@ -23,6 +23,15 @@ export const backendConfig = () => {
           formFields: [
             {
               id: "username",
+              validate: async (value, tenantId) => {
+                if (value.length < 3) {
+                  return "Username must be at least 3 characters long";
+                }
+                if (value.length > 50) {
+                  return "Username must be less than 50 characters long";
+                }
+                return undefined; //means no error
+              }
             },
           ]
         },

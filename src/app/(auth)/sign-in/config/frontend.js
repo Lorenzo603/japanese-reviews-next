@@ -51,9 +51,30 @@ export const frontendConfig = () => {
           signUpForm: {
             formFields: [
               {
+                id: "email",
+                label: "Email",
+                placeholder: "Email address",
+                nonOptionalErrorMsg: "Please add your email",
+              }, {
+                id: "password",
+                label: "Password",
+                placeholder: "Password",
+                nonOptionalErrorMsg: "Please add your password",
+              },
+              {
                 id: "username",
                 label: "Username",
                 placeholder: "Username",
+                nonOptionalErrorMsg: "Please add your username",
+                validate: async (value) => {
+                  if (value.length < 3) {
+                    return "Username must be at least 3 characters long";
+                  }
+                  if (value.length > 50) {
+                    return "Username must be less than 50 characters long";
+                  }
+                  return undefined; //means no error
+                }
               },
             ]
           }
