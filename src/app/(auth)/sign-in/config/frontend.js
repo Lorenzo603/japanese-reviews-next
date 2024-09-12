@@ -30,14 +30,18 @@ export const frontendConfig = () => {
         background-color: #be185d;
         border-color: #be185d;
       }
+      [data-supertokens~=superTokensBranding] {
+        display: none;
+      }
+        
     `,
     recipeList: [
       ThirdPartyReact.init({
         signInAndUpFeature: {
           providers: [
             ThirdPartyReact.Google.init(),
-            ThirdPartyReact.Facebook.init(),
-            ThirdPartyReact.Github.init(),
+            // ThirdPartyReact.Facebook.init(),
+            // ThirdPartyReact.Github.init(),
             // ThirdPartyReact.Apple.init(),
           ],
         },

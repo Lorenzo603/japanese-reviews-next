@@ -56,15 +56,15 @@ export const backendConfig = () => {
                 }]
               }
             },
-            {
-              config: {
-                thirdPartyId: "github",
-                clients: [{
-                  clientId: "467101b197249757c71f",
-                  clientSecret: "e97051221f4b6426e8fe8d51486396703012f5bd"
-                }]
-              }
-            },
+            // {
+            //   config: {
+            //     thirdPartyId: "github",
+            //     clients: [{
+            //       clientId: "467101b197249757c71f",
+            //       clientSecret: "e97051221f4b6426e8fe8d51486396703012f5bd"
+            //     }]
+            //   }
+            // },
             // {
             //   config: {
             //     thirdPartyId: "apple",
