@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { SessionAuth } from 'supertokens-auth-react/recipe/session'
 import { AccessDeniedScreen } from 'supertokens-auth-react/recipe/session/prebuiltui'
-import { doesSessionExist } from 'supertokens-web-js/recipe/session'
+import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 
 export default function SettingsAccount() {
 
@@ -60,11 +60,14 @@ export default function SettingsAccount() {
             <section>
               <h2 className="text-xl">Username</h2>
               <div>{username}</div>
+              <div>Edit</div>
 
             </section>
             <section>
               <h2 className="text-xl">Email</h2>
               <div>{email}</div>
+              <div>Edit</div>
+
             </section>
             <section>
               <h2 className="text-xl">Password</h2>

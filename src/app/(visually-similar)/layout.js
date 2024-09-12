@@ -4,6 +4,7 @@ import { SuperTokensProvider } from "../components/supertokens/supertokensProvid
 import HeaderComponent from '../components/nav/HeaderComponent';
 import FooterComponent from '../components/nav/FooterComponent';
 import { VisuallySimilarQuizContextProvider } from '../context/visuallySimilarQuizContext';
+import { UserContextProvider } from '../context/userContext';
 
 const inter = Inter({ subsets: ['latin'] })
 const notoSansJp = Noto_Sans_JP({
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <SuperTokensProvider>
         <body className={`${inter.className} ${notoSansJp.variable} h-screen bg-slate-50 text-slate-900`}>
+          <UserContextProvider>
           <VisuallySimilarQuizContextProvider>
             <div className="relative flex flex-col h-full">
               <div>
@@ -37,6 +39,7 @@ export default function RootLayout({ children }) {
               </div>
             </div>
           </VisuallySimilarQuizContextProvider>
+          </UserContextProvider>
         </body>
       </SuperTokensProvider>
     </html>
