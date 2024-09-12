@@ -3,12 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { doesSessionExist, signOut } from "supertokens-auth-react/recipe/session";
+import { useRouter } from 'next/navigation';
 
 export const LoginButton = () => {
 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    const router = useRouter();
+    
     useEffect(() => {
         async function checkAuth() {
             const sessionExists = await doesSessionExist();
@@ -26,6 +29,7 @@ export const LoginButton = () => {
         await signOut();
         setIsAuthenticated(false);
         setIsMenuOpen(false);
+        router.push('/');
     };
 
     return (
