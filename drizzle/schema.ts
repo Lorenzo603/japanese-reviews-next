@@ -32,6 +32,11 @@ export const userReviewsActive = pgTable("user_reviews_active", {
 	multichoiceInput: boolean("multichoice_input").default(true).notNull(),
 });
 
+export const users = pgTable("users", {
+	userId: char("user_id", { length: 36 }).primaryKey().notNull(),
+	username: varchar("username", { length: 50 }).notNull(),
+});
+
 export const supertokensRoles = pgTable("supertokens_roles", {
 	appId: varchar("app_id", { length: 64 }).default('public').notNull(),
 	role: varchar("role", { length: 255 }).notNull(),

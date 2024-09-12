@@ -6,6 +6,11 @@ CREATE TABLE IF NOT EXISTS "supertokens_apps" (
 	"created_at_time" bigint
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "users" (
+	"user_id" char(36) PRIMARY KEY NOT NULL,
+	"username" char(50) NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_settings" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" char(36) NOT NULL,

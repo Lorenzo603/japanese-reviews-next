@@ -1,12 +1,24 @@
 import db from "@/lib/drizzleOrmDb.js";
-import { userSettings } from "../../../../../drizzle/schema.ts";
+import { users, userSettings } from "../../../../../drizzle/schema.ts";
 
-export const addUserSettingsUponRegistration = async (userId) => {
-    console.log(`Adding user settings on SignUp for user: ${userId}`);
+export const createUserSettings = async (userId) => {
+    console.log(`Creating user settings for user: ${userId}`);
     await db.insert(userSettings)
         .values(
             {
                 userId: userId,
+            }
+        );
+}
+
+
+export const createUser = async (userId,username) => {
+    console.log(`Creating user: ${userId}`);
+    await db.insert(users)
+        .values(
+            {
+                userId: userId,
+                username: username,
             }
         );
 }

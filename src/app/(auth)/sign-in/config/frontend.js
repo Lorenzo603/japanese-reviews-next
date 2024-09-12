@@ -46,7 +46,19 @@ export const frontendConfig = () => {
           ],
         },
       }),
-      EmailPasswordReact.init(),
+      EmailPasswordReact.init({
+        signInAndUpFeature: {
+          signUpForm: {
+            formFields: [
+              {
+                id: "username",
+                label: "Username",
+                placeholder: "Username",
+              },
+            ]
+          }
+        },
+      }),
       SessionReact.init(),
     ],
     windowHandler: (original) => ({

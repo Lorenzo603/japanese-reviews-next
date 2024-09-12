@@ -5,7 +5,7 @@ import SessionNode from 'supertokens-node/recipe/session'
 import { appInfo } from './appInfo'
 import Dashboard from "supertokens-node/recipe/dashboard";
 import UserRoles from "supertokens-node/recipe/userroles"
-import { addUserSettingsUponRegistration } from "@/app/components/visually-similar/registration/RegistrationHandler";
+import { createUser, createUserSettings } from "@/app/components/visually-similar/registration/RegistrationHandler";
 
 export const backendConfig = () => {
   return {
@@ -19,6 +19,13 @@ export const backendConfig = () => {
     appInfo,
     recipeList: [
       EmailPasswordNode.init({
+        signUpFeature: {
+          formFields: [
+            {
+              id: "username",
+            },
+          ]
+        },
         override: {
           functions: (originalImplementation) => {
             return {
@@ -30,7 +37,7 @@ export const backendConfig = () => {
 
                 let response = await originalImplementation.signUp(input);
                 if (response.status === "OK" && response.user.loginMethods.length === 1 && input.session === undefined) {
-                  addUserSettingsUponRegistration(response.user.id);
+                  createUserSettings(response.user.id);
 
                   // TODO: registration email
                 }
@@ -39,8 +46,34 @@ export const backendConfig = () => {
               },
 
             }
-          }
-        }
+          },
+          apis: (originalImplementation) => {
+            return {
+              ...originalImplementation,
+              signUpPOST: async function (input) {
+
+                if (originalImplementation.signUpPOST === undefined) {
+                  throw Error("Should never come here");
+                }
+
+                // First we call the original implementation of signUpPOST.
+                let response = await originalImplementation.signUpPOST(input);
+
+                // Post sign up response, we check if it was successful
+                if (response.status === "OK") {
+                  const userId = response.user.id
+                  // These are the input form fields values that the user used while signing up
+                  const formFields = input.formFields;
+                  const usernameField = formFields.find(field => field.id === "username");
+                  const username = usernameField.value;
+                  createUser(userId, username);
+
+                }
+                return response;
+              }
+            }
+          },
+        },
       }),
       ThirdPartyNode.init({
         // We have provided you with development keys which you can use for testing.
