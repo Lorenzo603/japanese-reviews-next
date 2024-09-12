@@ -41,7 +41,7 @@ export const LoginButton = () => {
 
             {isAuthenticated ? (
                 username &&
-                <button onClick={toggleMenu}>
+                <button className="flex items-center" onClick={toggleMenu}>
                     <Avatar size={48} name={username} variant="beam" />
                 </button>
             ) : (
