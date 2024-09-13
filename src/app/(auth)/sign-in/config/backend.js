@@ -170,6 +170,27 @@ export const backendConfig = () => {
       //       }
       //     }
       //   },
+      //   override: {
+      //     apis: (oI) => {
+      //       return {
+      //         ...oI,
+      //         verifyEmailPOST: async function (input) {
+      //           if (oI.verifyEmailPOST) {
+      //             let response = await oI.verifyEmailPOST(input);
+      //             if (response.status === "OK") {
+      //               // This will update the email of the user to the one
+      //               // that was just marked as verified by the token.
+      //               await EmailPassword.updateEmailOrPassword({
+      //                 recipeUserId: response.user.recipeUserId,
+      //                 email: response.user.email,
+      //               });
+      //             }
+      //             return response;
+      //           }
+      //         },
+      //       };
+      //     },
+      //   },
       // }),
       SessionNode.init(),
       Dashboard.init(),
