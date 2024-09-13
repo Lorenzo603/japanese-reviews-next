@@ -3,7 +3,7 @@ import { withSession } from "supertokens-node/nextjs";
 import { ensureSuperTokensInit } from "@/app/(auth)/sign-in/config/backend.js";
 import EmailPassword from "supertokens-node/recipe/emailpassword";
 import EmailVerification from "supertokens-node/recipe/emailverification";
-import {isEmailChangeAllowed} from "supertokens-node/recipe/accountlinking"
+import { isEmailChangeAllowed } from "supertokens-node/recipe/accountlinking"
 import supertokens from "supertokens-node";
 
 ensureSuperTokensInit();
@@ -22,6 +22,7 @@ export async function POST(request) {
 
         const email = reqJson.newEmail;
         // console.log(`Updating email to: ${email}`);
+        const password = reqJson.password;
 
         // Validate the input email
         if (!isValidEmail(email)) {
@@ -29,6 +30,26 @@ export async function POST(request) {
             return NextResponse.json({
                 error: 'Internal Server Error',
                 message: 'Email is invalid.',
+            }, { status: 400 })
+        }
+
+        // get the signed in user's old email from the getUserById function
+        let userInfo = await supertokens.getUser(session.getUserId())
+        if (userInfo === undefined) {
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        }
+        let loginMethod = userInfo.loginMethods.find((lM) => lM.recipeUserId.getAsString() === session.getRecipeUserId().getAsString() && lM.recipeId === "emailpassword");
+        if (loginMethod === undefined) {
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        }
+        const oldEmail = loginMethod.email;
+        // call signin to check that input password is correct
+        let isPasswordValid = await EmailPassword.verifyCredentials(session.getTenantId(), oldEmail, password)
+        if (isPasswordValid.status !== "OK") {
+            // handle incorrect password error
+            return NextResponse.json({
+                error: 'Internal Server Error',
+                message: 'Incorrect password.',
             }, { status: 400 })
         }
 
@@ -46,7 +67,7 @@ export async function POST(request) {
         //             message: 'Email change not allowed. Please contact support.',
         //         }, { status: 400 })
         //     } 
-    
+
         //     // Before sending a verification email, we check if the email is already
         //     // being used by another user. If it is, we throw an error.
         //     let user = await supertokens.getUser(session.getUserId());
@@ -73,10 +94,10 @@ export async function POST(request) {
         //             }
         //         }
         //     }
-    
+
         //     // Now we create and send the email verification link to the user for the new email.
         //     await EmailVerification.sendEmailVerificationEmail(session.getTenantId(), session.getUserId(), session.getRecipeUserId(), email);
-    
+
         //     // TODO send successful response that email verification email sent.
         //     return NextResponse.json({
         //         status: 'VERIFICATION_EMAIL_SENT',
