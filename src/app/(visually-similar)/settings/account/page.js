@@ -13,6 +13,7 @@ export default function SettingsAccount() {
   const [newUsername, setNewUsername] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     async function loadAccountSettings() {
@@ -63,7 +64,7 @@ export default function SettingsAccount() {
       const resJson = await response.json();
       if (!response.ok) {
         if (response.status === 400) {
-          alert(resJson.message);
+          setErrorMessage(resJson.message);
         }
         return;
       }
@@ -88,7 +89,7 @@ export default function SettingsAccount() {
       const resJson = await response.json();
       if (!response.ok) {
         if (response.status === 400) {
-          alert(resJson.message);
+          setErrorMessage(resJson.message);
         }
         return;
       }
@@ -106,8 +107,29 @@ export default function SettingsAccount() {
       <main>
         <div className="w-full">
           <div className="mx-auto max-w-7xl p-6 flex flex-col">
-            <h1 className="text-2xl mb-2">Profile</h1>
+            {
+              errorMessage &&
+              <div id="alert-2" className="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 border border-red-500" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
 
+                <span className="sr-only">Info</span>
+                <div className="ms-3 text-sm font-medium">
+                  {errorMessage}
+                </div>
+                <button type="button" className="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center 
+                  justify-center h-8 w-8 border border-red-500" data-dismiss-target="#alert-2" aria-label="Close" onClick={() => setErrorMessage('')}>
+                  <span className="sr-only">Close</span>
+                  <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                  </svg>
+                </button>
+              </div>
+            }
+
+
+            <h1 className="text-2xl mb-2">Profile</h1>
             <section>
               <div className='flex flex-col gap-2 mb-6'>
                 <h2 className="text-xl">Username</h2>
