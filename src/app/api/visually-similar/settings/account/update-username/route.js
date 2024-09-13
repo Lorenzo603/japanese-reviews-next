@@ -57,8 +57,8 @@ function validateUsername(username) {
     if (username.length < 3) {
         return "Username must be at least 3 characters long";
     }
-    if (username.length > 50) {
-        return "Username must be less than 50 characters long";
+    if (username.length > 20) {
+        return "Username must be less than 20 characters long";
     }
     return undefined
 }
