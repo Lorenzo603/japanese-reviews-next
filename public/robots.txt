@@ -1,0 +1,9 @@
+# Block all crawlers for /settings/
+User-agent: *
+Disallow: /settings/
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+Sitemap: https://www.example.com/sitemap.xml

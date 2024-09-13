@@ -221,12 +221,11 @@ export default function SettingsAccount() {
               </div>
             </section>
 
-            <section>
+            {/* <section>
               <div className='flex flex-col gap-2 mb-4'>
                 <h2 className="text-xl">Profile Image</h2>
-                {/* Profile Image handling can be added here */}
               </div>
-            </section>
+            </section> */}
           </div>
         </div>
       </main>
