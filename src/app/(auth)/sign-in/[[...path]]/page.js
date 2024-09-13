@@ -5,12 +5,15 @@ import { redirectToAuth } from 'supertokens-auth-react';
 import SuperTokens from 'supertokens-auth-react/ui';
 import { ThirdPartyPreBuiltUI } from 'supertokens-auth-react/recipe/thirdparty/prebuiltui';
 import { EmailPasswordPreBuiltUI } from 'supertokens-auth-react/recipe/emailpassword/prebuiltui';
+// TODO: REENABLE Email verification
+// import { EmailVerificationPreBuiltUI } from 'supertokens-auth-react/recipe/emailverification/prebuiltui';
 
 export default function Auth() {
   // if the user visits a page that is not handled by us (like /auth/random), then we redirect them back to the auth page.
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     if (
+      // SuperTokens.canHandleRoute([ThirdPartyPreBuiltUI, EmailPasswordPreBuiltUI, EmailVerificationPreBuiltUI]) === false
       SuperTokens.canHandleRoute([ThirdPartyPreBuiltUI, EmailPasswordPreBuiltUI]) === false
     ) {
       redirectToAuth({ redirectBack: false });
@@ -20,6 +23,7 @@ export default function Auth() {
   }, []);
 
   if (loaded) {
+    // return SuperTokens.getRoutingComponent([ThirdPartyPreBuiltUI, EmailPasswordPreBuiltUI, EmailVerificationPreBuiltUI]);
     return SuperTokens.getRoutingComponent([ThirdPartyPreBuiltUI, EmailPasswordPreBuiltUI]);
   }
 

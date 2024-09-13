@@ -6,6 +6,8 @@ import { appInfo } from './appInfo'
 import Dashboard from "supertokens-node/recipe/dashboard";
 import UserRoles from "supertokens-node/recipe/userroles"
 import { createUser, createUserSettings } from "@/app/components/visually-similar/registration/RegistrationHandler";
+// TODO: REENABLE Email verification
+// import EmailVerification from "supertokens-node/recipe/emailverification";
 
 export const backendConfig = () => {
   return {
@@ -124,6 +126,9 @@ export const backendConfig = () => {
           ],
         }
       }),
+      // EmailVerification.init({
+      //   mode: "REQUIRED", // or "OPTIONAL"
+      // }),
       SessionNode.init(),
       Dashboard.init(),
       UserRoles.init(),

@@ -1,5 +1,7 @@
 import EmailPasswordReact from 'supertokens-auth-react/recipe/emailpassword'
 import ThirdPartyReact from 'supertokens-auth-react/recipe/thirdparty'
+// TODO: REENABLE Email verification
+// import EmailVerification from "supertokens-auth-react/recipe/emailverification";
 import SessionReact from 'supertokens-auth-react/recipe/session'
 import { appInfo } from './appInfo'
 
@@ -80,6 +82,9 @@ export const frontendConfig = () => {
           }
         },
       }),
+      // EmailVerification.init({
+      //   mode: "REQUIRED", // or "OPTIONAL"
+      // }),
       SessionReact.init(),
     ],
     windowHandler: (original) => ({
