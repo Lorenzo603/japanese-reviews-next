@@ -18,13 +18,14 @@ export async function POST(request) {
         const reqJson = await request.json();
 
         const email = reqJson.newEmail;
-        console.log(`Updating email to: ${email}`);
+        // console.log(`Updating email to: ${email}`);
+        
         // Validate the input email
         if (!isValidEmail(email)) {
-            // TODO: handle invalid email error
+            // handle invalid email error
             return NextResponse.json({
                 error: 'Internal Server Error',
-                message: 'Email is invalid.'
+                message: 'Email is invalid.',
             }, { status: 400 })
         }
 
@@ -44,7 +45,7 @@ export async function POST(request) {
             // handle error that email exists with another account.
             return NextResponse.json({
                 error: 'Internal Server Error',
-                message: 'Email already exists.'
+                message: 'Email already exists.',
             }, { status: 400 })
         }
         if (resp.status === "EMAIL_CHANGE_NOT_ALLOWED_ERROR") {
@@ -53,7 +54,7 @@ export async function POST(request) {
             // TODO: tell the user to contact support.
             return NextResponse.json({
                 error: 'Internal Server Error',
-                message: 'Email change not allowed. Please contact support.'
+                message: 'Email change not allowed. Please contact support.',
             }, { status: 400 })
         }
 
@@ -62,7 +63,7 @@ export async function POST(request) {
 }
 
 function isValidEmail(email) {
-    let regexp = new RegExp(
+    const regexp = new RegExp(
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
     return regexp.test(email);

@@ -52,7 +52,7 @@ export default function SettingsAccount() {
 
   const handleUpdateUsername = async () => {
     try {
-      const response = await fetch('/api/visually-similar/settings/update-username', {
+      const response = await fetch('/api/visually-similar/settings/account/update-username', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
@@ -60,11 +60,14 @@ export default function SettingsAccount() {
         body: JSON.stringify({ newUsername })
       });
 
+      const resJson = await response.json();
       if (!response.ok) {
-        throw new Error(`HTTP error status: ${response.status}`);
+        if (response.status === 400) {
+          alert(resJson.message);
+        }
+        return;
       }
 
-      const resJson = await response.json();
       setUsername(resJson.username);
       setNewUsername('');
     } catch (error) {
@@ -81,7 +84,7 @@ export default function SettingsAccount() {
         },
         body: JSON.stringify({ newEmail, password })
       });
-      
+
       const resJson = await response.json();
       if (!response.ok) {
         if (response.status === 400) {
