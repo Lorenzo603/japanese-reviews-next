@@ -8,6 +8,10 @@ import UserRoles from "supertokens-node/recipe/userroles"
 import { createUser, createUserSettings } from "@/app/components/visually-similar/registration/RegistrationHandler";
 // TODO: REENABLE Email verification
 // import EmailVerification from "supertokens-node/recipe/emailverification";
+const formData = require('form-data');
+const Mailgun = require('mailgun.js');
+const mailgun = new Mailgun(formData);
+const mg = mailgun.client({ username: process.env.MAILGUN_EMAIL_USERNAME, key: process.env.MAILGUN_EMAIL_PASSWORD || 'key-yourkeyhere' });
 
 export const backendConfig = () => {
   return {
@@ -85,6 +89,30 @@ export const backendConfig = () => {
             }
           },
         },
+        emailDelivery: {
+          override: (originalImplementation) => {
+            return {
+              ...originalImplementation,
+              sendEmail: async function (input) {
+                // TODO: create and send password reset email
+
+                mg.messages.create(process.env.MAILGUN_EMAIL_DOMAIN, {
+                  from: "Test email <no-reply@crownapp.com>",
+                  to: ["to-email@example.com"],
+                  subject: "Password Reset",
+                  text: "Testing some Mailgun awesomness!",
+                  html: "<h1>Testing some Mailgun awesomness!</h1> Ciao"
+                })
+                  .then(msg => console.log(msg)) // logs response data
+                  .catch(err => console.error(err)); // logs any errors
+
+                // Or use the original implementation which calls the default service,
+                // or a service that you may have specified in the emailDelivery object.
+                return originalImplementation.sendEmail(input);
+              }
+            }
+          }
+        }
       }),
       ThirdPartyNode.init({
         // We have provided you with development keys which you can use for testing.
@@ -128,6 +156,20 @@ export const backendConfig = () => {
       }),
       // EmailVerification.init({
       //   mode: "REQUIRED", // or "OPTIONAL"
+      //   emailDelivery: {
+      //     override: (originalImplementation) => {
+      //       return {
+      //         ...originalImplementation,
+      //         sendEmail: async function (input) {
+      //           // TODO: create and send email verification email
+
+      //           // Or use the original implementation which calls the default service,
+      //           // or a service that you may have specified in the emailDelivery object.
+      //           return originalImplementation.sendEmail(input);
+      //         }
+      //       }
+      //     }
+      //   },
       // }),
       SessionNode.init(),
       Dashboard.init(),
