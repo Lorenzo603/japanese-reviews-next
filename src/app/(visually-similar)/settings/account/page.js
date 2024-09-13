@@ -112,7 +112,7 @@ export default function SettingsAccount() {
               <div className='flex flex-col gap-2 mb-6'>
                 <h2 className="text-xl">Username</h2>
                 <p>Your username is <span className='font-bold'>{username}</span></p>
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row flex-wrap gap-2">
                   <input
                     type="text"
                     value={newUsername}
@@ -135,7 +135,7 @@ export default function SettingsAccount() {
               <div className='flex flex-col gap-2 mb-6'>
                 <h2 className="text-xl">Email</h2>
                 <p>Your email address is <span className='font-bold'>{email}</span></p>
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row flex-wrap gap-2">
                   <input
                     type="email"
                     value={newEmail}
