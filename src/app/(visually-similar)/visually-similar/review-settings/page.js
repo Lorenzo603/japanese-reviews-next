@@ -329,34 +329,37 @@ export default function VisuallySimilarReviewSettings() {
                                         </div>
                                     </div>
                                 </div> */}
-                                <div className="flex flex-row items-center pt-6 pb-8">
-                                    <div className="pr-4">
-                                        Enable Quick Mode:
-                                    </div>
-                                    <div className="inline-flex items-center justify-center">
-                                        <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
-                                            <div className="relative">
-                                                <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
-                                                    checked={quickMode ? 'checked' : ''}
-                                                    type="checkbox" onChange={() => toggleQuickMode()} name="switch" />
-                                                <div
-                                                    className="block cursor-pointer rounded-full 
+                                <div className="flex flex-col pt-4 pb-8">
+                                    <div className="flex flex-row items-center">
+                                        <div className="pr-4">
+                                            Enable <span className="font-bold">Quick Mode</span>:
+                                        </div>
+                                        <div className="inline-flex items-center justify-center">
+                                            <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
+                                                <div className="relative">
+                                                    <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
+                                                        checked={quickMode ? 'checked' : ''}
+                                                        type="checkbox" onChange={() => toggleQuickMode()} name="switch" />
+                                                    <div
+                                                        className="block cursor-pointer rounded-full 
                                                         border border-slate-300 bg-slate-50 
                                                         transition duration-300 
                                                         peer-checked:border-pink-500 peer-checked:bg-pink-500 
                                                         peer-disabled:cursor-not-allowed peer-disabled:border-slate-100 peer-disabled:bg-slate-100 h-6 w-12">
-                                                </div>
-                                                <div
-                                                    className="absolute top-0.5 z-10 cursor-pointer rounded-full border border-slate-50 
+                                                    </div>
+                                                    <div
+                                                        className="absolute top-0.5 z-10 cursor-pointer rounded-full border border-slate-50 
                                                         bg-pink-500 transition duration-300 
                                                         peer-checked:translate-x-5 peer-checked:border-pink-500 peer-checked:bg-white 
                                                         peer-disabled:cursor-not-allowed peer-disabled:border-slate-100 peer-disabled:bg-slate-400 
                                                         left-[3px] size-5 peer-checked:left-[5px]">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
-                                        </label>
+                                                {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
+                                            </label>
+                                        </div>
                                     </div>
+                                    <div className="text-sm mt-2">Immediately move to the next prompt upon answering</div>
                                 </div>
 
                             </div>
