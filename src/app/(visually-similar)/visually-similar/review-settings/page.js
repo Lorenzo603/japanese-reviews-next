@@ -364,7 +364,7 @@ export default function VisuallySimilarReviewSettings() {
                             <div className="flex flex-row flex-wrap mb-4">
                                 <p className="py-2">Select a difficulty level or category: the kanjis belonging to that category will be used in the review batch</p>
                                 <ul className="grid grid-cols-6 md:grid-cols-10 text-center gap-2">
-                                    {Array.from({ length: 2 }, (_, i) => i + 1).map(index => {
+                                    {Array.from({ length: 6 }, (_, i) => i + 1).map(index => {
                                         return (
                                             <li key={`category-level-${index}`} >
                                                 <SelectCategoryButton categoryName={`Level ${index}`} isSelected={selectedReviewCategory === `category-level-${index}`}
