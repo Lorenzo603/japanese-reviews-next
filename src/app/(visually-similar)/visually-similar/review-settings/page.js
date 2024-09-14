@@ -278,28 +278,34 @@ export default function VisuallySimilarReviewSettings() {
                                 <div className="flex flex-row">
                                     <div className="flex flex-col py-4">
                                         <div className="py-2">
-                                            Guess Mode:
+                                            Select <span className="font-bold">Guess Mode</span>:
                                         </div>
                                         <div id={GUESS_MODE_SEGMENT_CONTROL_ID}
-                                            className="inline-flex w-full items-baseline justify-start border border-gray-400 bg-slate-50 sm:w-auto">
+                                            className="inline-flex items-baseline justify-start border border-gray-400 bg-slate-50 max-w-64">
                                             <button id={GUESS_MODE_KANJI_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick(GUESS_MODE_KANJI_BUTTON_ID)}
                                                 className={`group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
                                                     gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400 
-                                                    h-7 w-full sm:w-auto ${guessKanji ? SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME : SELECT_CONTROL_INACTIVE_TAB_CLASS_NAME}`}>
+                                                    h-7 w-full ${guessKanji ? SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME : SELECT_CONTROL_INACTIVE_TAB_CLASS_NAME}`}>
                                                 <span>Guess Kanji</span>
                                             </button>
                                             <button id={GUESS_MODE_MEANING_BUTTON_ID} type="button" aria-disabled="false" onClick={() => handleGuessModeSegmentControlClick(GUESS_MODE_MEANING_BUTTON_ID)}
                                                 className={`group inline-flex items-center justify-center whitespace-nowrap p-6 align-middle font-semibold 
                                                     transition-all duration-300 ease-in-out disabled:cursor-not-allowed stroke-blue-700 min-w-[32px] 
                                                     gap-1.5 text-sm disabled:stroke-slate-400 disabled:text-slate-400 
-                                                    h-7 w-full sm:w-auto ${guessKanji ? SELECT_CONTROL_INACTIVE_TAB_CLASS_NAME : SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME}`}>
+                                                    h-7 w-full ${guessKanji ? SELECT_CONTROL_INACTIVE_TAB_CLASS_NAME : SELECT_CONTROL_ACTIVE_TAB_CLASS_NAME}`}>
                                                 <span>Guess Meaning</span>
                                             </button>
                                         </div>
+                                        <div className="mt-2">
+                                            <ul className="text-sm list-disc list-inside">
+                                                <li><span className="font-bold">Guess Kanji</span>: guess the correct Kanji based on a Meaning prompt</li>
+                                                <li><span className="font-bold">Guess Meaning</span>: guess the correct Meaning based on a Kanji prompt</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-row">
+                                {/* <div className="flex flex-row">
                                     <div className="flex flex-col py-4">
                                         <div className="py-2">
                                             Input Method:
@@ -322,7 +328,7 @@ export default function VisuallySimilarReviewSettings() {
                                             </button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="flex flex-row items-center pt-6 pb-8">
                                     <div className="pr-4">
                                         Enable Quick Mode:
