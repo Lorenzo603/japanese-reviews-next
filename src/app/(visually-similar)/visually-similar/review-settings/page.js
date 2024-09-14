@@ -8,6 +8,7 @@ import ContinueModal from "@/app/components/modals/ContinueModal";
 import Link from "next/link";
 import StartReviewsButton from "./StartReviewsButton";
 import SelectCategoryButton from "./SelectCategoryButton";
+import ResumeBatchButton from "./ResumeBatchButton";
 
 export default function VisuallySimilarReviewSettings() {
 
@@ -199,7 +200,7 @@ export default function VisuallySimilarReviewSettings() {
         console.log('promptSetResponse:', promptSetResponse);
 
         setPromptSet(promptSetResponse);
-        
+
         setIsLoading(true);
         router.push('/visually-similar/review');
     }
@@ -254,13 +255,7 @@ export default function VisuallySimilarReviewSettings() {
                                     <div className="pb-6">
                                         <h1 className="sr-only">Resume Batch</h1>
                                         <p className="text-sm py-2">You have an unfinished review batch, you can continue from where you left off:</p>
-                                        <button className='bg-pink-500 text-white rounded-md p-2 hover:bg-pink-600 flex items-center justify-center gap-2'
-                                            onClick={() => resumeBatch()}>
-                                            <span className="inline">Resume Batch</span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                                <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
-                                            </svg>
-                                        </button>
+                                        <ResumeBatchButton resumeBatch={resumeBatch} />
                                     </div>
                                 </section>
 
