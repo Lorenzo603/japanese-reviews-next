@@ -185,6 +185,9 @@ export default function VisuallySimilarReviewSettings() {
             setShowContinueModal(true);
             return;
         }
+
+        setIsLoading(true);
+        
         let promptSetResponse = await (await fetch('/api/visually-similar/quiz/prompts', {
             method: 'post',
             headers: {
@@ -201,7 +204,6 @@ export default function VisuallySimilarReviewSettings() {
 
         setPromptSet(promptSetResponse);
 
-        setIsLoading(true);
         router.push('/visually-similar/review');
     }
 
@@ -359,16 +361,16 @@ export default function VisuallySimilarReviewSettings() {
                                 </div>
 
                             </div>
-                            <div>
-                                <p>Select a difficulty level or category: the kanjis belonging to that category will be used in the review batch</p>
-                                <ul>
+                            <div className="flex flex-row flex-wrap mb-4">
+                                <p className="py-2">Select a difficulty level or category: the kanjis belonging to that category will be used in the review batch</p>
+                                <ul className="grid grid-cols-6 md:grid-cols-10">
                                     <li>
                                         <SelectCategoryButton categoryName='Level 1' isSelected={selectedReviewCategory === 'category-level-1'}
                                             handleSelectCategoryClick={() => setSelectedReviewCategory('category-level-1')} />
                                     </li>
                                 </ul>
                             </div>
-                            <ol className='grid grid-cols-6 md:grid-cols-10 text-center gap-2'>
+                            {/* <ol className='grid grid-cols-6 md:grid-cols-10 text-center gap-2'>
                                 {Array.from({ length: 60 }, (_, i) => i + 1).map(index => {
                                     return (
                                         <li key={`level-number-${index}`} >
@@ -377,9 +379,10 @@ export default function VisuallySimilarReviewSettings() {
                                         </li>
                                     );
                                 })}
-                            </ol>
+                            </ol> */}
                             <div>
-                                <StartReviewsButton handleStartReviewsClick={handleStartReviewsClick} isLoading={isLoading} />
+                                <StartReviewsButton isActive={selectedReviewCategory !== ''} isLoading={isLoading}
+                                    handleStartReviewsClick={handleStartReviewsClick} />
                             </div>
                         </section>
                     </div>
