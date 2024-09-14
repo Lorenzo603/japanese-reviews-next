@@ -81,6 +81,13 @@ export async function GET(request) {
     });
 }
 
+const filterBySelectedCategory = (kanji, selectedReviewCategory) => {
+    if (selectedReviewCategory.startsWith('level-number-')) {
+        const selectedLevel = parseInt(selectedReviewCategory.replace('level-number-', ''));
+        return kanji['data']['level'] === selectedLevel;
+    }
+    return kanji['data'].hasOwnProperty('categories') && kanji['data']['categories'].includes(selectedReviewCategory);
+}
 
 export async function POST(request) {
     return withPreParsedRequestResponse(request, async (baseRequest, baseResponse) => {
@@ -91,13 +98,9 @@ export async function POST(request) {
         const guessKanji = reqJson.guessKanji;
         const multichoiceInput = reqJson.multichoiceInput;
 
-        let selectedLevel = 0
-        if (selectedReviewCategory.startsWith('level-number-')) {
-            selectedLevel = parseInt(selectedReviewCategory.replace('level-number-', ''));
-        }
         const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
         let promptSet = fullKanjiDictionary
-            .filter(kanji => kanji['data']['level'] === selectedLevel)
+            .filter(kanji => filterBySelectedCategory(kanji, selectedReviewCategory))
             .filter(kanji => kanji['data']['visually_similar_subject_ids'].length > 0)
             .map(kanji => ({
                 id: kanji['id'],
@@ -105,6 +108,7 @@ export async function POST(request) {
                 answers: buildAnswers(kanji, guessKanji, fullKanjiDictionary),
                 correctAnswer: guessKanji ? kanji['data']['slug'] : getFirstMeaning(kanji),
             }));
+
 
         promptSet = shuffle(promptSet);
 
