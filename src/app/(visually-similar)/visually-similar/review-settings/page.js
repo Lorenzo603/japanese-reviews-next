@@ -4,9 +4,10 @@ import { AnswerState, useVisuallySimilarQuizContext } from "@/app/context/visual
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { doesSessionExist } from "supertokens-auth-react/recipe/session";
-import LevelNumberButton from "./LevelNumberButton";
 import ContinueModal from "@/app/components/modals/ContinueModal";
 import Link from "next/link";
+import StartReviewsButton from "./StartReviewsButton";
+import SelectCategoryButton from "./SelectCategoryButton";
 
 export default function VisuallySimilarReviewSettings() {
 
@@ -29,9 +30,14 @@ export default function VisuallySimilarReviewSettings() {
         setAnswerState, setTotalAnswers, setTotalCorrect, setWrongAnswers,
     } = useVisuallySimilarQuizContext();
 
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
     const [canResumeBatch, setCanResumeBatch] = useState(false);
     const [showContinueModal, setShowContinueModal] = useState(false);
-    const [selectedLevel, setSelectedLevel] = useState(1);
+    const [selectedReviewCategory, setSelectedReviewCategory] = useState('');
+
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const router = useRouter();
 
@@ -60,6 +66,7 @@ export default function VisuallySimilarReviewSettings() {
         async function loadActivePromptSet() {
             const sessionExists = await doesSessionExist();
             if (sessionExists) {
+                setIsAuthenticated(true);
                 loadActivePrompSetFromDatabase();
             }
         }
@@ -169,28 +176,22 @@ export default function VisuallySimilarReviewSettings() {
         }
     }
 
-
     // return false if modal is shown, so spinner must not start
-    const handleLevelNumberClick = (selectedLevel) => {
-        setSelectedLevel(selectedLevel);
-        if (canResumeBatch) {
+    const handleStartReviewsClick = async (overwriteBatchConfirmed) => {
+        if (selectedReviewCategory === '') {
+            return;
+        }
+        if (canResumeBatch && !overwriteBatchConfirmed) {
             setShowContinueModal(true);
             return false;
         }
-        startReviewBatch(selectedLevel);
-        return true;
-    }
-
-
-    const startReviewBatch = async (temporaryLevel) => {
-        setShowContinueModal(false);
         let promptSetResponse = await (await fetch('/api/visually-similar/quiz/prompts', {
             method: 'post',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                selectedLevel: temporaryLevel !== 0 ? temporaryLevel : selectedLevel,
+                selectedReviewCategory: selectedReviewCategory,
                 guessKanji: guessKanji,
                 multichoiceInput: multichoiceInput,
             })
@@ -199,8 +200,10 @@ export default function VisuallySimilarReviewSettings() {
         console.log('promptSetResponse:', promptSetResponse);
 
         setPromptSet(promptSetResponse);
-
+        
+        setIsLoading(true);
         router.push('/visually-similar/review');
+        return true;
     }
 
     const resumeBatch = async () => {
@@ -242,7 +245,7 @@ export default function VisuallySimilarReviewSettings() {
     return (
         <main>
             <div className="w-full">
-                <ContinueModal show={showContinueModal} onOk={() => startReviewBatch(0)} onCancel={() => setShowContinueModal(false)}
+                <ContinueModal show={showContinueModal} onOk={() => handleStartReviewsClick(true)} onCancel={() => setShowContinueModal(false)}
                     title="Resume Batch" description="You will overwrite the unfinished review batch. Do you want to continue?"
                     okText="Yes, continue!" cancelText="Cancel" />
                 <div className="mx-auto max-w-7xl p-6">
@@ -263,13 +266,13 @@ export default function VisuallySimilarReviewSettings() {
                                     </div>
                                 </section>
 
-                            ) : (
-                                <section>
-                                    <p className="text-sm py-2">
-                                        Remember to <Link href="/sign-in" className="underline font-bold text-md text-blue-900">sign in</Link> if you want to have the possibility to resume your latest unfinished review batch.
-                                    </p>
-                                </section>
-                            )
+                            ) : !isAuthenticated &&
+                            <section>
+                                <p className="text-sm py-2">
+                                    Remember to <Link href="/sign-in" className="underline font-bold text-md text-blue-900">sign in</Link> if you want to have the possibility to resume your latest unfinished review batch.
+                                </p>
+                            </section>
+
 
                         }
                         <section>
@@ -363,15 +366,28 @@ export default function VisuallySimilarReviewSettings() {
                                 </div>
 
                             </div>
+                            <div>
+                                <p>Select a difficulty level or category: the kanjis belonging to that category will be used in the review batch</p>
+                                <ul>
+                                    <li>
+                                        <SelectCategoryButton categoryName='Level 1' isSelected={selectedReviewCategory === 'category-level-1'}
+                                            handleSelectCategoryClick={() => setSelectedReviewCategory('category-level-1')} />
+                                    </li>
+                                </ul>
+                            </div>
                             <ol className='grid grid-cols-6 md:grid-cols-10 text-center gap-2'>
                                 {Array.from({ length: 60 }, (_, i) => i + 1).map(index => {
                                     return (
                                         <li key={`level-number-${index}`} >
-                                            <LevelNumberButton index={index} handleLevelNumberClick={handleLevelNumberClick} />
+                                            <SelectCategoryButton categoryName={index} isSelected={selectedReviewCategory === `level-number-${index}`}
+                                                handleSelectCategoryClick={() => setSelectedReviewCategory(`level-number-${index}`)} />
                                         </li>
                                     );
                                 })}
                             </ol>
+                            <div>
+                                <StartReviewsButton handleStartReviewsClick={handleStartReviewsClick} isLoading={isLoading} />
+                            </div>
                         </section>
                     </div>
                 </div>

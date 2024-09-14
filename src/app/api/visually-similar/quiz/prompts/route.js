@@ -87,10 +87,14 @@ export async function POST(request) {
         console.log("Calculating Visually Similar PromptSet...");
         const session = await Session.getSession(baseRequest, baseResponse, { sessionRequired: false });
         const reqJson = await request.json();
-        const selectedLevel = reqJson.selectedLevel;
+        const selectedReviewCategory = reqJson.selectedReviewCategory;
         const guessKanji = reqJson.guessKanji;
         const multichoiceInput = reqJson.multichoiceInput;
 
+        let selectedLevel = 0
+        if (selectedReviewCategory.startsWith('level-number-')) {
+            selectedLevel = parseInt(selectedReviewCategory.replace('level-number-', ''));
+        }
         const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
         let promptSet = fullKanjiDictionary
             .filter(kanji => kanji['data']['level'] === selectedLevel)
