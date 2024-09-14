@@ -176,14 +176,13 @@ export default function VisuallySimilarReviewSettings() {
         }
     }
 
-    // return false if modal is shown, so spinner must not start
     const handleStartReviewsClick = async (overwriteBatchConfirmed) => {
         if (selectedReviewCategory === '') {
             return;
         }
         if (canResumeBatch && !overwriteBatchConfirmed) {
             setShowContinueModal(true);
-            return false;
+            return;
         }
         let promptSetResponse = await (await fetch('/api/visually-similar/quiz/prompts', {
             method: 'post',
@@ -203,7 +202,6 @@ export default function VisuallySimilarReviewSettings() {
         
         setIsLoading(true);
         router.push('/visually-similar/review');
-        return true;
     }
 
     const resumeBatch = async () => {
