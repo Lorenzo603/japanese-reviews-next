@@ -12,7 +12,7 @@ export const StartReviewsButton = (props) => {
                 if (!props.isActive) return;
                 props.handleStartReviewsClick(false);
             }}>
-            {props.isLoading ? <LoadingSpinner className="loading-spinner" /> : "Start!"}
+            {props.isLoading ? <LoadingSpinner className="loading-spinner" /> : <span className="font-bold">Start!</span>}
         </button>
     )
 

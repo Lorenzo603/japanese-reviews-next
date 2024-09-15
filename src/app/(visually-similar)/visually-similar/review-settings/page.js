@@ -273,9 +273,10 @@ export default function VisuallySimilarReviewSettings() {
                         <section>
                             <h1 className="text-2xl">Review Settings</h1>
                             <div className="flex flex-col">
-                                <div className="flex flex-row">
-                                    <div className="flex flex-col py-4">
-                                        <div className="py-2">
+                                <div className="flex flex-row py-4">
+                                    <div className="flex flex-col p-4 w-full 
+                                        rounded-md border-2 border-slate-300 shadow">
+                                        <div className="pb-2">
                                             Select <span className="font-bold">Guess Mode</span>:
                                         </div>
                                         <div id={GUESS_MODE_SEGMENT_CONTROL_ID}
@@ -327,42 +328,47 @@ export default function VisuallySimilarReviewSettings() {
                                         </div>
                                     </div>
                                 </div> */}
-                                <div className="flex flex-col pt-4 pb-8">
-                                    <div className="flex flex-row items-center">
-                                        <div className="pr-4">
-                                            Enable <span className="font-bold">Quick Mode</span>:
-                                        </div>
-                                        <div className="inline-flex items-center justify-center">
-                                            <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
-                                                <div className="relative">
-                                                    <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
-                                                        checked={quickMode ? 'checked' : ''}
-                                                        type="checkbox" onChange={() => toggleQuickMode()} name="switch" />
-                                                    <div
-                                                        className="block cursor-pointer rounded-full 
+                                <div className="flex flex-row py-4">
+                                    <div className="flex flex-col p-4 w-full  
+                                    rounded-md border-2 border-slate-300 shadow">
+                                        <div className="flex flex-col p-x-4">
+                                            <div className="flex flex-row items-center">
+                                                <div className="pr-4">
+                                                    Enable <span className="font-bold">Quick Mode</span>:
+                                                </div>
+                                                <div className="inline-flex items-center justify-center">
+                                                    <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
+                                                        <div className="relative">
+                                                            <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
+                                                                checked={quickMode ? 'checked' : ''}
+                                                                type="checkbox" onChange={() => toggleQuickMode()} name="switch" />
+                                                            <div
+                                                                className="block cursor-pointer rounded-full 
                                                         border border-slate-300 bg-slate-50 
                                                         transition duration-300 
                                                         peer-checked:border-pink-500 peer-checked:bg-pink-500 
                                                         peer-disabled:cursor-not-allowed peer-disabled:border-slate-100 peer-disabled:bg-slate-100 h-6 w-12">
-                                                    </div>
-                                                    <div
-                                                        className="absolute top-0.5 z-10 cursor-pointer rounded-full border border-slate-50 
+                                                            </div>
+                                                            <div
+                                                                className="absolute top-0.5 z-10 cursor-pointer rounded-full border border-slate-50 
                                                         bg-pink-500 transition duration-300 
                                                         peer-checked:translate-x-5 peer-checked:border-pink-500 peer-checked:bg-white 
                                                         peer-disabled:cursor-not-allowed peer-disabled:border-slate-100 peer-disabled:bg-slate-400 
                                                         left-[3px] size-5 peer-checked:left-[5px]">
-                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                        {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
+                                                    </label>
                                                 </div>
-                                                {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
-                                            </label>
+                                            </div>
+                                            <div className="flex text-sm mt-2">Immediately move to the next prompt upon answering</div>
                                         </div>
                                     </div>
-                                    <div className="text-sm mt-2">Immediately move to the next prompt upon answering</div>
                                 </div>
 
                             </div>
-                            <div className="flex flex-row flex-wrap mb-4">
-                                <p className="py-2">Select a difficulty level or category: the kanjis belonging to that category will be used in the review batch</p>
+                            <div className="flex flex-row flex-wrap mt-4 mb-4">
+                                <p className="py-2">Select a <span className="font-bold">difficulty level</span> or <span className="font-bold">category</span>: the kanjis belonging to that category will be used in the review batch</p>
                                 <ul className="grid grid-cols-3 md:grid-cols-6 text-center gap-2">
                                     {Array.from({ length: 6 }, (_, i) => i + 1).map(index => {
                                         return (
