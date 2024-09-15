@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 
 export const SearchComponent = () => {
   const [highlightIndex, setHighlightIndex] = useState(1); // Track the highlighted item index
+  const [keyboardInteraction, setKeyboardInteraction] = useState(false); // Track if user is interacting via keyboard
+  const [lastMouseOverIndex, setLastMouseOverIndex] = useState(null); // Track the last mouseover item
 
   function ResultsHook() {
     const { results } = useInstantSearch();
@@ -83,6 +85,9 @@ export const SearchComponent = () => {
   };
 
   const handleKeyDown = (event, hits) => {
+    setKeyboardInteraction(true); // Set keyboard interaction to true when arrow keys are used
+    setLastMouseOverIndex(null);  // Clear the last mouseover index when keyboard interaction starts
+
     if (event.key === 'ArrowDown') {
       setHighlightIndex((prevIndex) => Math.min(prevIndex + 1, hits.length));
     } else if (event.key === 'ArrowUp') {
@@ -103,12 +108,18 @@ export const SearchComponent = () => {
       }
     };
 
+    const handleMouseMoveEvent = () => {
+      setKeyboardInteraction(false); // Re-enable mouse interaction on mouse move
+    };
+
     window.addEventListener('keydown', handleKeyDownEvent);
+    window.addEventListener('mousemove', handleMouseMoveEvent);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDownEvent);
+      window.removeEventListener('mousemove', handleMouseMoveEvent);
     };
-  }, [highlightIndex]); // Only re-run the effect if `highlightIndex` changes
+  }, [highlightIndex]);
 
   return (
     <InstantSearch indexName="kanjis" searchClient={proxySearchClient}
@@ -128,8 +139,19 @@ export const SearchComponent = () => {
       <Hits
         hitComponent={({ hit }) => (
           <div
-            className={`p-2 border ${highlightIndex === hit.__position && 'bg-pink-100'}`}
-            onMouseOver={() => setHighlightIndex(hit.__position)}
+            className={`p-2 border 
+              ${(highlightIndex === hit.__position)
+                ? 'bg-pink-100'
+                : (lastMouseOverIndex === hit.__position && !keyboardInteraction)
+                  ? 'bg-pink-100'
+                  : ''
+              }`}
+            onMouseOver={() => {
+              if (!keyboardInteraction) {
+                setLastMouseOverIndex(hit.__position); // Track last mouse over index
+                setHighlightIndex(hit.__position); // Highlight the item on mouseover if not using keyboard
+              }
+            }}
             onClick={() => window.location.href = `/visually-similar/kanji/${hit.id}`}
           >
             <HitComponent hit={hit} />
@@ -138,7 +160,7 @@ export const SearchComponent = () => {
         classNames={{
           root: 'bg-slate-50',
           list: 'p-0',
-          item: 'hover:bg-pink-100 ais-Hits-item', // ais-Hits-item used for selection
+          item: 'ais-Hits-item', // ais-Hits-item used for selection
         }}
       />
       <ResultsHook />
