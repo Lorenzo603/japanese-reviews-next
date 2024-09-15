@@ -35,7 +35,7 @@ export async function GET(request) {
                 );
 
             if (queryResult.length === 0) {
-                console.warn('No records found when getting userSettings of user: ' + userId);
+                console.warn('No active prompt sets found for user: ' + userId);
                 return NextResponse.json({}, { status: 200 });
             }
             if (queryResult.length > 1) {

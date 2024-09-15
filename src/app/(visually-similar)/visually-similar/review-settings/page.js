@@ -248,7 +248,7 @@ export default function VisuallySimilarReviewSettings() {
             <div className="w-full">
                 <ContinueModal show={showContinueModal} onOk={() => handleStartReviewsClick(true)} onCancel={() => setShowContinueModal(false)}
                     title="Resume Batch" description="You will overwrite the unfinished review batch. Do you want to continue?"
-                    okText="Yes, continue!" cancelText="Cancel" isLoading={isLoading}/>
+                    okText="Yes, continue!" cancelText="Cancel" isLoading={isLoading} />
                 <div className="mx-auto max-w-7xl p-6">
                     <div className="max-w-2xl py-4">
                         {
@@ -415,6 +415,21 @@ export default function VisuallySimilarReviewSettings() {
                                                             </li>
                                                         );
                                                     })}
+                                            </ul>
+                                        </section>
+                                    </div>
+                                    <div className="flex flex-col mb-2">
+                                        <section>
+                                            <h2 className="font-bold text-lg py-2">Assorted Categories:</h2>
+                                            <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
+                                                <li>
+                                                    <SelectCategoryButton categoryName="Animals" isSelected={selectedReviewCategory === "animals"}
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("animals")} />
+                                                </li>
+                                                <li>
+                                                    <SelectCategoryButton categoryName="Colors" isSelected={selectedReviewCategory === "colors"}
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("colors")} />
+                                                </li>
                                             </ul>
                                         </section>
                                     </div>
