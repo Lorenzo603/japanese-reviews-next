@@ -248,7 +248,7 @@ export default function VisuallySimilarReviewSettings() {
             <div className="w-full">
                 <ContinueModal show={showContinueModal} onOk={() => handleStartReviewsClick(true)} onCancel={() => setShowContinueModal(false)}
                     title="Resume Batch" description="You will overwrite the unfinished review batch. Do you want to continue?"
-                    okText="Yes, continue!" cancelText="Cancel" />
+                    okText="Yes, continue!" cancelText="Cancel" isLoading={isLoading}/>
                 <div className="mx-auto max-w-7xl p-6">
                     <div className="max-w-2xl py-4">
                         {
