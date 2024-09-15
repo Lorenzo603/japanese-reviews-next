@@ -368,19 +368,59 @@ export default function VisuallySimilarReviewSettings() {
 
                             </div>
                             <div className="flex flex-row flex-wrap mt-4 mb-4">
-                                <p className="py-2">Select a <span className="font-bold">difficulty level</span> or <span className="font-bold">category</span>: the kanjis belonging to that category will be used in the review batch</p>
-                                <ul className="grid grid-cols-3 md:grid-cols-6 text-center gap-2">
-                                    {Array.from({ length: 6 }, (_, i) => i + 1).map(index => {
-                                        return (
-                                            <li key={`category-level-${index}`} >
-                                                <SelectCategoryButton categoryName={`Level ${index}`} isSelected={selectedReviewCategory === `category-level-${index}`}
-                                                    handleSelectCategoryClick={() => setSelectedReviewCategory(`category-level-${index}`)} />
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
+                                <section>
+                                    <h1 className="sr-only">Select Review Category</h1>
+                                    <p className="py-2">Select a <span className="font-bold">difficulty level</span> or <span className="font-bold">category</span>: the kanjis belonging to that category will be used in the review batch</p>
+                                    <div className="flex flex-col mb-2">
+                                        <section>
+                                            <h2 className="font-bold text-lg py-2">Difficulty Level:</h2>
+                                            <ul className="grid grid-cols-3 md:grid-cols-6 text-center gap-2">
+                                                {Array.from({ length: 6 }, (_, i) => i + 1).map(index => {
+                                                    return (
+                                                        <li key={`category-level-${index}`} >
+                                                            <SelectCategoryButton categoryName={`Level ${index}`} isSelected={selectedReviewCategory === `category-level-${index}`}
+                                                                handleSelectCategoryClick={() => setSelectedReviewCategory(`category-level-${index}`)} />
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </section>
+                                    </div>
+                                    <div className="flex flex-col mb-2">
+                                        <section>
+                                            <h2 className="font-bold text-lg py-2">JLPT Categories:</h2>
+                                            <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
+                                                {Array.from({ length: 5 }, (_, i) => i + 1)
+                                                    .reverse()
+                                                    .map(index => {
+                                                        if (index === 1) {
+                                                            return (
+                                                                <li key={`jlpt1`} >
+                                                                    <button className={`
+                                                                            bg-gray-300 border border-gray-400 
+                                                                            text-white rounded-md p-2 w-full h-full
+                                                                            flex justify-center items-center
+                                                                            cursor-default
+                                                                            `}
+                                                                        onClick={() => { }}>
+                                                                        {`JLPT N1 (Coming Soon!)`}
+                                                                    </button>
+                                                                </li>
+                                                            )
+                                                        }
+                                                        return (
+                                                            <li key={`jlpt${index}`} >
+                                                                <SelectCategoryButton categoryName={`JLPT N${index}`} isSelected={selectedReviewCategory === `jlpt${index}`}
+                                                                    handleSelectCategoryClick={() => setSelectedReviewCategory(`jlpt${index}`)} />
+                                                            </li>
+                                                        );
+                                                    })}
+                                            </ul>
+                                        </section>
+                                    </div>
+                                </section>
                             </div>
-                            <ol className='grid grid-cols-6 md:grid-cols-10 text-center gap-2 mb-4'>
+                            {/* <ol className='grid grid-cols-6 md:grid-cols-10 text-center gap-2 mb-4'>
                                 {Array.from({ length: 60 }, (_, i) => i + 1).map(index => {
                                     return (
                                         <li key={`level-number-${index}`} >
@@ -389,7 +429,7 @@ export default function VisuallySimilarReviewSettings() {
                                         </li>
                                     );
                                 })}
-                            </ol>
+                            </ol> */}
                             <div>
                                 <StartReviewsButton isActive={selectedReviewCategory !== ''} isLoading={isLoading}
                                     handleStartReviewsClick={handleStartReviewsClick} />
