@@ -3,14 +3,18 @@
 import { Hits, InstantSearch, SearchBox, useInstantSearch } from "react-instantsearch";
 import TypesenseInstantsearchAdapter from "typesense-instantsearch-adapter";
 import HitComponent from "./HitComponent";
+import { useState, useEffect } from "react";
 
 export const SearchComponent = () => {
+  const [highlightIndex, setHighlightIndex] = useState(1); // Track the highlighted item index
 
   function ResultsHook() {
     const { results } = useInstantSearch();
+
     if (results === undefined) {
       return;
     }
+
     const searchSubmitButton = document.getElementsByClassName("ais-SearchBox-submit")[0];
     const searchInput = document.getElementsByClassName("ais-SearchBox-input")[0];
     const searchResetButton = document.getElementsByClassName("ais-SearchBox-reset")[0];
@@ -29,7 +33,6 @@ export const SearchComponent = () => {
       searchInput.classList.remove('border-b-2', 'rounded-bl-lg');
       searchResetButton.classList.remove('border-b-2', 'rounded-br-lg');
     }
-
   }
 
   const typesenseInstantsearchAdapter = new TypesenseInstantsearchAdapter({
@@ -79,10 +82,37 @@ export const SearchComponent = () => {
     },
   };
 
+  const handleKeyDown = (event, hits) => {
+    if (event.key === 'ArrowDown') {
+      setHighlightIndex((prevIndex) => Math.min(prevIndex + 1, hits.length));
+    } else if (event.key === 'ArrowUp') {
+      setHighlightIndex((prevIndex) => Math.max(prevIndex - 1, 1));
+    } else if (event.key === 'Enter') {
+      const currentHit = hits[highlightIndex - 1];
+      if (currentHit) {
+        window.location.href = currentHit.children[0].children[0].href; // Navigate to the highlighted item's URL
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDownEvent = (event) => {
+      const hits = document.querySelectorAll('.ais-Hits-item'); // Get all hit items
+      if (hits.length > 0) {
+        handleKeyDown(event, hits);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDownEvent);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDownEvent);
+    };
+  }, [highlightIndex]); // Only re-run the effect if `highlightIndex` changes
 
   return (
     <InstantSearch indexName="kanjis" searchClient={proxySearchClient}
-      future={{ preserveSharedStateOnUnmount: true, }}>
+      future={{ preserveSharedStateOnUnmount: true }}>
       <SearchBox
         classNames={{
           root: '',
@@ -94,20 +124,26 @@ export const SearchComponent = () => {
           resetIcon: 'h-full w-full',
         }}
         placeholder="Search by kanji, meaning, or kana"
-
       />
       <Hits
-        hitComponent={HitComponent}
+        hitComponent={({ hit }) => (
+          <div
+            className={`p-2 border ${highlightIndex === hit.__position && 'bg-pink-100'}`}
+            onMouseOver={() => setHighlightIndex(hit.__position)}
+            onClick={() => window.location.href = `/visually-similar/kanji/${hit.id}`}
+          >
+            <HitComponent hit={hit} />
+          </div>
+        )}
         classNames={{
           root: 'bg-slate-50',
           list: 'p-0',
-          item: 'p-2 border hover:bg-pink-100',
+          item: 'hover:bg-pink-100 ais-Hits-item', // ais-Hits-item used for selection
         }}
       />
       <ResultsHook />
     </InstantSearch>
-  )
+  );
 }
-
 
 export default SearchComponent;
