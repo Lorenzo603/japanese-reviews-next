@@ -102,9 +102,6 @@ export default function VisuallySimilarReview() {
         } else {
             setAnswerState(AnswerState.FINISHED);
             updateUserReviewAsInactive();
-            if (totalCorrect === totalReviews) {
-                setIsExploding(true);
-            }
         }
     }
 
@@ -179,7 +176,6 @@ export default function VisuallySimilarReview() {
         }
     }
 
-    const [isExploding, setIsExploding] = useState(false);
     const confettiConfig = {
         angle: '280',
         spread: '360',
@@ -200,7 +196,7 @@ export default function VisuallySimilarReview() {
         <main className="h-full flex-grow">
             <div className="h-full flex-grow overflow-hidden">
                 <div className="w-full p-1 flex justify-center">
-                    <Confetti active={isExploding} config={confettiConfig} />
+                    <Confetti active={answerState === AnswerState.FINISHED && totalCorrect === totalReviews} config={confettiConfig} />
                 </div>
                 <section>
                     <div className="mx-auto max-w-7xl flex justify-center p-6">
