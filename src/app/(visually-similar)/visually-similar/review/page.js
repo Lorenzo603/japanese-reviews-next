@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import Confetti from 'react-dom-confetti';
 import AnswerButton from "./AnswerButton";
 import { doesSessionExist } from "supertokens-auth-react/recipe/session";
+import ShiningTrophy from "./ShiningTrophy";
 
 export default function VisuallySimilarReview() {
 
@@ -152,8 +153,8 @@ export default function VisuallySimilarReview() {
         if (totalAnswers === 0) {
             return "No worries!"
         }
-        const correctPercentage = getCorrectPercentage();
         if (isReviewBatchFinished()) {
+            const correctPercentage = getCorrectPercentage();
             if (correctPercentage === 100) {
                 return "Absolutely perfect!"
             } else if (correctPercentage >= 80) {
@@ -178,8 +179,8 @@ export default function VisuallySimilarReview() {
         if (totalAnswers === 0) {
             return "When you're ready, dive in!"
         }
-        const correctPercentage = getCorrectPercentage();
         if (isReviewBatchFinished()) {
+            const correctPercentage = getCorrectPercentage();
             if (correctPercentage === 100) {
                 return "You aced it! You're a true quiz master. Keep shining!"
             } else if (correctPercentage >= 80) {
@@ -198,6 +199,22 @@ export default function VisuallySimilarReview() {
                 return "You're doing good so far!"
             }
         }
+    }
+
+    function getTrophyImage() {
+        if (isReviewBatchFinished()) {
+            const correctPercentage = getCorrectPercentage();
+            if (correctPercentage === 100) {
+                return "gold"
+            } else if (correctPercentage >= 80) {
+                return "silver"
+            } else if (correctPercentage >= 60) {
+                return "bronze"
+            } else {
+                return ""
+            }
+        }
+        return ""
     }
 
     const confettiConfig = {
@@ -228,6 +245,12 @@ export default function VisuallySimilarReview() {
                             {
                                 answerState === AnswerState.FINISHED ? (
                                     <div>
+                                        <div className="flex justify-center pb-4">
+                                            {
+                                                getTrophyImage() !== "" &&
+                                                <ShiningTrophy trophy={getTrophyImage()} />
+                                            }
+                                        </div>
                                         <div className="flex flex-col pb-4">
                                             <div className="text-4xl pb-2">
                                                 {getCongratulationsStatement()}

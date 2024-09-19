@@ -434,3 +434,38 @@ button.btn-primary.wrong-button {
 .japanese-font {
   font-family: var(--noto-sans-jp);
 }
+
+/**********/
+/* Trophies animation
+/**********/
+.trophy-container {
+  position: relative;
+}
+
+.trophy-container.shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%; /* Start from further left to make the shine smoother */
+  width: 25%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.6) 30%, rgba(255, 255, 255, 0.1) 60%);
+  transform: skewX(-20deg);
+  opacity: 0;
+  animation: shine-animation 1.0s forwards;
+}
+
+@keyframes shine-animation {
+  0% {
+    left: -200%;
+    opacity: 0;
+  }
+  50% {
+    left: 100%;
+    opacity: 1;
+  }
+  100% {
+    left: 200%;
+    opacity: 0;
+  }
+}
