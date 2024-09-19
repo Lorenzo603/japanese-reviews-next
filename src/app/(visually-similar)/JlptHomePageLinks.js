@@ -9,8 +9,8 @@ const JlptHomePageLinks = (props) => {
         <div className="relative inline-block">
             {
                 props.medal !== "" &&
-                <div className="absolute top-[-5px] left-[-5px]">
-                    <Image src={`/img/medals/medal-${props.medal}.svg`} alt="" width={32} height={32} />
+                <div className="absolute top-[-3px] left-[-7px]">
+                    <Image src={`/img/medals/medal-${props.medal}.svg`} alt="" width={32} height={32} style={{width: 32, height: 32}}/>
                 </div>
             }
 
