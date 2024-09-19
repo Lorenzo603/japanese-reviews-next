@@ -70,11 +70,11 @@ export default function Home() {
             <section>
               <h1 id="browse-by-jlpt-level" className="text-2xl mb-4 text-center">Browse By JLPT Level</h1>
               <div className="flex flex-row flex-wrap gap-6 justify-center">
-                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-5" level="N5" />
-                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-4" level="N4" />
-                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-3" level="N3" />
-                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-2" level="N2" />
-                <JlptHomePageLinks enabled={false} href="/" level="N1" />
+                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-5" level="N5" medal="bronze" />
+                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-4" level="N4" medal="silver" />
+                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-3" level="N3" medal="gold" />
+                <JlptHomePageLinks enabled={true} href="/visually-similar/jlpt-level-2" level="N2" medal="platinum" />
+                <JlptHomePageLinks enabled={false} href="/" level="N1" medal="" />
               </div>
             </section>
           </div>
