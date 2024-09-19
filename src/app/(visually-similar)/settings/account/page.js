@@ -156,10 +156,10 @@ export default function SettingsAccount() {
             }
 
 
-            <h1 className="text-2xl mb-2">Profile</h1>
+            <h1 className="text-2xl text-pink-800 font-bold mb-2">Profile</h1>
             <section>
               <div className='flex flex-col gap-2 mb-6'>
-                <h2 className="text-xl">Username</h2>
+                <h2 className="text-xl font-bold">Username</h2>
                 <p>Your username is <span className='font-bold'>{username}</span></p>
                 <div className="flex flex-row flex-wrap gap-2">
                   <input
@@ -182,7 +182,7 @@ export default function SettingsAccount() {
 
             <section>
               <div className='flex flex-col gap-2 mb-6'>
-                <h2 className="text-xl">Email</h2>
+                <h2 className="text-xl font-bold">Email</h2>
                 <p>Your email address is <span className='font-bold'>{email}</span></p>
                 <div className="flex flex-row flex-wrap gap-2">
                   <input
@@ -211,7 +211,7 @@ export default function SettingsAccount() {
 
             <section>
               <div className='flex flex-col gap-4 mb-6'>
-                <h2 className="text-xl">Password</h2>
+                <h2 className="text-xl font-bold">Password</h2>
                 <div>
                   <Link href="/sign-in/reset-password"
                     className="p-2 bg-pink-500 hover:bg-pink-700 text-white rounded">

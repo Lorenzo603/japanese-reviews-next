@@ -36,9 +36,32 @@ export default function Home() {
             </section>
           </div>
 
+          <div className="max-w-3xl py-4 w-full flex justify-start">
+            <section>
+              <h1 id="latest-news" className="text-2xl text-pink-800 font-bold">Latest news</h1>
+              <div className="py-2">
+                <div className="flex flex-row gap-4">
+                  <h2 className="text-2xl pb-2">Welcome!</h2>
+                  {/* <span>- date here</span> */}
+                </div>
+                <div>
+                  <p>
+                    Welcome to the site, you can find info here.
+                  </p>
+                  <p>
+                    The code for this site is available on Github.
+                  </p>
+                  <p className="grid justify-items-end py-1">
+                    <Link className="underline" href="/news">Read more</Link>
+                  </p>
+                </div>
+              </div>
+            </section>
+          </div>
+
           <div className="max-w-3xl py-4">
             <section>
-              <h1 className="sr-only text-2xl">Support us</h1>
+              <h1 className="text-2xl">Support us</h1>
               KoFI
             </section>
           </div>
