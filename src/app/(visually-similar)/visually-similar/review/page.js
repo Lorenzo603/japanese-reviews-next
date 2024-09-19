@@ -15,7 +15,7 @@ export default function VisuallySimilarReview() {
     const WRONG_COLOR_CLASSES = "bg-red-500 text-white border-red-700";
 
     const { promptSet, promptIndex, setPromptIndex,
-        guessKanji, multichoiceInput, 
+        guessKanji, multichoiceInput,
         quickMode, focusModeEnabled,
         answerState, setAnswerState,
         totalAnswers, setTotalAnswers,
@@ -118,7 +118,7 @@ export default function VisuallySimilarReview() {
                 })
             });
         }
-    }   
+    }
 
 
     function getAnswerButtonColor(answerIdx) {
@@ -140,39 +140,63 @@ export default function VisuallySimilarReview() {
         return Math.round(totalCorrect / totalReviews * 100)
     }
 
+    function getCorrectPercentagePartial() {
+        return Math.round(totalCorrect / totalAnswers * 100)
+    }
+
+    function isReviewBatchFinished() {
+        return totalAnswers === totalReviews;
+    }
+
     function getCongratulationsStatement() {
         if (totalAnswers === 0) {
             return "No worries!"
         }
         const correctPercentage = getCorrectPercentage();
-        if (correctPercentage === 100) {
-            return "Absolutely perfect!"
-        } else if (correctPercentage >= 80) {
-            return "Amazing work!"
-        } else if (correctPercentage >= 60) {
-            return "Well done!"
-        } else if (correctPercentage >= 40) {
-            return "Nice try!"
+        if (isReviewBatchFinished()) {
+            if (correctPercentage === 100) {
+                return "Absolutely perfect!"
+            } else if (correctPercentage >= 80) {
+                return "Amazing work!"
+            } else if (correctPercentage >= 60) {
+                return "Well done!"
+            } else if (correctPercentage >= 40) {
+                return "Nice try!"
+            } else {
+                return "Great effort!"
+            }
         } else {
-            return "Great effort!"
+            if (getCorrectPercentagePartial() < 50) {
+                return "Keep it up!"
+            } else {
+                return "Great start!"
+            }
         }
     }
 
     function getCongratulationsSubStatement() {
-        const correctPercentage = getCorrectPercentage();
         if (totalAnswers === 0) {
             return "When you're ready, dive in!"
         }
-        if (correctPercentage === 100) {
-            return "You aced it! You're a true quiz master. Keep shining!"
-        } else if (correctPercentage >= 80) {
-            return "You're nearly flawless. Keep it up, and you'll achieve perfection!"
-        } else if (correctPercentage >= 60) {
-            return "You're making real strides. Keep up the good work!"
-        } else if (correctPercentage >= 40) {
-            return "You're getting there. A bit more practice, and you'll be unstoppable!"
+        const correctPercentage = getCorrectPercentage();
+        if (isReviewBatchFinished()) {
+            if (correctPercentage === 100) {
+                return "You aced it! You're a true quiz master. Keep shining!"
+            } else if (correctPercentage >= 80) {
+                return "You're nearly flawless. Keep it up, and you'll achieve perfection!"
+            } else if (correctPercentage >= 60) {
+                return "You're making real strides. Keep up the good work!"
+            } else if (correctPercentage >= 40) {
+                return "You're getting there. A bit more practice, and you'll be unstoppable!"
+            } else {
+                return "Every step forward is progress. Keep going, you'll improve in no time!"
+            }
         } else {
-            return "Every step forward is progress. Keep going, you'll improve in no time!"
+            if (getCorrectPercentagePartial() < 50) {
+                return "It's not over yet!"
+            } else {
+                return "You're doing good so far!"
+            }
         }
     }
 
@@ -213,11 +237,14 @@ export default function VisuallySimilarReview() {
                                             </div>
                                         </div>
                                         <div className="text-2xl pb-2">
-                                            {`You got ${totalCorrect} out of ${totalReviews}`}
+                                            {`${isReviewBatchFinished() ? "You got" : "So far, you got"} ${totalCorrect} correct answers out of ${isReviewBatchFinished() ? totalReviews : totalAnswers}`}
                                         </div>
-                                        <div className="text-2xl">
-                                            {getCorrectPercentage()}&#37; correct
-                                        </div>
+                                        {
+                                            isReviewBatchFinished() &&
+                                            <div className="text-2xl">
+                                                {getCorrectPercentage()}&#37; correct
+                                            </div>
+                                        }
                                         {
                                             wrongAnswers.length > 0 &&
                                             <div className="pt-4">
