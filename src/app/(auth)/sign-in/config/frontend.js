@@ -75,6 +75,10 @@ export const frontendConfig = () => {
                   if (value.length > 20) {
                     return "Username must be less than 20 characters long";
                   }
+                  // check against regexp [a-zA-Z0-9_]
+                  if (!/^[a-zA-Z0-9_]*$/.test(value)) {
+                    return "Username can only contain letters, numbers and underscores";
+                  }
                   return undefined; //means no error
                 }
               },
