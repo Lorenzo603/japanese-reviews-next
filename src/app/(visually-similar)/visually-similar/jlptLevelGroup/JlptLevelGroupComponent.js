@@ -1,5 +1,6 @@
 import { getDictionary } from '@/app/components/backend/DictionaryLoaderComponent';
 import KanjiCardLinkComponent from './KanjiCardLinkComponent';
+import Image from 'next/image';
 
 export const JlptLevelGroupComponent = async (props) => {
 
@@ -10,7 +11,10 @@ export const JlptLevelGroupComponent = async (props) => {
     return (
         <main>
             <div>
-                <h1 className='text-4xl pb-4'>JLPT Level {props.jlptLevelNumber}</h1>
+                <div className='flex flex-row gap-6 pb-4'>
+                    <h1 className='text-4xl'>JLPT Level {props.jlptLevelNumber}</h1>
+                    <Image src={`/img/medals/medal-${props.medal}.svg`} alt={`JLPT Level ${props.jlptLevelNumber} medal`} width={32} height={32} />
+                </div>
                 <div className='flex flex-row 
                 mb-6
                 border-2 border-blue-900 rounded-md p-2

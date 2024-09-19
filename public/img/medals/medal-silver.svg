@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   shape-rendering="geometricPrecision"
+   text-rendering="geometricPrecision"
+   image-rendering="optimizeQuality"
+   fill-rule="evenodd"
+   clip-rule="evenodd"
+   viewBox="0 0 418 512.098"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="medal-silver.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs5" />
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.5172876"
+     inkscape:cx="209.25499"
+     inkscape:cy="256.37855"
+     inkscape:window-width="1450"
+     inkscape:window-height="1020"
+     inkscape:window-x="620"
+     inkscape:window-y="70"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg5" />
+  <path
+     fill="#E37E00"
+     d="M338.162 0l-3.226 5.303-44.592 73.121H127.443L79.838.004z"
+     id="path1"
+     style="fill:#544dff;fill-opacity:1" />
+  <path
+     fill="#F60"
+     d="M341.642 0L418 95.776l-89.519 153.682c-22.587-25.893-53.454-44.369-88.471-51.317L338.417 5.303l-.772 1.264L341.267 0h.375z"
+     id="path2"
+     style="fill:#0c0ac5;fill-opacity:1" />
+  <path
+     fill="#D0401B"
+     d="M89.487 249.494L0 95.776 76.012.004h.242L82.8 11.187l-1.348-2.221 96.757 189.133c-35.123 6.917-66.085 25.43-88.722 51.395z"
+     id="path3"
+     style="fill:#060285;fill-opacity:1" />
+  <circle
+     fill="#F5C800"
+     cx="209"
+     cy="353.598"
+     r="158.499"
+     id="circle3"
+     style="fill:#d4d4d4;fill-opacity:1" />
+  <path
+     fill="#FFDD61"
+     d="M209.112 233.909c65.819 0 119.182 53.35 119.182 119.182 0 65.837-53.363 119.201-119.182 119.201-65.83 0-119.192-53.364-119.192-119.201 0-65.828 53.362-119.182 119.192-119.182z"
+     id="path4"
+     style="fill:#ededed;fill-opacity:1" />
+</svg>

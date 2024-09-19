@@ -6,7 +6,7 @@ export default function VisuallySimilarJlptLevel3() {
     return (
         <div className='w-full mx-auto max-w-7xl px-6 pb-6'>
             <Breadcrumb />
-            <JlptLevelGroupComponent jlptLevelNumber={3} />
+            <JlptLevelGroupComponent jlptLevelNumber={3} medal="gold" />
         </div>
     )
 }
