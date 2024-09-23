@@ -16,7 +16,7 @@ const FooterComponent = () => {
       <div className="flex">
         <div className="container mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 
              px-4 py-6">
-          {showFooterContent && <p className="text-sm">© {new Date().getFullYear()} Lorenzo Furrer. All rights reserved.</p>}
+          {showFooterContent && <p className="text-sm">© {new Date().getFullYear()} Tomomoji. All rights reserved.</p>}
         </div>
       </div>
     </footer>
