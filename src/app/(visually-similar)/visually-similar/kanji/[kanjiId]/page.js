@@ -35,7 +35,7 @@ export default async function VisuallySimilarKanji({ params }) {
     }
 
     return (
-        <div className="max-w-7xl px-6 pb-6">
+        <div className="w-full mx-auto max-w-7xl px-6 pb-6">
             <Breadcrumb />
             <main>
                 <div className="min-w-64 inline-block
