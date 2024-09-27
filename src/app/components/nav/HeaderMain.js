@@ -9,6 +9,7 @@ import HeaderLinkReviewSettingsIcon from "./HeaderLinkReviewSettingsIcon";
 import HeaderLinkBrowseJlptIcon from "./HeaderLinkBrowseJlptIcon";
 import Logo from "./Logo";
 import SearchBarComponent from "../search/SearchBarComponent";
+import HeaderSearchIcon from "./HeaderSearchIcon";
 
 const HeaderMain = () => {
     const [isSearchBarVisible, setSearchBarVisible] = useState(false);
@@ -32,9 +33,7 @@ const HeaderMain = () => {
                                 className="no-underline font-bold text-blue-900 hidden sm:flex items-center rounded-md gap-x-2 px-2 py-2.5 hover:bg-slate-50"
                                 onClick={toggleSearchBar}
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 lg:size-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                </svg>
+                                <HeaderSearchIcon />
                                 <span className="hidden lg:inline">Search</span>
                             </button>
                         </div>
