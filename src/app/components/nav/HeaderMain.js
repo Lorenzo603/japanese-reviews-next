@@ -62,9 +62,10 @@ const HeaderMain = () => {
                     {isSearchBarVisible && (
                         <div
                             ref={searchBarRef} // Attach ref to search bar container
-                            className="absolute top-24 left-0 shadow-md
+                            className={`absolute top-24 left-0 shadow-md
                                 w-full flex justify-center items-center
-                                bg-gradient-to-b from-sky-100 to-slate-50"
+                                bg-gradient-to-b from-sky-100 to-slate-50
+                                ${isSearchBarVisible ? 'animate-slide-down' : 'hidden'}`}
                         >
                             <SearchBarComponent />
 
