@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import LoginButton from "../buttons/login/LoginButton";
+import { LoginSidebar } from "./sidebar/LoginSidebar";
 import HeaderLinkComponent from "./HeaderLinkComponent";
 import HeaderLinkNewsIcon from "./HeaderLinkNewsIcon";
 import HeaderLinkReviewSettingsIcon from "./HeaderLinkReviewSettingsIcon";
@@ -97,7 +97,7 @@ const HeaderMain = () => {
                     />
 
                     <div className="flex items-center">
-                        <LoginButton />
+                        <LoginSidebar />
                     </div>
                 </div>
             </nav>
