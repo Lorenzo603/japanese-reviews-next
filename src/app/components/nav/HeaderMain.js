@@ -67,7 +67,7 @@ const HeaderMain = () => {
                             <SearchBarComponent />
 
                             <button
-                                className="hidden sm:block absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-900"
+                                className="hidden sm:inline absolute right-4 top-10 transform -translate-y-1/2 text-gray-600 hover:text-gray-900"
                                 onClick={() => setSearchBarVisible(false)}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
