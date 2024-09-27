@@ -128,7 +128,7 @@ export const SearchComponent = () => {
         classNames={{
           root: '',
           form: 'flex w-full h-12',
-          input: 'bg-slate-50 w-full p-2 border-t-2 border-b-2 border-l-2 rounded-tl-lg rounded-bl-lg w-72 sm:w-96 focus:outline-none',
+          input: 'bg-slate-50 w-full w-96 p-2 border-t-2 border-b-2 border-l-2 rounded-tl-lg rounded-bl-lg focus:outline-none',
           submit: 'bg-slate-50 h-full p-2 border-y-2 border-r-2 rounded-r-lg',
           submitIcon: 'h-full w-full',
           reset: 'bg-slate-50 h-full p-2 border-t-2 border-b-2 border-r-2 rounded-tr-lg rounded-br-lg',

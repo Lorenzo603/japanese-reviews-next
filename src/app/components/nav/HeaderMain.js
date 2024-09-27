@@ -44,13 +44,13 @@ const HeaderMain = () => {
         <header className="sticky top-0 z-50 w-full bg-pink-200">
             <nav aria-label="navigation-menu" className="mx-auto flex h-24 max-w-7xl items-center justify-between gap-x-6 p-6">
                 <Logo />
-                <div className="flex items-center justify-end gap-x-4">
+                <div className="flex items-center justify-end gap-x-1 sm:gap-x-4">
 
                     {pathname !== '/' && (
                         <div className="flex items-center">
                             <button
                                 title="Toggle search bar"
-                                className="no-underline font-bold text-blue-900 hidden sm:flex items-center rounded-md gap-x-2 px-2 py-2.5 hover:bg-slate-50"
+                                className="no-underline font-bold text-blue-900 flex items-center rounded-md gap-x-2 px-2 py-2.5 hover:bg-slate-50"
                                 onClick={toggleSearchBar}
                             >
                                 <HeaderSearchIcon />
@@ -67,7 +67,7 @@ const HeaderMain = () => {
                             <SearchBarComponent />
 
                             <button
-                                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-900"
+                                className="hidden sm:block absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-900"
                                 onClick={() => setSearchBarVisible(false)}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
