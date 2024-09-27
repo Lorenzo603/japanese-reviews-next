@@ -65,7 +65,7 @@ const HeaderMain = () => {
                             className={`absolute top-24 left-0 shadow-md
                                 w-full flex justify-center items-center
                                 bg-gradient-to-b from-sky-100 to-slate-50
-                                ${isSearchBarVisible ? 'animate-slide-down' : 'hidden'}`}
+                                ${isSearchBarVisible ? 'animate-fade-in' : 'hidden'}`}
                         >
                             <SearchBarComponent />
 
