@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from "react";
-import LoginButton from "../buttons/login/LoginButton";
+import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import LoginButton from "../buttons/login/LoginButton";
 import HeaderLinkComponent from "./HeaderLinkComponent";
 import HeaderLinkNewsIcon from "./HeaderLinkNewsIcon";
 import HeaderLinkReviewSettingsIcon from "./HeaderLinkReviewSettingsIcon";
@@ -13,11 +13,32 @@ import HeaderSearchIcon from "./HeaderSearchIcon";
 
 const HeaderMain = () => {
     const [isSearchBarVisible, setSearchBarVisible] = useState(false);
+    const searchBarRef = useRef(null);
     const pathname = usePathname();
 
     const toggleSearchBar = () => {
-        setSearchBarVisible(!isSearchBarVisible);
+        setSearchBarVisible((prev) => !prev);
     };
+
+    // Close search bar if user clicks outside of it
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchBarRef.current && !searchBarRef.current.contains(event.target)) {
+                setSearchBarVisible(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isSearchBarVisible]);
+
+    // Close search bar when the route changes (because pathname changes)
+    useEffect(() => {
+        setSearchBarVisible(false);
+    }, [pathname]);
 
     return (
         <header className="sticky top-0 z-50 w-full bg-pink-200">
@@ -25,8 +46,7 @@ const HeaderMain = () => {
                 <Logo />
                 <div className="flex items-center justify-end gap-x-4">
 
-                    {
-                        pathname !== '/' &&
+                    {pathname !== '/' && (
                         <div className="flex items-center">
                             <button
                                 title="Toggle search bar"
@@ -37,12 +57,13 @@ const HeaderMain = () => {
                                 <span className="hidden lg:inline">Search</span>
                             </button>
                         </div>
-                    }
+                    )}
 
                     {isSearchBarVisible && (
-                        <div className="absolute top-24 left-0 w-full flex justify-center
-                            bg-gradient-to-b from-sky-100 to-slate-50
-                            shadow-md">
+                        <div
+                            ref={searchBarRef}
+                            className="absolute top-24 left-0 w-full flex justify-center bg-gradient-to-b from-sky-100 to-slate-50 shadow-md"
+                        >
                             <SearchBarComponent />
                         </div>
                     )}
