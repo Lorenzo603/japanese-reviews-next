@@ -5,6 +5,13 @@ import { notFound } from "next/navigation";
 import Breadcrumb from "@/app/components/breadcrumbs/Breadcrumb";
 var wanakana = require('wanakana');
 
+export async function generateMetadata({ params }, parent) {
+
+    return {
+        title: decodeURIComponent(params.kanjiSlug)
+    }
+}
+
 export default async function VisuallySimilarKanji({ params }) {
 
     const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
