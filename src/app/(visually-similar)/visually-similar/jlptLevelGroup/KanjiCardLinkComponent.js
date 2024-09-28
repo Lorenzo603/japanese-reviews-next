@@ -6,7 +6,7 @@ export const KanjiCardLinkComponent = async (props) => {
         <li className={`${props.kanjiHasSimilarities ? 'bg-pink-500' : 'bg-pink-300'} 
             rounded-md p-2 hover:bg-pink-600`}>
             <Link className="no-underline text-white"
-                href={`/visually-similar/kanji/${props.kanjiId}`}
+                href={`/visually-similar/kanji/${props.kanjiSlug}`}
             >
                 <div className='flex flex-col w-24'>
                     <div className='japanese-font text-5xl flex justify-center text-center'>

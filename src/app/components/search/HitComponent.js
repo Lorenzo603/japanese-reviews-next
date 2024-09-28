@@ -6,7 +6,7 @@ const HitComponent = ({ hit }) => {
 
     return (
         <Link className="no-underline text-slate-900"
-            href={`/visually-similar/kanji/${hit.id}`} >
+            href={`/visually-similar/kanji/${hit.slug}`} >
             <div className="flex gap-4">
                 <div className="japanese-font text-5xl">
                     {hit.slug}

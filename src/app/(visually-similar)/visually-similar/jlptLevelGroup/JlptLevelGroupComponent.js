@@ -34,7 +34,6 @@ export const JlptLevelGroupComponent = async (props) => {
                                     && kanji['data']['visually_similar_subject_ids'].length > 0;
                                 return (
                                     <KanjiCardLinkComponent key={kanji["id"]}
-                                        kanjiId={kanji["id"]}
                                         kanjiSlug={kanji["data"]["slug"]}
                                         kanjiMeaning={kanji["data"]["meanings"][0]["meaning"]}
                                         kanjiHasSimilarities={hasSimilarKanji}

@@ -152,7 +152,7 @@ export const SearchComponent = () => {
                 setHighlightIndex(hit.__position); // Highlight the item on mouseover if not using keyboard
               }
             }}
-            onClick={() => window.location.href = `/visually-similar/kanji/${hit.id}`}
+            onClick={() => window.location.href = `/visually-similar/kanji/${hit.slug}`}
           >
             <HitComponent hit={hit} />
           </div>

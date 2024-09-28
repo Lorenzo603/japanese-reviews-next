@@ -8,8 +8,9 @@ var wanakana = require('wanakana');
 export default async function VisuallySimilarKanji({ params }) {
 
     const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
+    const decodedKanjiSlug = decodeURIComponent(params.kanjiSlug);
     const kanji = fullKanjiDictionary
-        .filter(item => item['id'] === parseInt(params.kanjiId))?.[0]?.["data"];
+        .filter(item => item['data']['slug'] === decodedKanjiSlug)?.[0]?.["data"];
     if (!kanji) {
         notFound();
     }
