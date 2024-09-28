@@ -196,7 +196,7 @@ export default function VisuallySimilarReview() {
             if (getCorrectPercentagePartial() < 50) {
                 return "It's not over yet!"
             } else {
-                return "You're doing good so far!"
+                return "You're doing good!"
             }
         }
     }
