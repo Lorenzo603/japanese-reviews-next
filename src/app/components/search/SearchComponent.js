@@ -135,6 +135,7 @@ export const SearchComponent = () => {
           resetIcon: 'h-full w-full',
         }}
         placeholder="Search by kanji, meaning, or kana"
+        autoFocus
       />
       <Hits
         hitComponent={({ hit }) => (
