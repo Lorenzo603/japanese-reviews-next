@@ -8,7 +8,6 @@ import Avatar from "boring-avatars";
 import { useUserContext } from "@/app/context/userContext";
 import SidebarLink from "./SidebarLink";
 import SidebarNewsIcon from "./SidebarNewsIcon";
-import SidebarSearchIcon from "./SidebarSearchIcon";
 import SidebarReviewSettingsIcon from "./SidebarReviewSettingsIcon";
 import SidebarBrowseJlptIcon from "./SidebarBrowseJlptIcon";
 
@@ -91,9 +90,6 @@ export const LoginSidebar = () => {
                     <h2 className="text-xl font-bold mb-2 text-pink-800">Browse</h2>
                     <nav aria-label="navigation-menu">
                         <ul>
-                            <li className="flex py-2 hover:bg-pink-50 text-gray-800 hover:text-pink-600 transition-colors duration-20">
-                                <SidebarLink href="/#search" title="Search" icon={<SidebarSearchIcon />} onClick={toggleMenu} />
-                            </li>
                             <li className="flex py-2 hover:bg-pink-50 text-gray-800 hover:text-pink-600 transition-colors duration-20">
                                 <SidebarLink href="/news" title="News" icon={<SidebarNewsIcon />} onClick={toggleMenu} />
                             </li>

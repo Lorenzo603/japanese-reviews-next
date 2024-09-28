@@ -1,7 +1,6 @@
 import Link from "next/link";
 import SvgArrows from "./SvgArrows";
 import JlptHomePageLinks from "./JlptHomePageLinks";
-import SearchBarComponent from "../components/search/SearchBarComponent";
 
 export default function Home() {
 
@@ -9,10 +8,6 @@ export default function Home() {
   return (
     <main>
       <div className="w-full">
-        <div className="w-full flex justify-center items-center 
-          bg-gradient-to-b from-sky-100 to-slate-50">
-          <SearchBarComponent />
-        </div>
         <div className="mx-auto max-w-7xl p-6 flex flex-col items-center">
           <div className="max-w-3xl py-4">
             <section>

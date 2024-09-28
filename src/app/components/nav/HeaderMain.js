@@ -46,18 +46,16 @@ const HeaderMain = () => {
                 <Logo />
                 <div className="flex items-center justify-end gap-x-1 sm:gap-x-4">
 
-                    {pathname !== '/' && (
-                        <div className="flex items-center">
-                            <button
-                                title="Toggle search bar"
-                                className="no-underline font-bold text-blue-900 flex items-center rounded-md gap-x-2 px-2 py-2.5 hover:bg-slate-50"
-                                onClick={toggleSearchBar}
-                            >
-                                <HeaderSearchIcon />
-                                <span className="hidden lg:inline">Search</span>
-                            </button>
-                        </div>
-                    )}
+                    <div className="flex items-center">
+                        <button
+                            title="Toggle search bar"
+                            className="no-underline font-bold text-blue-900 flex items-center rounded-md gap-x-2 px-2 py-2.5 hover:bg-slate-50"
+                            onClick={toggleSearchBar}
+                        >
+                            <HeaderSearchIcon />
+                            <span className="hidden lg:inline">Search</span>
+                        </button>
+                    </div>
 
                     {isSearchBarVisible && (
                         <div
