@@ -60,15 +60,15 @@ const HeaderMain = () => {
                     {isSearchBarVisible && (
                         <div
                             ref={searchBarRef} // Attach ref to search bar container
-                            className={`absolute top-24 left-0 shadow-md
-                                w-full flex justify-center items-center
+                            className={`absolute top-0 left-0 shadow-md
+                                w-full min-h-24 flex justify-center items-center
                                 bg-gradient-to-b from-sky-100 to-slate-50
                                 ${isSearchBarVisible ? 'animate-fade-in' : 'hidden'}`}
                         >
                             <SearchBarComponent />
 
                             <button
-                                className="absolute right-4 top-10 transform -translate-y-1/2 text-gray-600 hover:text-gray-900"
+                                className="absolute right-4 top-12 transform -translate-y-1/2 text-gray-600 hover:text-gray-900"
                                 onClick={() => setSearchBarVisible(false)}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
