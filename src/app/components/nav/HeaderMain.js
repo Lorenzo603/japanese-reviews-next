@@ -61,7 +61,7 @@ const HeaderMain = () => {
                         <div
                             ref={searchBarRef} // Attach ref to search bar container
                             className={`absolute top-0 left-0 shadow-md
-                                w-full min-h-24 flex justify-center items-center
+                                w-full min-h-24 flex justify-center
                                 bg-gradient-to-b from-sky-100 to-slate-50
                                 ${isSearchBarVisible ? 'animate-fade-in' : 'hidden'}`}
                         >

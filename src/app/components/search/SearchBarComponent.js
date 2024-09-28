@@ -5,7 +5,7 @@ export const SearchBarComponent = () => {
     return (
         <section>
             <h1 id="search" className="sr-only">Search</h1>
-            <div className="w-full flex justify-center p-4">
+            <div className="w-full flex justify-center p-6">
                 <div>
                     <SearchComponent />
                 </div>
