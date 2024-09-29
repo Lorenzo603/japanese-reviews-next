@@ -130,9 +130,9 @@ export const SearchComponent = () => {
           form: 'flex w-full h-12',
           input: 'bg-slate-50 w-72 sm:w-96 p-2 border-t-2 border-b-2 border-l-2 rounded-tl-lg rounded-bl-lg focus:outline-none',
           submit: 'bg-slate-50 h-full p-2 border-y-2 border-r-2 rounded-r-lg',
-          submitIcon: 'h-full w-full',
+          submitIcon: 'w-5 h-5',
           reset: 'bg-slate-50 h-full p-2 border-t-2 border-b-2 border-r-2 rounded-tr-lg rounded-br-lg',
-          resetIcon: 'h-full w-full',
+          resetIcon: 'w-5 h-5',
         }}
         placeholder="Search by kanji, meaning, or kana"
         autoFocus
