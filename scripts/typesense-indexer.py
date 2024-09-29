@@ -52,6 +52,10 @@ client = typesense.Client({
 #             "readingsOn": list(map(lambda reading: reading["reading"], readingsOn)),
 #             "readingsNames": list(map(lambda reading: reading["reading"], readingsNames)),
 #         }
+#
+#         # .create() : creates new document
+#         # .upsert() : updates existing document (whole doc has to be sent)
+#         # .update() : updates existing document (partial doc has to be sent)
 #         client.collections['kanjis'].documents.create(document)
 # print("Done!")
 
