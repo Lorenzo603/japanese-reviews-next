@@ -18,22 +18,14 @@ export const SearchComponent = () => {
     }
 
     const searchSubmitButton = document.getElementsByClassName("ais-SearchBox-submit")[0];
-    const searchInput = document.getElementsByClassName("ais-SearchBox-input")[0];
-    const searchResetButton = document.getElementsByClassName("ais-SearchBox-reset")[0];
-    if (searchSubmitButton === undefined || searchInput === undefined || searchResetButton === undefined) {
+    if (searchSubmitButton === undefined) {
       return;
     }
 
     if (results.query === '') {
       searchSubmitButton.classList.remove('hidden');
-      searchInput.classList.add('border-b-2', 'rounded-bl-lg');
-    } else if (results.nbHits === 0) {
-      searchInput.classList.add('border-b-2', 'rounded-bl-lg');
-      searchResetButton.classList.add('border-b-2', 'rounded-br-lg');
     } else {
       searchSubmitButton.classList.add('hidden');
-      searchInput.classList.remove('border-b-2', 'rounded-bl-lg');
-      searchResetButton.classList.remove('border-b-2', 'rounded-br-lg');
     }
   }
 
@@ -127,11 +119,11 @@ export const SearchComponent = () => {
       <SearchBox
         classNames={{
           root: 'w-full',
-          form: 'flex w-full h-12',
-          input: 'bg-slate-50 w-72 sm:w-96 p-2 border-t-2 border-b-2 border-l-2 rounded-tl-lg rounded-bl-lg focus:outline-none',
-          submit: 'bg-slate-50 h-full p-2 border-y-2 border-r-2 rounded-r-lg',
+          form: 'relative flex w-full h-12',
+          input: 'bg-slate-50 w-72 sm:w-96 py-2 pl-2 pr-10 border-2 rounded-lg',
+          submit: 'bg-slate-50 absolute top-3.5 right-4',
           submitIcon: 'w-5 h-5',
-          reset: 'bg-slate-50 h-full p-2 border-t-2 border-b-2 border-r-2 rounded-tr-lg rounded-br-lg',
+          reset: 'bg-slate-50 absolute top-3.5 right-4',
           resetIcon: 'w-5 h-5',
         }}
         placeholder="Search by kanji, meaning, or kana"
@@ -140,7 +132,7 @@ export const SearchComponent = () => {
       <Hits
         hitComponent={({ hit }) => (
           <div
-            className={`p-2 border 
+            className={`p-2 border w-72 sm:w-96 
               ${(highlightIndex === hit.__position)
                 ? 'bg-pink-100'
                 : (lastMouseOverIndex === hit.__position && !keyboardInteraction)
