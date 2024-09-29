@@ -423,12 +423,16 @@ export default function VisuallySimilarReviewSettings() {
                                             <h2 className="font-bold text-lg py-2">Assorted Categories:</h2>
                                             <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Animals" isSelected={selectedReviewCategory === "animals"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("animals")} />
+                                                    <SelectCategoryButton categoryName="Numbers" isSelected={selectedReviewCategory === "numbers"}
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("numbers")} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Colors" isSelected={selectedReviewCategory === "colors"}
                                                         handleSelectCategoryClick={() => setSelectedReviewCategory("colors")} />
+                                                </li>
+                                                <li>
+                                                    <SelectCategoryButton categoryName="Animals" isSelected={selectedReviewCategory === "animals"}
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("animals")} />
                                                 </li>
                                             </ul>
                                         </section>
