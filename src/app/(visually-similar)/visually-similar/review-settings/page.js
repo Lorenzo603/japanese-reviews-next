@@ -35,7 +35,7 @@ export default function VisuallySimilarReviewSettings() {
 
     const [canResumeBatch, setCanResumeBatch] = useState(false);
     const [showContinueModal, setShowContinueModal] = useState(false);
-    const [selectedReviewCategory, setSelectedReviewCategory] = useState('');
+    const [selectedReviewCategories, setSelectedReviewCategories] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -192,8 +192,16 @@ export default function VisuallySimilarReviewSettings() {
         }
     }
 
+    const toggleSelectedCategory = (category) => {
+        if (selectedReviewCategories.includes(category)) {
+            setSelectedReviewCategories(selectedReviewCategories.filter((c) => c !== category));
+        } else {
+            setSelectedReviewCategories([...selectedReviewCategories, category]);
+        }
+    }
+
     const handleStartReviewsClick = async (overwriteBatchConfirmed) => {
-        if (selectedReviewCategory === '') {
+        if (selectedReviewCategories.length === 0) {
             return;
         }
         if (canResumeBatch && !overwriteBatchConfirmed) {
@@ -209,7 +217,7 @@ export default function VisuallySimilarReviewSettings() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                selectedReviewCategory: selectedReviewCategory,
+                selectedReviewCategories: selectedReviewCategories,
                 guessKanji: guessKanji,
                 multichoiceInput: multichoiceInput,
             })
@@ -393,8 +401,8 @@ export default function VisuallySimilarReviewSettings() {
                                                 {Array.from({ length: 6 }, (_, i) => i + 1).map(index => {
                                                     return (
                                                         <li key={`category-level-${index}`} >
-                                                            <SelectCategoryButton categoryName={`Level ${index}`} isSelected={selectedReviewCategory === `category-level-${index}`}
-                                                                handleSelectCategoryClick={() => setSelectedReviewCategory(`category-level-${index}`)} 
+                                                            <SelectCategoryButton categoryName={`Level ${index}`} isSelected={selectedReviewCategories.includes(`category-level-${index}`)}
+                                                                handleSelectCategoryClick={() => toggleSelectedCategory(`category-level-${index}`)} 
                                                                 numItems={DIFFICULTYLEVEL_NUMITEMS_MAP.get(index)} />
                                                         </li>
                                                     );
@@ -426,8 +434,8 @@ export default function VisuallySimilarReviewSettings() {
                                                         }
                                                         return (
                                                             <li key={`jlpt${index}`} >
-                                                                <SelectCategoryButton categoryName={`JLPT N${index}`} isSelected={selectedReviewCategory === `jlpt${index}`}
-                                                                    handleSelectCategoryClick={() => setSelectedReviewCategory(`jlpt${index}`)} 
+                                                                <SelectCategoryButton categoryName={`JLPT N${index}`} isSelected={selectedReviewCategories.includes(`jlpt${index}`)}
+                                                                    handleSelectCategoryClick={() => toggleSelectedCategory(`jlpt${index}`)} 
                                                                     numItems={JLPTCATEGORY_NUMITEMS_MAP.get(index)} />
                                                             </li>
                                                         );
@@ -440,58 +448,58 @@ export default function VisuallySimilarReviewSettings() {
                                             <h2 className="font-bold text-lg py-2">Assorted Categories:</h2>
                                             <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Numbers" isSelected={selectedReviewCategory === "numbers"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("numbers")}
+                                                    <SelectCategoryButton categoryName="Numbers" isSelected={selectedReviewCategories.includes("numbers")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("numbers")}
                                                         numItems={6} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Colors" isSelected={selectedReviewCategory === "colors"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("colors")}
+                                                    <SelectCategoryButton categoryName="Colors" isSelected={selectedReviewCategories.includes("colors")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("colors")}
                                                         numItems={6} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Directions" isSelected={selectedReviewCategory === "directions"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("directions")}
+                                                    <SelectCategoryButton categoryName="Directions" isSelected={selectedReviewCategories.includes("directions")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("directions")}
                                                         numItems={9} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Places" isSelected={selectedReviewCategory === "places"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("places")}
+                                                    <SelectCategoryButton categoryName="Places" isSelected={selectedReviewCategories.includes("places")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("places")}
                                                         numItems={8} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Animals" isSelected={selectedReviewCategory === "animals"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("animals")}
+                                                    <SelectCategoryButton categoryName="Animals" isSelected={selectedReviewCategories.includes("animals")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("animals")}
                                                         numItems={8} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Food and Drink" isSelected={selectedReviewCategory === "foods"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("foods")}
+                                                    <SelectCategoryButton categoryName="Food and Drink" isSelected={selectedReviewCategories.includes("foods")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("foods")}
                                                         numItems={6} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Body Parts" isSelected={selectedReviewCategory === "body"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("body")}
+                                                    <SelectCategoryButton categoryName="Body Parts" isSelected={selectedReviewCategories.includes("body")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("body")}
                                                         numItems={10} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Family" isSelected={selectedReviewCategory === "family"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("family")}
+                                                    <SelectCategoryButton categoryName="Family" isSelected={selectedReviewCategories.includes("family")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("family")}
                                                         numItems={8} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Seasons" isSelected={selectedReviewCategory === "seasons"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("seasons")}
+                                                    <SelectCategoryButton categoryName="Seasons" isSelected={selectedReviewCategories.includes("seasons")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("seasons")}
                                                         numItems={2} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Weather" isSelected={selectedReviewCategory === "weather"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("weather")}
+                                                    <SelectCategoryButton categoryName="Weather" isSelected={selectedReviewCategories.includes("weather")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("weather")}
                                                         numItems={3} />
                                                 </li>
                                                 <li>
-                                                    <SelectCategoryButton categoryName="Periods of Time" isSelected={selectedReviewCategory === "periods-of-time"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("periods-of-time")}
+                                                    <SelectCategoryButton categoryName="Periods of Time" isSelected={selectedReviewCategories.includes("periods-of-time")}
+                                                        handleSelectCategoryClick={() => toggleSelectedCategory("periods-of-time")}
                                                         numItems={5} />
                                                 </li>
                                             </ul>
@@ -503,14 +511,14 @@ export default function VisuallySimilarReviewSettings() {
                                 {Array.from({ length: 60 }, (_, i) => i + 1).map(index => {
                                     return (
                                         <li key={`level-number-${index}`} >
-                                            <SelectCategoryButton categoryName={index} isSelected={selectedReviewCategory === `level-number-${index}`}
-                                                handleSelectCategoryClick={() => setSelectedReviewCategory(`level-number-${index}`)} />
+                                            <SelectCategoryButton categoryName={index} isSelected={selectedReviewCategories.includes(`level-number-${index}`)}
+                                                handleSelectCategoryClick={() => toggleSelectedCategory(`level-number-${index}`)} />
                                         </li>
                                     );
                                 })}
                             </ol> */}
                             <div className="flex justify-center">
-                                <StartReviewsButton isActive={selectedReviewCategory !== ''} isLoading={isLoading}
+                                <StartReviewsButton isActive={selectedReviewCategories.length > 0} isLoading={isLoading}
                                     handleStartReviewsClick={handleStartReviewsClick} />
                             </div>
                         </section>
