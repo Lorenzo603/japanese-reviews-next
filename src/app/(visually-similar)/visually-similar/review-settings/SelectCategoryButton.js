@@ -25,7 +25,7 @@ export const SelectCategoryButton = (props) => {
                     <div className="text-lg">{props.categoryName}</div>
                 </div>
 
-                <div className="text-sm text-right mt-2">9 items</div>
+                <div className="text-sm text-right mt-2">{props.numItems} items</div>
             </div>
         </button>
     )

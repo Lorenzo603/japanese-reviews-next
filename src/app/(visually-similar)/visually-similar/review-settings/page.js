@@ -39,8 +39,23 @@ export default function VisuallySimilarReviewSettings() {
 
     const [isLoading, setIsLoading] = useState(false);
 
-
     const router = useRouter();
+
+    const DIFFICULTYLEVEL_NUMITEMS_MAP = new Map([
+        [1, 8],
+        [2, 10],
+        [3, 11],
+        [4, 10],
+        [5, 10],
+        [6, 6],
+
+      ]);
+    const JLPTCATEGORY_NUMITEMS_MAP = new Map([
+        [5, 55],
+        [4, 110],
+        [3, 222],
+        [2, 225],
+      ]);
 
     useEffect(() => {
         setPromptSet([]);
@@ -379,7 +394,8 @@ export default function VisuallySimilarReviewSettings() {
                                                     return (
                                                         <li key={`category-level-${index}`} >
                                                             <SelectCategoryButton categoryName={`Level ${index}`} isSelected={selectedReviewCategory === `category-level-${index}`}
-                                                                handleSelectCategoryClick={() => setSelectedReviewCategory(`category-level-${index}`)} />
+                                                                handleSelectCategoryClick={() => setSelectedReviewCategory(`category-level-${index}`)} 
+                                                                numItems={DIFFICULTYLEVEL_NUMITEMS_MAP.get(index)} />
                                                         </li>
                                                     );
                                                 })}
@@ -411,7 +427,8 @@ export default function VisuallySimilarReviewSettings() {
                                                         return (
                                                             <li key={`jlpt${index}`} >
                                                                 <SelectCategoryButton categoryName={`JLPT N${index}`} isSelected={selectedReviewCategory === `jlpt${index}`}
-                                                                    handleSelectCategoryClick={() => setSelectedReviewCategory(`jlpt${index}`)} />
+                                                                    handleSelectCategoryClick={() => setSelectedReviewCategory(`jlpt${index}`)} 
+                                                                    numItems={JLPTCATEGORY_NUMITEMS_MAP.get(index)} />
                                                             </li>
                                                         );
                                                     })}
@@ -424,47 +441,58 @@ export default function VisuallySimilarReviewSettings() {
                                             <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
                                                 <li>
                                                     <SelectCategoryButton categoryName="Numbers" isSelected={selectedReviewCategory === "numbers"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("numbers")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("numbers")}
+                                                        numItems={6} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Colors" isSelected={selectedReviewCategory === "colors"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("colors")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("colors")}
+                                                        numItems={6} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Directions" isSelected={selectedReviewCategory === "directions"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("directions")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("directions")}
+                                                        numItems={9} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Places" isSelected={selectedReviewCategory === "places"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("places")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("places")}
+                                                        numItems={8} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Animals" isSelected={selectedReviewCategory === "animals"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("animals")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("animals")}
+                                                        numItems={8} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Food and Drink" isSelected={selectedReviewCategory === "foods"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("foods")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("foods")}
+                                                        numItems={6} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Body Parts" isSelected={selectedReviewCategory === "body"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("body")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("body")}
+                                                        numItems={10} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Family" isSelected={selectedReviewCategory === "family"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("family")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("family")}
+                                                        numItems={8} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Seasons" isSelected={selectedReviewCategory === "seasons"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("seasons")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("seasons")}
+                                                        numItems={2} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Weather" isSelected={selectedReviewCategory === "weather"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("weather")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("weather")}
+                                                        numItems={3} />
                                                 </li>
                                                 <li>
                                                     <SelectCategoryButton categoryName="Periods of Time" isSelected={selectedReviewCategory === "periods-of-time"}
-                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("periods-of-time")} />
+                                                        handleSelectCategoryClick={() => setSelectedReviewCategory("periods-of-time")}
+                                                        numItems={5} />
                                                 </li>
                                             </ul>
                                         </section>
