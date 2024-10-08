@@ -509,7 +509,7 @@ export default function VisuallySimilarReviewSettings() {
                                     );
                                 })}
                             </ol> */}
-                            <div>
+                            <div className="flex justify-center">
                                 <StartReviewsButton isActive={selectedReviewCategory !== ''} isLoading={isLoading}
                                     handleStartReviewsClick={handleStartReviewsClick} />
                             </div>
