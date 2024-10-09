@@ -81,26 +81,20 @@ export async function GET(request) {
     });
 }
 
-const filterBySelectedCategory = (kanji, selectedReviewCategory) => {
-    if (selectedReviewCategory.startsWith('level-number-')) {
-        const selectedLevel = parseInt(selectedReviewCategory.replace('level-number-', ''));
-        return kanji['data']['level'] === selectedLevel;
-    }
-    return kanji['data'].hasOwnProperty('categories') && kanji['data']['categories'].includes(selectedReviewCategory);
-}
 
 export async function POST(request) {
     return withPreParsedRequestResponse(request, async (baseRequest, baseResponse) => {
         console.log("Calculating Visually Similar PromptSet...");
         const session = await Session.getSession(baseRequest, baseResponse, { sessionRequired: false });
         const reqJson = await request.json();
-        const selectedReviewCategory = reqJson.selectedReviewCategory;
+        const selectedReviewCategories = reqJson.selectedReviewCategories;
         const guessKanji = reqJson.guessKanji;
         const multichoiceInput = reqJson.multichoiceInput;
 
         const fullKanjiDictionary = await getDictionary('kanji_full_reduced');
         let promptSet = fullKanjiDictionary
-            .filter(kanji => filterBySelectedCategory(kanji, selectedReviewCategory))
+            .filter(kanji => kanji['data'].hasOwnProperty('categories'))
+            .filter(kanji => selectedReviewCategories.some(id => kanji['data']['categories'].includes(id)))
             .filter(kanji => kanji['data']['visually_similar_subject_ids'].length > 0)
             .map(kanji => ({
                 id: kanji['id'],

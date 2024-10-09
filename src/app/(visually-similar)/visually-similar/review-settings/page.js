@@ -9,6 +9,7 @@ import Link from "next/link";
 import StartReviewsButton from "./StartReviewsButton";
 import SelectCategoryButton from "./SelectCategoryButton";
 import ResumeBatchButton from "./ResumeBatchButton";
+import CategoryIcon from "./CategoryIcon";
 
 export default function VisuallySimilarReviewSettings() {
 
@@ -43,31 +44,91 @@ export default function VisuallySimilarReviewSettings() {
     const router = useRouter();
 
     const categories = [
-        { id: "category-level-1", name: "Level 1", numItems: 8 },
-        { id: "category-level-2", name: "Level 2", numItems: 10 },
-        { id: "category-level-3", name: "Level 3", numItems: 11 },
-        { id: "category-level-4", name: "Level 4", numItems: 10 },
-        { id: "category-level-5", name: "Level 5", numItems: 10 },
-        { id: "category-level-6", name: "Level 6", numItems: 6 },
-        { id: "jlpt5", name: "JLPT N5", numItems: 55 },
-        { id: "jlpt4", name: "JLPT N4", numItems: 110 },
-        { id: "jlpt3", name: "JLPT N3", numItems: 222 },
-        { id: "jlpt2", name: "JLPT N2", numItems: 225 },
-
-        { id: "numbers", name: "Numbers", numItems: 6 },
-        { id: "colors", name: "Colors", numItems: 6 },
-        { id: "directions", name: "Directions", numItems: 9 },
-        { id: "places", name: "Places", numItems: 8 },
-        { id: "animals", name: "Animals", numItems: 8 },
-        { id: "foods", name: "Food & Drink", numItems: 6 },
-        { id: "body", name: "Body Parts", numItems: 10 },
-        { id: "family", name: "Family", numItems: 8 },
-        { id: "seasons", name: "Seasons", numItems: 2 },
-        { id: "weather", name: "Weather", numItems: 3 },
-        { id: "periods-of-time", name: "Periods of Time", numItems: 5 },
-
+        {
+            id: "category-level-1", name: "Level 1", numItems: 8,
+            icon: <CategoryIcon url="/img/reviews/categories/category-level-1.svg" />,
+        },
+        {
+            id: "category-level-2", name: "Level 2", numItems: 10,
+            icon: <CategoryIcon url="/img/reviews/categories/category-level-2.svg" />,
+        },
+        {
+            id: "category-level-3", name: "Level 3", numItems: 11,
+            icon: <CategoryIcon url="/img/reviews/categories/category-level-3.svg" />,
+        },
+        {
+            id: "category-level-4", name: "Level 4", numItems: 10,
+            icon: <CategoryIcon url="/img/reviews/categories/category-level-4.svg" />,
+        },
+        {
+            id: "category-level-5", name: "Level 5", numItems: 10,
+            icon: <CategoryIcon url="/img/reviews/categories/category-level-5.svg" />,
+        },
+        {
+            id: "category-level-6", name: "Level 6", numItems: 6,
+            icon: <CategoryIcon url="/img/reviews/categories/category-level-6.svg" />,
+        },
+        {
+            id: "jlpt5", name: "JLPT N5", numItems: 55,
+            icon: <CategoryIcon url="/img/medals/medal-bronze.svg" />,
+        },
+        {
+            id: "jlpt4", name: "JLPT N4", numItems: 110,
+            icon: <CategoryIcon url="/img/medals/medal-silver.svg" />,
+        },
+        {
+            id: "jlpt3", name: "JLPT N3", numItems: 222,
+            icon: <CategoryIcon url="/img/medals/medal-gold.svg" />,
+        },
+        {
+            id: "jlpt2", name: "JLPT N2", numItems: 225,
+            icon: <CategoryIcon url="/img/medals/medal-platinum.svg" />,
+        },
+        {
+            id: "numbers", name: "Numbers", numItems: 6,
+            icon: <CategoryIcon url="/img/reviews/categories/numbers.svg" />,
+        },
+        {
+            id: "colors", name: "Colors", numItems: 6,
+            icon: <CategoryIcon url="/img/reviews/categories/colors.svg" />,
+        },
+        {
+            id: "directions", name: "Directions", numItems: 9,
+            icon: <CategoryIcon url="/img/reviews/categories/directions.svg" />,
+        },
+        {
+            id: "places", name: "Places", numItems: 10,
+            icon: <CategoryIcon url="/img/reviews/categories/places.svg" />,
+        },
+        {
+            id: "animals", name: "Animals", numItems: 8,
+            icon: <CategoryIcon url="/img/reviews/categories/animals.svg" />,
+        },
+        {
+            id: "foods", name: "Food & Drink", numItems: 6,
+            icon: <CategoryIcon url="/img/reviews/categories/foods.svg" />,
+        },
+        {
+            id: "body", name: "Body Parts", numItems: 10,
+            icon: <CategoryIcon url="/img/reviews/categories/body.svg" />,
+        },
+        {
+            id: "family", name: "Family", numItems: 8,
+            icon: <CategoryIcon url="/img/reviews/categories/family.svg" />,
+        },
+        {
+            id: "seasons", name: "Seasons", numItems: 2,
+            icon: <CategoryIcon url="/img/reviews/categories/seasons.svg" />,
+        },
+        {
+            id: "weather", name: "Weather", numItems: 3,
+            icon: <CategoryIcon url="/img/reviews/categories/weather.svg" />,
+        },
+        {
+            id: "periods-of-time", name: "Periods of Time", numItems: 5,
+            icon: <CategoryIcon url="/img/reviews/categories/periods-of-time.svg" />,
+        },
     ];
-
 
     useEffect(() => {
         setPromptSet([]);
@@ -215,9 +276,9 @@ export default function VisuallySimilarReviewSettings() {
     useEffect(() => {
         setNumSelectedReviews(
             categories
-            .filter((c) => selectedReviewCategories.includes(c.id))
-            .map((c) => c.numItems)
-            .reduce((a, b) => a + b, 0)
+                .filter((c) => selectedReviewCategories.includes(c.id))
+                .map((c) => c.numItems)
+                .reduce((a, b) => a + b, 0)
         )
     }, [selectedReviewCategories])
 
@@ -426,7 +487,7 @@ export default function VisuallySimilarReviewSettings() {
                                                             <li key={category.id} >
                                                                 <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
                                                                     handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
-                                                                    numItems={category.numItems} />
+                                                                    numItems={category.numItems} icon={category.icon} />
                                                             </li>
                                                         );
                                                     })}
@@ -445,7 +506,7 @@ export default function VisuallySimilarReviewSettings() {
                                                                 <li key={category.id} >
                                                                     <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
                                                                         handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
-                                                                        numItems={category.numItems} />
+                                                                        numItems={category.numItems} icon={category.icon} />
                                                                 </li>
                                                             );
                                                         })
@@ -470,18 +531,18 @@ export default function VisuallySimilarReviewSettings() {
                                             <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
                                                 {
                                                     Array.from(categories)
-                                                    .filter((category) => !category.id.startsWith('category-level-') && !category.id.startsWith('jlpt'))    
-                                                    .map(category => {
-                                                        return (
-                                                            <li key={category.id} >
-                                                                <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
-                                                                    handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
-                                                                    numItems={category.numItems} />
-                                                            </li>
-                                                        );
-                                                    })
+                                                        .filter((category) => !category.id.startsWith('category-level-') && !category.id.startsWith('jlpt'))
+                                                        .map(category => {
+                                                            return (
+                                                                <li key={category.id} >
+                                                                    <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
+                                                                        handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
+                                                                        numItems={category.numItems} icon={category.icon} />
+                                                                </li>
+                                                            );
+                                                        })
                                                 }
-                                               
+
                                             </ul>
                                         </section>
                                     </div>

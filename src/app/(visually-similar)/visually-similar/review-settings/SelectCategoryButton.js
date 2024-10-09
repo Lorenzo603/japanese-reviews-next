@@ -12,7 +12,9 @@ export const SelectCategoryButton = (props) => {
             <div className="flex flex-col w-full h-full">
                 <div className="flex flex-row justify-between">
                     <div>
-                        &#9917;
+                        {
+                            props.icon && <span>{props.icon}</span>
+                        }
                     </div>
                     <div>
                         {
