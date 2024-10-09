@@ -41,6 +41,8 @@ export default function VisuallySimilarReviewSettings() {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const [activeTab, setActiveTab] = useState('tab1');
+
     const router = useRouter();
 
     const categories = [
@@ -347,6 +349,9 @@ export default function VisuallySimilarReviewSettings() {
         }
     }
 
+    const handleTabClick = (tabId) => {
+        setActiveTab(tabId);
+    };
 
     return (
         <main>
@@ -474,33 +479,34 @@ export default function VisuallySimilarReviewSettings() {
                             </div>
                             <div className="flex flex-row flex-wrap mt-4 mb-4">
                                 <section>
-                                    <h1 className="sr-only">Select Review Category</h1>
                                     <p className="py-2">Select a <span className="font-bold">difficulty level</span> or <span className="font-bold">category</span>: the kanjis belonging to that category will be used in the review batch</p>
-                                    <div className="flex flex-col mb-2">
-                                        <section>
-                                            <h2 className="font-bold text-lg py-2">Difficulty Level:</h2>
-                                            <ul className="grid grid-cols-3 md:grid-cols-6 text-center gap-2">
-                                                {Array.from(categories)
-                                                    .filter((category) => category.id.startsWith('category-level-'))
-                                                    .map(category => {
-                                                        return (
-                                                            <li key={category.id} >
-                                                                <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
-                                                                    handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
-                                                                    numItems={category.numItems} icon={category.icon} />
-                                                            </li>
-                                                        );
-                                                    })}
-                                            </ul>
-                                        </section>
+                                    <div className="border-b border-gray-200">
+                                        <nav className="flex gap-x-1 sm:gap-x-4" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
+                                            <button type="button" className={`${activeTab === 'tab1' ? 'font-semibold border-blue-600 text-blue-600' : ''} py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none`}
+                                                id="tabs-with-badges-item-1" data-hs-tab="#tabs-with-badges-1" onClick={() => handleTabClick('tab1')}
+                                                aria-controls="tabs-with-badges-1" role="tab" aria-selected={activeTab === 'tab1'}>
+                                                Difficulty Levels <span className="hs-tab-active:bg-blue-100 hs-tab-active:text-blue-600 ms-1 py-0.5 px-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">6</span>
+                                            </button>
+                                            <button type="button" className={`${activeTab === 'tab2' ? 'font-semibold border-blue-600 text-blue-600' : ''} py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none`}
+                                                id="tabs-with-badges-item-2" data-hs-tab="#tabs-with-badges-2" onClick={() => handleTabClick('tab2')}
+                                                aria-controls="tabs-with-badges-2" role="tab" aria-selected={activeTab === 'tab2'}>
+                                                JLPT Levels <span className="hs-tab-active:bg-blue-100 hs-tab-active:text-blue-600 ms-1 py-0.5 px-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">4</span>
+                                            </button>
+                                            <button type="button" className={`${activeTab === 'tab3' ? 'font-semibold border-blue-600 text-blue-600' : ''} py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none`}
+                                                id="tabs-with-badges-item-3" data-hs-tab="#tabs-with-badges-3" onClick={() => handleTabClick('tab3')}
+                                                aria-controls="tabs-with-badges-3" role="tab" aria-selected={activeTab === 'tab3'}>
+                                                Life Categories <span className="hs-tab-active:bg-blue-100 hs-tab-active:text-blue-600 ms-1 py-0.5 px-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">11</span>
+                                            </button>
+                                        </nav>
                                     </div>
-                                    <div className="flex flex-col mb-2">
-                                        <section>
-                                            <h2 className="font-bold text-lg py-2">JLPT Categories:</h2>
-                                            <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
-                                                {
-                                                    Array.from(categories)
-                                                        .filter((category) => category.id.startsWith('jlpt'))
+
+                                    <div className="mt-3">
+
+                                        <div id="tabs-with-badges-1" role="tabpanel" aria-labelledby="tabs-with-badges-item-1" aria-hidden={activeTab !== 'tab1'}>
+                                            {activeTab === 'tab1' &&
+                                                <ul className="grid grid-cols-3 md:grid-cols-6 text-center gap-2">
+                                                    {Array.from(categories)
+                                                        .filter((category) => category.id.startsWith('category-level-'))
                                                         .map(category => {
                                                             return (
                                                                 <li key={category.id} >
@@ -509,43 +515,62 @@ export default function VisuallySimilarReviewSettings() {
                                                                         numItems={category.numItems} icon={category.icon} />
                                                                 </li>
                                                             );
-                                                        })
-                                                }
-                                                <li key="jlpt1" >
-                                                    <button className={`
+                                                        })}
+                                                </ul>
+                                            }
+                                        </div>
+                                        <div id="tabs-with-badges-2" role="tabpanel" aria-labelledby="tabs-with-badges-item-2" aria-hidden={activeTab !== 'tab2'}>
+                                            {activeTab === 'tab2' &&
+                                                <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
+                                                    {
+                                                        Array.from(categories)
+                                                            .filter((category) => category.id.startsWith('jlpt'))
+                                                            .map(category => {
+                                                                return (
+                                                                    <li key={category.id} >
+                                                                        <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
+                                                                            handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
+                                                                            numItems={category.numItems} icon={category.icon} />
+                                                                    </li>
+                                                                );
+                                                            })
+                                                    }
+                                                    <li key="jlpt1" >
+                                                        <button className={`
                                                         bg-gray-300 border border-gray-400 
                                                         text-white rounded-md p-2 w-full h-full
                                                         flex justify-center items-center
                                                         cursor-default
                                                         `}
-                                                        onClick={() => { }}>
-                                                        {`JLPT N1 (Coming Soon!)`}
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </section>
-                                    </div>
-                                    <div className="flex flex-col mb-2">
-                                        <section>
-                                            <h2 className="font-bold text-lg py-2">Assorted Categories:</h2>
-                                            <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
-                                                {
-                                                    Array.from(categories)
-                                                        .filter((category) => !category.id.startsWith('category-level-') && !category.id.startsWith('jlpt'))
-                                                        .map(category => {
-                                                            return (
-                                                                <li key={category.id} >
-                                                                    <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
-                                                                        handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
-                                                                        numItems={category.numItems} icon={category.icon} />
-                                                                </li>
-                                                            );
-                                                        })
-                                                }
+                                                            onClick={() => { }}>
+                                                            {`JLPT N1 (Coming Soon!)`}
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            }
+                                        </div>
+                                        <div id="tabs-with-badges-3" role="tabpanel" aria-labelledby="tabs-with-badges-item-3" aria-hidden={activeTab !== 'tab3'}>
+                                            {activeTab === 'tab3' &&
+                                                <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
+                                                    {
+                                                        Array.from(categories)
+                                                            .filter((category) => !category.id.startsWith('category-level-') && !category.id.startsWith('jlpt'))
+                                                            .map(category => {
+                                                                return (
+                                                                    <li key={category.id} >
+                                                                        <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
+                                                                            handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
+                                                                            numItems={category.numItems} icon={category.icon} />
+                                                                    </li>
+                                                                );
+                                                            })
+                                                    }
 
-                                            </ul>
-                                        </section>
+                                                </ul>
+                                            }
+                                        </div>
                                     </div>
+
                                 </section>
                             </div>
                             {/* <ol className='grid grid-cols-6 md:grid-cols-10 text-center gap-2 mb-4'>
@@ -558,7 +583,7 @@ export default function VisuallySimilarReviewSettings() {
                                     );
                                 })}
                             </ol> */}
-                            <div>Total number of reviews: {numSelectedReviews}</div>
+                            <div className="pb-4">Total number of reviews: {numSelectedReviews}</div>
                             <div className="flex justify-center">
                                 <StartReviewsButton isActive={selectedReviewCategories.length > 0} isLoading={isLoading}
                                     handleStartReviewsClick={handleStartReviewsClick} />
