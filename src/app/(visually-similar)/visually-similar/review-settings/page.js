@@ -36,26 +36,38 @@ export default function VisuallySimilarReviewSettings() {
     const [canResumeBatch, setCanResumeBatch] = useState(false);
     const [showContinueModal, setShowContinueModal] = useState(false);
     const [selectedReviewCategories, setSelectedReviewCategories] = useState([]);
+    const [numSelectedReviews, setNumSelectedReviews] = useState(0);
 
     const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
 
-    const DIFFICULTYLEVEL_NUMITEMS_MAP = new Map([
-        [1, 8],
-        [2, 10],
-        [3, 11],
-        [4, 10],
-        [5, 10],
-        [6, 6],
+    const categories = [
+        { id: "category-level-1", name: "Level 1", numItems: 8 },
+        { id: "category-level-2", name: "Level 2", numItems: 10 },
+        { id: "category-level-3", name: "Level 3", numItems: 11 },
+        { id: "category-level-4", name: "Level 4", numItems: 10 },
+        { id: "category-level-5", name: "Level 5", numItems: 10 },
+        { id: "category-level-6", name: "Level 6", numItems: 6 },
+        { id: "jlpt5", name: "JLPT N5", numItems: 55 },
+        { id: "jlpt4", name: "JLPT N4", numItems: 110 },
+        { id: "jlpt3", name: "JLPT N3", numItems: 222 },
+        { id: "jlpt2", name: "JLPT N2", numItems: 225 },
 
-      ]);
-    const JLPTCATEGORY_NUMITEMS_MAP = new Map([
-        [5, 55],
-        [4, 110],
-        [3, 222],
-        [2, 225],
-      ]);
+        { id: "numbers", name: "Numbers", numItems: 6 },
+        { id: "colors", name: "Colors", numItems: 6 },
+        { id: "directions", name: "Directions", numItems: 9 },
+        { id: "places", name: "Places", numItems: 8 },
+        { id: "animals", name: "Animals", numItems: 8 },
+        { id: "foods", name: "Food & Drink", numItems: 6 },
+        { id: "body", name: "Body Parts", numItems: 10 },
+        { id: "family", name: "Family", numItems: 8 },
+        { id: "seasons", name: "Seasons", numItems: 2 },
+        { id: "weather", name: "Weather", numItems: 3 },
+        { id: "periods-of-time", name: "Periods of Time", numItems: 5 },
+
+    ];
+
 
     useEffect(() => {
         setPromptSet([]);
@@ -192,13 +204,22 @@ export default function VisuallySimilarReviewSettings() {
         }
     }
 
-    const toggleSelectedCategory = (category) => {
-        if (selectedReviewCategories.includes(category)) {
-            setSelectedReviewCategories(selectedReviewCategories.filter((c) => c !== category));
+    const toggleSelectedCategory = (categoryId) => {
+        if (selectedReviewCategories.includes(categoryId)) {
+            setSelectedReviewCategories(selectedReviewCategories.filter((c) => c !== categoryId));
         } else {
-            setSelectedReviewCategories([...selectedReviewCategories, category]);
+            setSelectedReviewCategories([...selectedReviewCategories, categoryId]);
         }
     }
+
+    useEffect(() => {
+        setNumSelectedReviews(
+            categories
+            .filter((c) => selectedReviewCategories.includes(c.id))
+            .map((c) => c.numItems)
+            .reduce((a, b) => a + b, 0)
+        )
+    }, [selectedReviewCategories])
 
     const handleStartReviewsClick = async (overwriteBatchConfirmed) => {
         if (selectedReviewCategories.length === 0) {
@@ -398,45 +419,14 @@ export default function VisuallySimilarReviewSettings() {
                                         <section>
                                             <h2 className="font-bold text-lg py-2">Difficulty Level:</h2>
                                             <ul className="grid grid-cols-3 md:grid-cols-6 text-center gap-2">
-                                                {Array.from({ length: 6 }, (_, i) => i + 1).map(index => {
-                                                    return (
-                                                        <li key={`category-level-${index}`} >
-                                                            <SelectCategoryButton categoryName={`Level ${index}`} isSelected={selectedReviewCategories.includes(`category-level-${index}`)}
-                                                                handleSelectCategoryClick={() => toggleSelectedCategory(`category-level-${index}`)} 
-                                                                numItems={DIFFICULTYLEVEL_NUMITEMS_MAP.get(index)} />
-                                                        </li>
-                                                    );
-                                                })}
-                                            </ul>
-                                        </section>
-                                    </div>
-                                    <div className="flex flex-col mb-2">
-                                        <section>
-                                            <h2 className="font-bold text-lg py-2">JLPT Categories:</h2>
-                                            <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
-                                                {Array.from({ length: 5 }, (_, i) => i + 1)
-                                                    .reverse()
-                                                    .map(index => {
-                                                        if (index === 1) {
-                                                            return (
-                                                                <li key={`jlpt1`} >
-                                                                    <button className={`
-                                                                            bg-gray-300 border border-gray-400 
-                                                                            text-white rounded-md p-2 w-full h-full
-                                                                            flex justify-center items-center
-                                                                            cursor-default
-                                                                            `}
-                                                                        onClick={() => { }}>
-                                                                        {`JLPT N1 (Coming Soon!)`}
-                                                                    </button>
-                                                                </li>
-                                                            )
-                                                        }
+                                                {Array.from(categories)
+                                                    .filter((category) => category.id.startsWith('category-level-'))
+                                                    .map(category => {
                                                         return (
-                                                            <li key={`jlpt${index}`} >
-                                                                <SelectCategoryButton categoryName={`JLPT N${index}`} isSelected={selectedReviewCategories.includes(`jlpt${index}`)}
-                                                                    handleSelectCategoryClick={() => toggleSelectedCategory(`jlpt${index}`)} 
-                                                                    numItems={JLPTCATEGORY_NUMITEMS_MAP.get(index)} />
+                                                            <li key={category.id} >
+                                                                <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
+                                                                    handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
+                                                                    numItems={category.numItems} />
                                                             </li>
                                                         );
                                                     })}
@@ -445,63 +435,53 @@ export default function VisuallySimilarReviewSettings() {
                                     </div>
                                     <div className="flex flex-col mb-2">
                                         <section>
+                                            <h2 className="font-bold text-lg py-2">JLPT Categories:</h2>
+                                            <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
+                                                {
+                                                    Array.from(categories)
+                                                        .filter((category) => category.id.startsWith('jlpt'))
+                                                        .map(category => {
+                                                            return (
+                                                                <li key={category.id} >
+                                                                    <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
+                                                                        handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
+                                                                        numItems={category.numItems} />
+                                                                </li>
+                                                            );
+                                                        })
+                                                }
+                                                <li key="jlpt1" >
+                                                    <button className={`
+                                                        bg-gray-300 border border-gray-400 
+                                                        text-white rounded-md p-2 w-full h-full
+                                                        flex justify-center items-center
+                                                        cursor-default
+                                                        `}
+                                                        onClick={() => { }}>
+                                                        {`JLPT N1 (Coming Soon!)`}
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </section>
+                                    </div>
+                                    <div className="flex flex-col mb-2">
+                                        <section>
                                             <h2 className="font-bold text-lg py-2">Assorted Categories:</h2>
                                             <ul className="grid grid-cols-3 md:grid-cols-5 text-center gap-2">
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Numbers" isSelected={selectedReviewCategories.includes("numbers")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("numbers")}
-                                                        numItems={6} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Colors" isSelected={selectedReviewCategories.includes("colors")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("colors")}
-                                                        numItems={6} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Directions" isSelected={selectedReviewCategories.includes("directions")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("directions")}
-                                                        numItems={9} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Places" isSelected={selectedReviewCategories.includes("places")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("places")}
-                                                        numItems={8} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Animals" isSelected={selectedReviewCategories.includes("animals")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("animals")}
-                                                        numItems={8} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Food and Drink" isSelected={selectedReviewCategories.includes("foods")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("foods")}
-                                                        numItems={6} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Body Parts" isSelected={selectedReviewCategories.includes("body")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("body")}
-                                                        numItems={10} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Family" isSelected={selectedReviewCategories.includes("family")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("family")}
-                                                        numItems={8} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Seasons" isSelected={selectedReviewCategories.includes("seasons")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("seasons")}
-                                                        numItems={2} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Weather" isSelected={selectedReviewCategories.includes("weather")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("weather")}
-                                                        numItems={3} />
-                                                </li>
-                                                <li>
-                                                    <SelectCategoryButton categoryName="Periods of Time" isSelected={selectedReviewCategories.includes("periods-of-time")}
-                                                        handleSelectCategoryClick={() => toggleSelectedCategory("periods-of-time")}
-                                                        numItems={5} />
-                                                </li>
+                                                {
+                                                    Array.from(categories)
+                                                    .filter((category) => !category.id.startsWith('category-level-') && !category.id.startsWith('jlpt'))    
+                                                    .map(category => {
+                                                        return (
+                                                            <li key={category.id} >
+                                                                <SelectCategoryButton categoryName={category.name} isSelected={selectedReviewCategories.includes(category.id)}
+                                                                    handleSelectCategoryClick={() => toggleSelectedCategory(category.id)}
+                                                                    numItems={category.numItems} />
+                                                            </li>
+                                                        );
+                                                    })
+                                                }
+                                               
                                             </ul>
                                         </section>
                                     </div>
@@ -517,6 +497,7 @@ export default function VisuallySimilarReviewSettings() {
                                     );
                                 })}
                             </ol> */}
+                            <div>Total number of reviews: {numSelectedReviews}</div>
                             <div className="flex justify-center">
                                 <StartReviewsButton isActive={selectedReviewCategories.length > 0} isLoading={isLoading}
                                     handleStartReviewsClick={handleStartReviewsClick} />
