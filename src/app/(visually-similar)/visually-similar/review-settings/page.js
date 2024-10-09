@@ -351,6 +351,7 @@ export default function VisuallySimilarReviewSettings() {
 
     const handleTabClick = (tabId) => {
         setActiveTab(tabId);
+        setSelectedReviewCategories([]);
     };
 
     return (
@@ -482,20 +483,20 @@ export default function VisuallySimilarReviewSettings() {
                                     <p className="py-2">Select a <span className="font-bold">difficulty level</span> or <span className="font-bold">category</span>: the kanjis belonging to that category will be used in the review batch</p>
                                     <div className="border-b border-gray-200">
                                         <nav className="flex gap-x-1 sm:gap-x-4" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
-                                            <button type="button" className={`${activeTab === 'tab1' ? 'font-semibold border-blue-600 text-blue-600' : ''} py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none`}
+                                            <button type="button" className={`${activeTab === 'tab1' ? 'font-semibold border-pink-800 text-pink-800' : ''} py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-pink-800 focus:outline-none focus:text-pink-800 disabled:opacity-50 disabled:pointer-events-none`}
                                                 id="tabs-with-badges-item-1" data-hs-tab="#tabs-with-badges-1" onClick={() => handleTabClick('tab1')}
                                                 aria-controls="tabs-with-badges-1" role="tab" aria-selected={activeTab === 'tab1'}>
-                                                Difficulty Levels <span className="hs-tab-active:bg-blue-100 hs-tab-active:text-blue-600 ms-1 py-0.5 px-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">6</span>
+                                                Difficulty Levels <span className={`${activeTab === 'tab1' ? 'bg-pink-200 text-pink-800' : 'bg-gray-100 text-gray-800'} ms-1 py-0.5 px-1.5 rounded-full text-xs font-medium`}>6</span>
                                             </button>
-                                            <button type="button" className={`${activeTab === 'tab2' ? 'font-semibold border-blue-600 text-blue-600' : ''} py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none`}
+                                            <button type="button" className={`${activeTab === 'tab2' ? 'font-semibold border-pink-800 text-pink-800' : ''} py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-pink-800 focus:outline-none focus:text-pink-800 disabled:opacity-50 disabled:pointer-events-none`}
                                                 id="tabs-with-badges-item-2" data-hs-tab="#tabs-with-badges-2" onClick={() => handleTabClick('tab2')}
                                                 aria-controls="tabs-with-badges-2" role="tab" aria-selected={activeTab === 'tab2'}>
-                                                JLPT Levels <span className="hs-tab-active:bg-blue-100 hs-tab-active:text-blue-600 ms-1 py-0.5 px-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">4</span>
+                                                JLPT Levels <span className={`${activeTab === 'tab2' ? 'bg-pink-200 text-pink-800' : 'bg-gray-100 text-gray-800'} ms-1 py-0.5 px-1.5 rounded-full text-xs font-medium`}>4</span>
                                             </button>
-                                            <button type="button" className={`${activeTab === 'tab3' ? 'font-semibold border-blue-600 text-blue-600' : ''} py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none`}
+                                            <button type="button" className={`${activeTab === 'tab3' ? 'font-semibold border-pink-800 text-pink-800' : ''} py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-pink-800 focus:outline-none focus:text-pink-800 disabled:opacity-50 disabled:pointer-events-none`}
                                                 id="tabs-with-badges-item-3" data-hs-tab="#tabs-with-badges-3" onClick={() => handleTabClick('tab3')}
                                                 aria-controls="tabs-with-badges-3" role="tab" aria-selected={activeTab === 'tab3'}>
-                                                Life Categories <span className="hs-tab-active:bg-blue-100 hs-tab-active:text-blue-600 ms-1 py-0.5 px-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">11</span>
+                                                Life Categories <span className={`${activeTab === 'tab3' ? 'bg-pink-200 text-pink-800' : 'bg-gray-100 text-gray-800'} ms-1 py-0.5 px-1.5 rounded-full text-xs font-medium`}>11</span>
                                             </button>
                                         </nav>
                                     </div>
