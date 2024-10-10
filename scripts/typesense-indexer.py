@@ -1,7 +1,8 @@
 import typesense
 import json
+import wanakana
 
-KANJI_FULL_PATH = '../src/resources/kanji_full.json'
+KANJI_FULL_PATH = 'C:\\p\\japanese-reviews-next\\src\\resources\\kanji_full_reduced.json'
 client = typesense.Client({
     'api_key': '****',
     'nodes': [{
@@ -22,6 +23,10 @@ client = typesense.Client({
 #     {"name": "readingsKun", "type": "string[]", "locale": "ja"},
 #     {"name": "readingsOn", "type": "string[]", "locale": "ja"},
 #     {"name": "readingsNames", "type": "string[]", "locale": "ja"},
+#
+#     {"name": "readingsKunRomaji", "type": "string[]"},
+#     {"name": "readingsOnRomaji", "type": "string[]"},
+#     {"name": "readingsNamesRomaji", "type": "string[]"},
 #   ],
 # })
 # print(create_response)
@@ -33,7 +38,7 @@ client = typesense.Client({
 
 # # INDEXING
 #
-# with open(KANJI_FULL_PATH, 'r') as kanji_full_str:
+# with open(KANJI_FULL_PATH, 'r', encoding='utf-8') as kanji_full_str:
 #     kanji_full_json = json.load(kanji_full_str)
 #
 #     filtered_kanji = list(filter(lambda k: k['data']['hidden_at'] is None, kanji_full_json['data']))
@@ -41,22 +46,26 @@ client = typesense.Client({
 #     for kanji in filtered_kanji:
 #         print(f"Indexing: {kanji['id']}")
 #         readings = kanji["data"]["readings"]
-#         readingsKun = [reading for reading in readings if 'type' not in reading or reading['type'] == 'kunyomi']
-#         readingsOn = [reading for reading in readings if reading['type'] == 'onyomi']
-#         readingsNames = [reading for reading in readings if reading['type'] == 'nanori']
+#         readingsKun = [reading["reading"] for reading in readings if 'type' not in reading or reading['type'] == 'kunyomi']
+#         readingsOn = [reading["reading"] for reading in readings if reading['type'] == 'onyomi']
+#         readingsNames = [reading["reading"] for reading in readings if reading['type'] == 'nanori']
 #         document = {
 #             "id": str(kanji["id"]),
 #             "slug": kanji["data"]["slug"],
 #             "meanings": list(map(lambda meaning: meaning["meaning"], kanji["data"]["meanings"])),
-#             "readingsKun": list(map(lambda reading: reading["reading"], readingsKun)),
-#             "readingsOn": list(map(lambda reading: reading["reading"], readingsOn)),
-#             "readingsNames": list(map(lambda reading: reading["reading"], readingsNames)),
+#             "readingsKun": readingsKun,
+#             "readingsOn": readingsOn,
+#             "readingsNames": readingsNames,
+#             "readingsKunRomaji": list(map(lambda reading: wanakana.to_romaji(reading), readingsKun)),
+#             "readingsOnRomaji":  list(map(lambda reading: wanakana.to_romaji(reading), readingsOn)),
+#             "readingsNamesRomaji":  list(map(lambda reading: wanakana.to_romaji(reading), readingsNames)),
 #         }
+#         # print(document)
 #
 #         # .create() : creates new document
 #         # .upsert() : updates existing document (whole doc has to be sent)
 #         # .update() : updates existing document (partial doc has to be sent)
-#         client.collections['kanjis'].documents.create(document)
+#         client.collections['kanjis'].documents.upsert(document)
 # print("Done!")
 
 # # SEARCH / QUERY
