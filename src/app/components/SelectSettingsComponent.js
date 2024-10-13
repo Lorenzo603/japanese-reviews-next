@@ -29,6 +29,7 @@ export const SelectSettings = (props) => {
 
 
     const handleLevelSelect = (newLastSelectedLevel) => {
+        console.log('newLastSelectedLevel:', newLastSelectedLevel);
         setSelectedLevel(newLastSelectedLevel);
         setCookie('lastSelectedLevel', newLastSelectedLevel, { sameSite: true });
         fetch('/api/accounts/lastSelectedLevel', {
@@ -143,9 +144,28 @@ export const SelectSettings = (props) => {
                                             Practice Mode:
                                         </Col>
                                         <Col className='col-4'>
-                                            <div className="form-check form-switch">
-                                                <input className="form-check-input" type="checkbox" role="switch" id="practiceModeCheck"
-                                                    checked={practiceMode === true} onChange={() => { setPracticeMode(!practiceMode) }} />
+                                            <div className="inline-flex items-center justify-center">
+                                                <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
+                                                    <div className="relative">
+                                                        <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
+                                                            checked={practiceMode ? 'checked' : ''}
+                                                            type="checkbox" onChange={() => { setPracticeMode(!practiceMode) }} name="switch" />
+                                                        {/* Toggle background */}
+                                                        <div className="block cursor-pointer rounded-full 
+                                                            border-1 border-slate-300 bg-slate-800 
+                                                            transition duration-300 
+                                                            peer-checked:bg-blue-600 peer-checked:border-blue-600 
+                                                            h-6 w-12">
+                                                        </div>
+                                                        {/* Toggle ball */}
+                                                        <div className="absolute top-0.5 z-10 cursor-pointer rounded-full 
+                                                            bg-slate-900 transition duration-300 
+                                                            peer-checked:translate-x-5 peer-checked:bg-white 
+                                                            left-[3px] size-5 peer-checked:left-[5px]">
+                                                        </div>
+                                                    </div>
+                                                    {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
+                                                </label>
                                             </div>
                                         </Col>
                                     </Row>

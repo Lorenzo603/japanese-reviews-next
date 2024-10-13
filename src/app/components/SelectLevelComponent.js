@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
+import { Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { LoadingSpinner } from './LoadingSpinner';
 
 export const SelectLevel = (props) => {
@@ -13,22 +13,26 @@ export const SelectLevel = (props) => {
     const popover = (
         <Popover id="popover-basic">
             <Popover.Body>
-                <Row>
+                <div className="grid grid-cols-6">
                     {Array.from({ length: 61 }, (_, i) => i + 1).map(index => {
                         return (
-                            <Col key={'level-number-' + index} className='col-2 level-number'>
-                                <Button onClick={() => { handleLevelNumberClick(index); }}>{index}</Button>
-                            </Col>
+                            <button key={'level-number-' + index}
+                                className="text-white border-1 border-blue-600 p-2 hover:bg-blue-600"
+                                onClick={() => { handleLevelNumberClick(index); }}>
+                                {index}
+                            </button>
                         );
                     })}
-                </Row>
+                </div>
             </Popover.Body>
         </Popover>
     );
 
     return (
         <OverlayTrigger variant="dark" trigger="click" placement="right" rootClose="true" overlay={popover}>
-            <Button className='selectedLevel'>{props.level || <LoadingSpinner className='loading-spinner' />}</Button>
+            <Button className='border-1 border-blue-600 p-2 hover:bg-blue-600'>
+                {props.level || <LoadingSpinner className='loading-spinner' />}
+            </Button>
         </OverlayTrigger >
     );
 }

@@ -330,11 +330,6 @@ button.btn-primary {
   border-radius: 0;
 }
 
-button.btn-primary.selectedLevel {
-  border-color: #0d6efd;
-  width: 100%;
-}
-
 .linkButton {
   text-decoration: none;
   background-color: #0d6efd;
