@@ -143,15 +143,6 @@ CUSTOM CSS
   min-height: 100vh;
 }
 
-
-/**********/
-/* Reviews
-/**********/
-
-.upComing-review:first-child {
-  border-top: 1px solid;
-}
-
 /**********/
 /* Level Select
 /**********/

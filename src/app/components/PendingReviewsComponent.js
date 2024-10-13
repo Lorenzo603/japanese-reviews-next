@@ -1,6 +1,3 @@
-'use client'
-
-import { Col, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useQuizContext } from '@/app/context/quizContext';
 
@@ -80,7 +77,7 @@ export const PendingReviewsComponent = (props) => {
 
 
     return (
-        <div>
+        <div className='flex flex-col gap-y-4 items-center'>
             <div>
                 <button className="flex justify-center items-center p-2 
                     rounded-md border-1 border-blue-600 bg-blue-600 
@@ -102,17 +99,18 @@ export const PendingReviewsComponent = (props) => {
                                 {
                                     dayGroup.map(upComingReview => {
                                         return (
-                                            <Row key={upComingReview[0]} className="justify-content-center p-1 upComing-review">
-                                                <Col className="col-4 d-flex justify-content-start p-0">
+                                            <div key={upComingReview[0]}
+                                                className="flex flex-row justify-between gap-x-2 first:border-t-2 px-4">
+                                                <div className="flex justify-start w-28">
                                                     {formatDate(upComingReview[0])}:
-                                                </Col>
-                                                <Col className="col-1 d-flex justify-content-end p-0">
+                                                </div>
+                                                <div className="flex flex-grow justify-end text-right">
                                                     +{upComingReview[1]}
-                                                </Col>
-                                                <Col className="col-2 d-flex justify-content-end p-0">
+                                                </div>
+                                                <div className="flex justify-end w-16">
                                                     {upComingReview[2] + pendingReviewsCount}
-                                                </Col>
-                                            </Row>
+                                                </div>
+                                            </div>
                                         );
                                     })
                                 }
