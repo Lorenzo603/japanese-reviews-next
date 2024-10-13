@@ -122,7 +122,7 @@ export const SelectSettings = (props) => {
                         </SelectModeButton>
                     </RadioSelectModeComponent>
                     <div>
-                        <div id="meaning-reading-form" onSubmit={onMeaningReadingFormSubmit} data-option={'level'}
+                        <Form id="meaning-reading-form" onSubmit={onMeaningReadingFormSubmit} data-option={'level'}
                             data-guess-meaning-selected={guessMeaningSelected}
                             data-guess-reading-selected={guessReadingSelected}
                             data-guess-kanji-selected={guessKanjiSelected}
@@ -170,7 +170,7 @@ export const SelectSettings = (props) => {
                             <div>
                                 <StartQuizButton loading={loading} disabled={isStartQuizButtonDisabled()} />
                             </div>
-                        </div>
+                        </Form>
                     </div>
                 </>
                 :

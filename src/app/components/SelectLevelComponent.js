@@ -27,7 +27,7 @@ export const SelectLevel = (props) => {
     return (
         <div className="relative inline-block">
             {/* Button to toggle popover */}
-            <button
+            <button type='button'
                 onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                 className="border-1 border-blue-600 p-2 hover:bg-blue-600 text-white"
             >
@@ -42,7 +42,7 @@ export const SelectLevel = (props) => {
                 >
                     <div className="grid grid-cols-6">
                         {Array.from({ length: 61 }, (_, i) => i + 1).map((index) => (
-                            <button
+                            <button type='button'
                                 key={'level-number-' + index}
                                 className="text-white bg-slate-800 hover:bg-blue-600 
                                     border-1 border-blue-600 p-2
