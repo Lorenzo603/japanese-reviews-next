@@ -143,10 +143,6 @@ CUSTOM CSS
   min-height: 100vh;
 }
 
-.hamburger-menu {
-  text-align: left;
-}
-
 
 /**********/
 /* Reviews
@@ -186,19 +182,6 @@ CUSTOM CSS
 /**********/
 /* Score
 /**********/
-.score {
-  text-align: right;
-  font-size: x-large;
-}
-
-.total-reviews {
-  background-color: #7283e3;
-}
-
-.kanjiPrompt {
-  font-size: 6rem;
-  font-family: "Hiragino Kaku Gothic Pro";
-}
 
 .kanjiPrompt-guessKanji {
   font-size: 2rem;
@@ -208,17 +191,6 @@ CUSTOM CSS
 /**********/
 /* Questions Input/Output
 /**********/
-
-.guess-mode-instructions-kanji {
-  border-style: solid;
-  border-width: 0.1rem;
-  border-color: #f500a3;
-}
-.guess-mode-instructions-vocabulary {
-  border-style: solid;
-  border-width: 0.1rem;
-  border-color: #a135bb;
-}
 
 #answer-input {
   width: 100%;

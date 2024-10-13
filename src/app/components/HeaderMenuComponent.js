@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react';
-import { Col, Row , Dropdown } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 import { ScoreComponent } from './ScoreComponent';
 
 export const HeaderMenu = (props) => {
@@ -27,14 +27,14 @@ export const HeaderMenu = (props) => {
     }
 
     return (
-        <Row>
-            <Col className='hamburger-menu'>
+        <div className='flex flex-row justify-between gap-x-4'>
+            <div className='text-left'>
                 <SessionMenu endSessionHandler={props.endSessionHandler} />
-            </Col>
-            <Col>
+            </div>
+            <div>
                 {!focusModeEnabled && <ScoreComponent totalAnswers={props.totalAnswers} totalCorrect={props.totalCorrect} totalReviews={props.totalReviews} />}
-            </Col>
-        </Row>
+            </div>
+        </div>
     );
 }
 

@@ -5,7 +5,6 @@ import { Col, Form, Row } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
 import { updateSrsWrongAnswer, updateSrsAfterReview, updateSingleSrsAfterReview } from '../services/SrsService';
-import styles from '../page.module.css'
 import Link from 'next/link';
 import { useQuizContext } from '@/app/context/quizContext';
 var wanakana = require('wanakana');
@@ -87,7 +86,7 @@ export const QuestionAnswerComponent = (props) => {
             updatePrompt();
             getAnswerInputElement().focus();
         }
-        
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -171,15 +170,15 @@ export const QuestionAnswerComponent = (props) => {
         if (userAnswer.length === 0 || answerContainsRomaji || similarAnswerExists) {
             shakeInputField();
             return;
-        } 
-        
+        }
+
         const unexpectedReading = kanjiPrompt["promptMode"] === "reading" && isReadingNotAccepted(userAnswer);
         if (unexpectedReading) {
             getAnswerInputElement().classList.add('unexected-reading');
             shakeInputField();
             return;
         }
-        
+
         handleWrongAnswer();
 
     }
@@ -239,12 +238,12 @@ export const QuestionAnswerComponent = (props) => {
     function updateScoreMap(result) {
         const isElementAlreadyInMap = scoreMap.has(kanjiPrompt["id"]);
         const currentScore = isElementAlreadyInMap ? scoreMap.get(kanjiPrompt["id"]).score : 0;
-        const numPromptsAlreadyAnswered = isElementAlreadyInMap ? scoreMap.get(kanjiPrompt["id"]).numPromptsAlreadyAnswered : 0; 
+        const numPromptsAlreadyAnswered = isElementAlreadyInMap ? scoreMap.get(kanjiPrompt["id"]).numPromptsAlreadyAnswered : 0;
         setScoreMap(scoreMap.set(
             kanjiPrompt["id"], {
-                score: result === Result.CORRECT ? currentScore + 1 : currentScore - 2,
-                numPromptsAlreadyAnswered: numPromptsAlreadyAnswered + 1
-            }
+            score: result === Result.CORRECT ? currentScore + 1 : currentScore - 2,
+            numPromptsAlreadyAnswered: numPromptsAlreadyAnswered + 1
+        }
         ));
     }
 
@@ -257,11 +256,9 @@ export const QuestionAnswerComponent = (props) => {
 
     function GuessModeInstructions() {
         return (
-            <Row className='justify-content-center align-items-center'>
-                <Col className={'col-1 p-2 ' + (kanjiPrompt["object"] === "kanji" ? 'guess-mode-instructions-kanji' : 'guess-mode-instructions-vocabulary')}>
-                    <GuessModeText />
-                </Col>
-            </Row>
+            <div className={`min-w-24 col-1 p-2 border-2 ${kanjiPrompt["object"] === "kanji" ? 'border-[#f500a3]' : 'border-[#a135bb]'}`}>
+                <GuessModeText />
+            </div>
         );
     }
 
@@ -286,7 +283,7 @@ export const QuestionAnswerComponent = (props) => {
                 .join(', ');
             return <KanjiPromptStyled promptText={acceptedMeaningPrompt} cssClass="kanjiPrompt-guessKanji" />;
         }
-        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} cssClass="kanjiPrompt" />;
+        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} cssClass="p-3 text-8xl" />;
     }
 
     function KanjiPromptStyled(props) {
@@ -366,58 +363,50 @@ export const QuestionAnswerComponent = (props) => {
     }
 
     return (
-        <Row>
-            <Col>
-                <HeaderMenu endSessionHandler={endSession}
-                    totalAnswers={totalAnswers} totalCorrect={totalCorrect}
-                    totalReviews={promptSet.length} />
-                <Row>
-                    <Col className='AppBody'>
+        <div>
+            <HeaderMenu endSessionHandler={endSession}
+                totalAnswers={totalAnswers} totalCorrect={totalCorrect}
+                totalReviews={promptSet.length} />
+            <div className='min-h-screen'>
+                <div className='flex justify-center'>
+                    {kanjiPrompt && <GuessModeInstructions />}
+                </div>
+                <div>
+                    {kanjiPrompt && <KanjiPrompt />}
+                </div>
+                {kanjiPrompt && kanjiPrompt["promptMode"] === "kanji" && kanjiPrompt["data"].hasOwnProperty("parts_of_speech") && (
+                    <Row>
+                        <Col className='mb-3'>
+                            {kanjiPrompt["data"]["parts_of_speech"].join(', ')}
+                        </Col>
+                    </Row>
+                )}
+                {answerState !== AnswerState.FINISHED && (
+                    <>
                         <Row>
                             <Col>
-                                {kanjiPrompt && <GuessModeInstructions />}
+                                <Form onSubmit={handleSubmit} autoComplete="off">
+                                    <input type="text" id={ANSWER_INPUT_ID}
+                                        className={answerState === AnswerState.ANSWERED ? answerResult === Result.CORRECT ? 'correct' : 'wrong' : ''}
+                                        onKeyDown={handleKeyDown} />
+                                </Form>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                {kanjiPrompt && <KanjiPrompt />}
+                                <AnswerResult currentState={answerState} result={answerResult} />
                             </Col>
                         </Row>
-                        {kanjiPrompt && kanjiPrompt["promptMode"] === "kanji" && kanjiPrompt["data"].hasOwnProperty("parts_of_speech") && (
-                            <Row>
-                                <Col className='mb-3'>
-                                    {kanjiPrompt["data"]["parts_of_speech"].join(', ')}
-                                </Col>
-                            </Row>
-                        )}
-                        {answerState !== AnswerState.FINISHED && (
-                            <>
-                                <Row>
-                                    <Col>
-                                        <Form onSubmit={handleSubmit} autoComplete="off">
-                                            <input type="text" id={ANSWER_INPUT_ID}
-                                                className={answerState === AnswerState.ANSWERED ? answerResult === Result.CORRECT ? 'correct' : 'wrong' : ''}
-                                                onKeyDown={handleKeyDown} />
-                                        </Form>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <AnswerResult currentState={answerState} result={answerResult} />
-                                    </Col>
-                                </Row>
-                            </>
-                        )}
-                        {answerState === AnswerState.FINISHED && <FinalResult />}
-                        <Row className="justify-content-center">
-                            <Col className="col-1">
-                                <Confetti active={isExploding} config={confettiConfig} />
-                            </Col>
-                        </Row>
+                    </>
+                )}
+                {answerState === AnswerState.FINISHED && <FinalResult />}
+                <Row className="justify-content-center">
+                    <Col className="col-1">
+                        <Confetti active={isExploding} config={confettiConfig} />
                     </Col>
                 </Row>
-            </Col>
-        </Row>
+            </div>
+        </div>
     );
 };
 

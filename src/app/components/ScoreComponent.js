@@ -1,7 +1,3 @@
-'use client'
-
-import { Row, Col } from "react-bootstrap";
-
 export const ScoreComponent = (props) => {
 
     const percentage = props.totalAnswers === 0 ? 0 : Math.round(props.totalCorrect / props.totalAnswers * 100, 2);
@@ -19,11 +15,11 @@ export const ScoreComponent = (props) => {
     }
 
     return (
-        <Row className='score'>
-            <Col className="col-10"><Tally /></Col>
-            <Col className="col-1 text-center"><Percentage /></Col>
-            <Col className="col-1 text-center total-reviews"><TotalReviews /></Col>
-        </Row >
+        <div className='flex flex-row gap-x-4 text-2xl text-right'>
+            <div><Tally /></div>
+            <div><Percentage /></div>
+            <div className="w-10 text-center bg-blue-400"><TotalReviews /></div>
+        </div>
     );
 }
 
