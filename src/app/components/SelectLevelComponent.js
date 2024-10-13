@@ -1,40 +1,62 @@
-'use client'
-
-import { Button, OverlayTrigger, Popover } from "react-bootstrap";
+import { useState, useRef, useEffect } from 'react';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export const SelectLevel = (props) => {
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const popoverRef = useRef(null);
 
     function handleLevelNumberClick(index) {
         props.handleLevelSelect(index);
-        document.body.click();
+        setIsPopoverOpen(false);  // Close the popover after selecting a level
     }
 
-    const popover = (
-        <Popover id="popover-basic">
-            <Popover.Body>
-                <div className="grid grid-cols-6">
-                    {Array.from({ length: 61 }, (_, i) => i + 1).map(index => {
-                        return (
-                            <button key={'level-number-' + index}
-                                className="text-white border-1 border-blue-600 p-2 hover:bg-blue-600"
-                                onClick={() => { handleLevelNumberClick(index); }}>
-                                {index}
-                            </button>
-                        );
-                    })}
-                </div>
-            </Popover.Body>
-        </Popover>
-    );
+    // Close the popover when clicking outside of it
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+                setIsPopoverOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [popoverRef]);
 
     return (
-        <OverlayTrigger variant="dark" trigger="click" placement="right" rootClose="true" overlay={popover}>
-            <Button className='border-1 border-blue-600 p-2 hover:bg-blue-600'>
-                {props.level || <LoadingSpinner className='loading-spinner' />}
-            </Button>
-        </OverlayTrigger >
+        <div className="relative inline-block">
+            {/* Button to toggle popover */}
+            <button
+                onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+                className="border-1 border-blue-600 p-2 hover:bg-blue-600 text-white"
+            >
+                {props.level || <LoadingSpinner className="loading-spinner" />}
+            </button>
+
+            {/* Popover Content */}
+            {isPopoverOpen && (
+                <div
+                    ref={popoverRef}
+                    className="absolute w-80 mt-2 left-0 bg-slate-800 shadow-lg z-50"
+                >
+                    <div className="grid grid-cols-6">
+                        {Array.from({ length: 61 }, (_, i) => i + 1).map((index) => (
+                            <button
+                                key={'level-number-' + index}
+                                className="text-white bg-slate-800 hover:bg-blue-600 
+                                    border-1 border-blue-600 p-2
+                                    transition"
+                                onClick={() => handleLevelNumberClick(index)}
+                            >
+                                {index}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
     );
-}
+};
 
 export default SelectLevel;
