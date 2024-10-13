@@ -133,43 +133,6 @@ CUSTOM CSS
 *******/
 
 
-.App {
-  background-color: #282c34;
-  text-align: center;
-  color: white;
-}
-
-.AppBody {
-  min-height: 100vh;
-}
-
-/**********/
-/* Level Select
-/**********/
-
-#popover-basic {
-  max-width: 20%;
-}
-#popover-basic .popover-body {
-  padding: 0.1rem;
-  background-color: rgb(41, 40, 40);
-}
-#popover-basic .popover-body .row {
-  padding: 0;
-  margin: 0;
-}
-
-#popover-basic .popover-body .row .col {
-  padding: 0;
-  margin: 0;
-}
-
-#popover-basic .popover-body .row .col button {
-  width: 100%;
-  border-color: #4a6082;
-}
-
-
 /**********/
 /* Score
 /**********/

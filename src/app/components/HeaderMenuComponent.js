@@ -16,7 +16,9 @@ export const HeaderMenu = (props) => {
         return (
             <Dropdown>
                 <Dropdown.Toggle>
-                    {focusModeEnabled ? "" : "Settings"}
+                    {!focusModeEnabled &&
+                        <div className='bg-slate-800'>Settings</div>
+                    }
                 </Dropdown.Toggle>
                 <Dropdown.Menu variant="dark">
                     <Dropdown.Item onClick={toggleFocusMode}>{focusModeEnabled ? "Disable Focus Mode" : "Enable Focus Mode"}</Dropdown.Item>

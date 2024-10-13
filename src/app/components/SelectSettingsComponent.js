@@ -8,7 +8,6 @@ import { SelectLevel } from './SelectLevelComponent';
 import SelectModeButton from './SelectModeButtonComponent';
 import { useQuizContext } from '@/app/context/quizContext';
 import { setCookie, getCookie } from 'cookies-next';
-import { LoadingSpinner } from './LoadingSpinner';
 import StartQuizButton from '../(dashboard)/components/StartQuizButton';
 
 export const SelectSettings = (props) => {
