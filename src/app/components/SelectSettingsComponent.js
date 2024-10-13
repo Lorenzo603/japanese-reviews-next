@@ -1,9 +1,8 @@
 'use client'
 
-import { Col, Row, Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { RadioSelectModeComponent } from './RadioSelectModeComponent';
 import { SelectionOption } from './SelectionOptionComponent';
-import styles from '../page.module.css'
 import { useEffect, useState } from 'react';
 import { SelectLevel } from './SelectLevelComponent';
 import SelectModeButton from './SelectModeButtonComponent';
@@ -78,9 +77,8 @@ export const SelectSettings = (props) => {
     }
 
     return (
-        <Row className='quiz-settings'>
-            <Col>
-                <Row><Col><h4 className='quiz-type-title'>Meaning and Reading</h4></Col></Row>
+        <div className='p-4 rounded-md border-2 border-blue-600'>
+                <h4>Meaning and Reading</h4>
                 <RadioSelectModeComponent title="Select Mode:">
                     <SelectModeButton key="guess-meaning" id="guess-meaning"
                         onClickHander={() => { setGuessMeaningSelected(!guessMeaningSelected) }}
@@ -122,64 +120,61 @@ export const SelectSettings = (props) => {
                                 Vocab
                             </SelectModeButton>
                         </RadioSelectModeComponent>
-                        <Row className='align-items-center p-3'>
-                            <Col className="col-8">
-                                <Form id="meaning-reading-form" onSubmit={onMeaningReadingFormSubmit} data-option={'level'}
-                                    data-guess-meaning-selected={guessMeaningSelected}
-                                    data-guess-reading-selected={guessReadingSelected}
-                                    data-guess-kanji-selected={guessKanjiSelected}
-                                    data-kanjiset-selected={kanjiSetSelected}
-                                    data-vocabularyset-selected={vocabularySetSelected}
-                                    data-selected-level={selectedLevel}>
-                                    <Row className='justify-content-end align-items-center p-2'>
-                                        <Col className="col-4 level-label">
-                                            Level:
-                                        </Col>
-                                        <Col className='col-4'>
-                                            <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
-                                        </Col>
-                                    </Row>
-                                    <Row className='justify-content-end align-items-center p-2'>
-                                        <Col className="col-4 level-label">
-                                            Practice Mode:
-                                        </Col>
-                                        <Col className='col-4'>
-                                            <div className="inline-flex items-center justify-center">
-                                                <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
-                                                    <div className="relative">
-                                                        <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
-                                                            checked={practiceMode ? 'checked' : ''}
-                                                            type="checkbox" onChange={() => { setPracticeMode(!practiceMode) }} name="switch" />
-                                                        {/* Toggle background */}
-                                                        <div className="block cursor-pointer rounded-full 
+                        <div>
+                            <Form id="meaning-reading-form" onSubmit={onMeaningReadingFormSubmit} data-option={'level'}
+                                data-guess-meaning-selected={guessMeaningSelected}
+                                data-guess-reading-selected={guessReadingSelected}
+                                data-guess-kanji-selected={guessKanjiSelected}
+                                data-kanjiset-selected={kanjiSetSelected}
+                                data-vocabularyset-selected={vocabularySetSelected}
+                                data-selected-level={selectedLevel}>
+                                <div className='flex flex-row justify-center items-center gap-x-2'>
+                                    <div>
+                                        Level:
+                                    </div>
+                                    <div>
+                                        <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
+                                    </div>
+                                </div>
+                                <div className='flex flex-row justify-center items-center gap-x-2'>
+                                    <div>
+                                        Practice Mode:
+                                    </div>
+                                    <div>
+                                        <div className="inline-flex items-center justify-center">
+                                            <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
+                                                <div className="relative">
+                                                    <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
+                                                        checked={practiceMode ? 'checked' : ''}
+                                                        type="checkbox" onChange={() => { setPracticeMode(!practiceMode) }} name="switch" />
+                                                    {/* Toggle background */}
+                                                    <div className="block cursor-pointer rounded-full 
                                                             border-1 border-slate-300 bg-slate-800 
                                                             transition duration-300 
                                                             peer-checked:bg-blue-600 peer-checked:border-blue-600 
                                                             h-6 w-12">
-                                                        </div>
-                                                        {/* Toggle ball */}
-                                                        <div className="absolute top-0.5 z-10 cursor-pointer rounded-full 
+                                                    </div>
+                                                    {/* Toggle ball */}
+                                                    <div className="absolute top-0.5 z-10 cursor-pointer rounded-full 
                                                             bg-slate-900 transition duration-300 
                                                             peer-checked:translate-x-5 peer-checked:bg-white 
                                                             left-[3px] size-5 peer-checked:left-[5px]">
-                                                        </div>
                                                     </div>
-                                                    {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
-                                                </label>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <Row className='justify-content-end'>
-                                        <Col className='col-4 p-2 d-flex flex-column'>
-                                            <Button type='submit' className='start-quiz-button'
-                                                disabled={isStartQuizButtonDisabled()}>
-                                                {loading ? <LoadingSpinner className="loading-spinner" /> : 'Start Quiz'}
-                                            </Button>
-                                        </Col>
-                                    </Row>
-                                </Form>
-                            </Col>
-                        </Row>
+                                                </div>
+                                                {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type='submit' className="p-2 rounded-md border-1 border-blue-600 bg-blue-600 
+                                                disabled:bg-slate-400 disabled:border-slate-400"
+                                        disabled={isStartQuizButtonDisabled()}>
+                                        {loading ? <LoadingSpinner className="loading-spinner" /> : 'Start Quiz'}
+                                    </button>
+                                </div>
+                            </Form>
+                        </div>
                     </>
                     :
                     <div className='flex flex-col mt-4'>
@@ -192,8 +187,7 @@ export const SelectSettings = (props) => {
                         <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'test'}>Test</SelectionOption>
                     </div>
                 }
-            </Col>
-        </Row>
+        </div>
 
     );
 }
