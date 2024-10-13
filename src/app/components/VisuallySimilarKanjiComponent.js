@@ -1,8 +1,7 @@
 'use client'
 
-import { Col, Row, Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import MultiRangeSliderComponent from './MultiRangeSlider/MultiRangeSliderComponent';
-import { LoadingSpinner } from './LoadingSpinner';
 import { useState, useEffect } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
 import StartQuizButton from '../(dashboard)/components/StartQuizButton';
@@ -41,11 +40,9 @@ export const VisuallySimilarKanji = (props) => {
             <h4>Visually Similar Kanjis</h4>
 
             <Form id="vis-sim-form" onSubmit={onVisSimFormSubmit}>
-                <Row className='align-items-center p-3'>
-                    <Col className="col-2 level-label">
-                        Level Range:
-                    </Col>
-                    <Col className="col-8">
+                <div className='flex flex-row flex-wrap gap-4 items-center'>
+                    <div>Level Range:</div>
+                    <div>
                         {(!Number.isNaN(visMinValue) && !Number.isNaN(visMaxValue)) &&
                             <MultiRangeSliderComponent
                                 min={1}
@@ -54,14 +51,9 @@ export const VisuallySimilarKanji = (props) => {
                                 minStartValue={visMinValue}
                                 maxStartValue={visMaxValue}
                             />}
-                    </Col>
-                    <Col className='col-2 p-2 d-flex flex-column'>
-
-                        <StartQuizButton loading={loading} disabled={loading} />
-
-
-                    </Col>
-                </Row>
+                    </div>
+                    <StartQuizButton loading={loading} disabled={loading} />
+                </div>
             </Form>
         </div>
     );
