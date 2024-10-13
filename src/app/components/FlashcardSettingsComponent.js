@@ -1,12 +1,11 @@
 'use client'
 
-import { Col, Row, Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { SelectionOption } from './SelectionOptionComponent';
-import styles from '../page.module.css'
 import { useEffect, useState } from 'react';
 import { SelectLevel } from './SelectLevelComponent';
 import { setCookie, getCookie } from 'cookies-next';
-import { LoadingSpinner } from './LoadingSpinner';
+import StartQuizButton from '../(dashboard)/components/StartQuizButton';
 
 export const FlashcardSettings = (props) => {
 
@@ -64,48 +63,37 @@ export const FlashcardSettings = (props) => {
     }
 
     return (
-        <Row className='quiz-settings'>
-            <Col>
-                <Row><Col><h4 className='quiz-type-title'>Flashcards</h4></Col></Row>
+        <div className='p-4 rounded-md border-2 border-blue-600'>
+            <h4>Flashcards</h4>
 
-                {selectedSet == 'select-level' ?
-                    <Row className='align-items-center p-3'>
-                        <Col className="col-8">
-                            <Form id="flashcard-form" onSubmit={onFlashcardFormSubmit} data-selected-level={selectedLevel}>
-                                <Row className='justify-content-end align-items-center p-2'>
-                                    <Col className="col-4 level-label">
-                                        Level:
-                                    </Col>
-                                    <Col className='col-4'>
-                                        <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
-                                    </Col>
-                                </Row>
-                                <Row className='justify-content-end'>
-                                    <Col className='col-4 p-2 d-flex flex-column'>
-                                        <Button type='submit' className='start-quiz-button'
-                                            disabled={isStartQuizButtonDisabled()}>
-                                            {loading ? <LoadingSpinner className="loading-spinner" /> : 'Start Quiz'}
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Form>
-                        </Col>
-                    </Row>
-                    :
-                    <Row className='mt-4'>
-                        <Col>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt5'}>JLPT N5</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt4'}>JLPT N4</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt3'}>JLPT N3</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt2'}>JLPT N2</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-kanji'}>Full Kanji Set</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-vocab'}>Full Vocabulary Set</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'test'}>Test</SelectionOption>
-                        </Col>
-                    </Row>
-                }
-            </Col>
-        </Row>
+            {selectedSet == 'select-level' ?
+                <div>
+                    <Form id="flashcard-form" onSubmit={onFlashcardFormSubmit} data-selected-level={selectedLevel}>
+                        <div className='flex flex-row justify-center items-center gap-x-2'>
+                            <div>
+                                Level:
+                            </div>
+                            <div>
+                                <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
+                            </div>
+                        </div>
+                        <div>
+                            <StartQuizButton loading={loading} disabled={isStartQuizButtonDisabled()} />
+                        </div>
+                    </Form>
+                </div>
+                :
+                <div className='flex flex-col mt-4'>
+                    <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt5'}>JLPT N5</SelectionOption>
+                    <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt4'}>JLPT N4</SelectionOption>
+                    <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt3'}>JLPT N3</SelectionOption>
+                    <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt2'}>JLPT N2</SelectionOption>
+                    <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-kanji'}>Full Kanji Set</SelectionOption>
+                    <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-vocab'}>Full Vocabulary Set</SelectionOption>
+                    <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'test'}>Test</SelectionOption>
+                </div>
+            }
+        </div>
 
     );
 }

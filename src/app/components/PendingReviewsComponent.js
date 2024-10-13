@@ -1,6 +1,6 @@
 'use client'
 
-import { Col, Row, Button } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useQuizContext } from '@/app/context/quizContext';
 
@@ -80,58 +80,51 @@ export const PendingReviewsComponent = (props) => {
 
 
     return (
-        <>
-            <Row className="justify-content-center p-2 mt-3">
-                <Col>
-                    <Button className="start-quiz-button" disabled={pendingReviewsCount === 0}
-                        data-option='review'
-                        onClick={props.handleSetSelection}>
-                        Pending reviews: {pendingReviewsCount}
-                    </Button>
-                </Col>
-            </Row>
-            <Row className="justify-content-center p-3">
-                <Col>
-                    <Row className="justify-content-center p-2">
-                        <Col>
-                            <h4>Upcoming reviews</h4>
-                        </Col>
-                    </Row>
-                    {
-                        upcomingReviewsCountArray.map(dayGroup => {
-                            return (
-                                <Row key={dayGroup}>
-                                    <Col>
-                                        {
-                                            dayGroup.map(upComingReview => {
-                                                return (
-                                                    <Row key={upComingReview[0]} className="justify-content-center p-1 upComing-review">
-                                                        <Col className="col-4 d-flex justify-content-start p-0">
-                                                            {formatDate(upComingReview[0])}:
-                                                        </Col>
-                                                        <Col className="col-1 d-flex justify-content-end p-0">
-                                                            +{upComingReview[1]}
-                                                        </Col>
-                                                        <Col className="col-2 d-flex justify-content-end p-0">
-                                                            {upComingReview[2] + pendingReviewsCount}
-                                                        </Col>
-                                                    </Row>
-                                                );
-                                            })
-                                        }
-                                    </Col>
-                                </Row>
-                            );
-                        })
-                    }
-                </Col>
-            </Row>
-            <Row className="justify-content-center p-3">
-                <Col>
-                    Total reviews: {totalReviewsCount}
-                </Col>
-            </Row>
-        </>
+        <div>
+            <div>
+                <button className="flex justify-center items-center p-2 
+                    rounded-md border-1 border-blue-600 bg-blue-600 
+                    disabled:bg-gray-500 disabled:border-gray-500 disabled:text-gray-300"
+                    disabled={pendingReviewsCount === 0}
+                    data-option='review'
+                    onClick={props.handleSetSelection}>
+                    Pending reviews: {pendingReviewsCount}
+                </button>
+            </div>
+            <div>
+                <div>
+                    <h4>Upcoming reviews</h4>
+                </div>
+                {
+                    upcomingReviewsCountArray.map(dayGroup => {
+                        return (
+                            <div key={dayGroup}>
+                                {
+                                    dayGroup.map(upComingReview => {
+                                        return (
+                                            <Row key={upComingReview[0]} className="justify-content-center p-1 upComing-review">
+                                                <Col className="col-4 d-flex justify-content-start p-0">
+                                                    {formatDate(upComingReview[0])}:
+                                                </Col>
+                                                <Col className="col-1 d-flex justify-content-end p-0">
+                                                    +{upComingReview[1]}
+                                                </Col>
+                                                <Col className="col-2 d-flex justify-content-end p-0">
+                                                    {upComingReview[2] + pendingReviewsCount}
+                                                </Col>
+                                            </Row>
+                                        );
+                                    })
+                                }
+                            </div>
+                        );
+                    })
+                }
+            </div>
+            <div>
+                Total reviews: {totalReviewsCount}
+            </div>
+        </div>
     );
 }
 

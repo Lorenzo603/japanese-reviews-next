@@ -1,8 +1,6 @@
 'use client'
 
-import { Col, Container, Row } from 'react-bootstrap';
 import { SelectSettings } from '@/app/components/SelectSettingsComponent';
-import styles from '../../page.module.css'
 import { useRouter } from 'next/navigation';
 import { useQuizContext } from '@/app/context/quizContext';
 import PendingReviewsComponent from '@/app/components/PendingReviewsComponent';
@@ -106,21 +104,17 @@ export default function Dashboard() {
 
     return (
 
-        <Container fluid className='App'>
-            <Row>
-                <Col className='AppBody'>
-                    <Row className='justify-content-center'>
-                        <Col className='col-6'>
-                            <SelectSettings handleSetSelection={handleSetSelection} />
-                            <VisuallySimilarKanji handleLevelSelection={handleLevelSelection} />
-                            <FlashcardSettings handleFlashcardFormSubmission={handleFlashcardFormSubmission} />
-                        </Col>
-                        <Col className='col-3'>
-                            <PendingReviewsComponent handleSetSelection={handleSetSelection} />
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
-        </Container>
+        <div className='min-h-screen bg-[#282c34] text-white text-center'>
+            <div className='flex flex-row flex-wrap gap-x-12 justify-center'>
+                <div className='max-w-4xl'>
+                    <SelectSettings handleSetSelection={handleSetSelection} />
+                    <VisuallySimilarKanji handleLevelSelection={handleLevelSelection} />
+                    <FlashcardSettings handleFlashcardFormSubmission={handleFlashcardFormSubmission} />
+                </div>
+                <div className='max-w-lg'>
+                    <PendingReviewsComponent handleSetSelection={handleSetSelection} />
+                </div>
+            </div>
+        </div>
     )
 }
