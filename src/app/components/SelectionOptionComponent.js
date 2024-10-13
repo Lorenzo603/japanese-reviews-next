@@ -1,16 +1,9 @@
-'use client'
-
-import { Col, Row, Button } from 'react-bootstrap';
-
 export const SelectionOption = (props) => {
     return (
-        <Row>
-            <Col>
-                <Button onClick={props.handleSetSelectionCallback} data-option={props.dataOption}>
-                    {props.children}
-                </Button>
-            </Col>
-        </Row>
+        <button className="p-2 hover:bg-blue-700" 
+            onClick={props.handleSetSelectionCallback} data-option={props.dataOption}>
+            {props.children}
+        </button>
     );
 
 }

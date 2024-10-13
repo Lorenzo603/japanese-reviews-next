@@ -27,7 +27,7 @@ export const SelectSettings = (props) => {
 
     const [loading, setLoading] = useState(false);
 
-    
+
     const handleLevelSelect = (newLastSelectedLevel) => {
         setSelectedLevel(newLastSelectedLevel);
         setCookie('lastSelectedLevel', newLastSelectedLevel, { sameSite: true });
@@ -81,59 +81,45 @@ export const SelectSettings = (props) => {
             <Col>
                 <Row><Col><h4 className='quiz-type-title'>Meaning and Reading</h4></Col></Row>
                 <RadioSelectModeComponent title="Select Mode:">
-                    <Col className='col-2'>
-                        <SelectModeButton key="guess-meaning" id="guess-meaning"
-                            onClickHander={() => { setGuessMeaningSelected(!guessMeaningSelected) }}
-                            checked={guessMeaningSelected}>
-                            Guess Meaning
-                        </SelectModeButton>
-                    </Col>
-                    <Col className='col-2'>
-                        <SelectModeButton key="guess-reading" id="guess-reading"
-                            onClickHander={() => { setGuessReadingSelected(!guessReadingSelected) }}
-                            checked={guessReadingSelected}>
-                            Guess Reading
-                        </SelectModeButton>
-                    </Col>
-                    <Col className='col-2'>
-                        <SelectModeButton key="guess-kanji" id="guess-kanji"
-                            onClickHander={() => { setGuessKanjiSelected(!guessKanjiSelected) }}
-                            checked={guessKanjiSelected}>
-                            Guess Kanji
-                        </SelectModeButton>
-                    </Col>
+                    <SelectModeButton key="guess-meaning" id="guess-meaning"
+                        onClickHander={() => { setGuessMeaningSelected(!guessMeaningSelected) }}
+                        checked={guessMeaningSelected}>
+                        Guess Meaning
+                    </SelectModeButton>
+                    <SelectModeButton key="guess-reading" id="guess-reading"
+                        onClickHander={() => { setGuessReadingSelected(!guessReadingSelected) }}
+                        checked={guessReadingSelected}>
+                        Guess Reading
+                    </SelectModeButton>
+                    <SelectModeButton key="guess-kanji" id="guess-kanji"
+                        onClickHander={() => { setGuessKanjiSelected(!guessKanjiSelected) }}
+                        checked={guessKanjiSelected}>
+                        Guess Kanji
+                    </SelectModeButton>
                 </RadioSelectModeComponent>
-                <Row className='align-items-center p-3'>
-                    <Col className='col-4 select-title'>
+                <div className='flex flex-row gap-x-4 items-center'>
+                    <div className='text-lg'>
                         Select Set:
-                    </Col>
-                    <Col className='col-4'>
-                        <Button className={selectedSet === 'select-level' ? 'selected-set-button-checked' : 'selected-set-button'}
-                            onClick={() => { setSelectedSet('select-level') }}>Select Level</Button>
-                    </Col>
-                    <Col className='col-4'>
-                        <Button className={selectedSet === 'preconfigured-sets' ? 'selected-set-button-checked' : 'selected-set-button'}
-                            onClick={() => { setSelectedSet('preconfigured-sets') }}>Preconfigured sets</Button>
-                    </Col>
-                </Row>
+                    </div>
+                    <button className={`p-2 ${selectedSet === 'select-level' ? 'bg-blue-600' : ''} hover:bg-blue-700`}
+                        onClick={() => { setSelectedSet('select-level') }}>Select Level</button>
+                    <button className={`p-2 ${selectedSet === 'preconfigured-sets' ? 'bg-blue-600' : ''} hover:bg-blue-700`}
+                        onClick={() => { setSelectedSet('preconfigured-sets') }}>Preconfigured sets</button>
+                </div>
 
                 {selectedSet == 'select-level' ?
                     <>
                         <RadioSelectModeComponent title="Select Quiz Set:">
-                            <Col className='col-2'>
-                                <SelectModeButton key="kanji-set" id="kanji-set"
-                                    onClickHander={() => { setKanjiSetSelected(!kanjiSetSelected) }}
-                                    checked={kanjiSetSelected}>
-                                    Kanjis
-                                </SelectModeButton>
-                            </Col>
-                            <Col className='col-2'>
-                                <SelectModeButton key="vocabulary-set" id="vocabulary-set"
-                                    onClickHander={() => { setVocabularySetSelected(!vocabularySetSelected) }}
-                                    checked={vocabularySetSelected}>
-                                    Vocab
-                                </SelectModeButton>
-                            </Col>
+                            <SelectModeButton key="kanji-set" id="kanji-set"
+                                onClickHander={() => { setKanjiSetSelected(!kanjiSetSelected) }}
+                                checked={kanjiSetSelected}>
+                                Kanjis
+                            </SelectModeButton>
+                            <SelectModeButton key="vocabulary-set" id="vocabulary-set"
+                                onClickHander={() => { setVocabularySetSelected(!vocabularySetSelected) }}
+                                checked={vocabularySetSelected}>
+                                Vocab
+                            </SelectModeButton>
                         </RadioSelectModeComponent>
                         <Row className='align-items-center p-3'>
                             <Col className="col-8">
@@ -176,17 +162,15 @@ export const SelectSettings = (props) => {
                         </Row>
                     </>
                     :
-                    <Row className='mt-4'>
-                        <Col>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt5'}>JLPT N5</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt4'}>JLPT N4</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt3'}>JLPT N3</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt2'}>JLPT N2</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-kanji'}>Full Kanji Set</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-vocab'}>Full Vocabulary Set</SelectionOption>
-                            <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'test'}>Test</SelectionOption>
-                        </Col>
-                    </Row>
+                    <div className='flex flex-col mt-4'>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt5'}>JLPT N5</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt4'}>JLPT N4</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt3'}>JLPT N3</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt2'}>JLPT N2</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-kanji'}>Full Kanji Set</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'full-vocab'}>Full Vocabulary Set</SelectionOption>
+                        <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'test'}>Test</SelectionOption>
+                    </div>
                 }
             </Col>
         </Row>
