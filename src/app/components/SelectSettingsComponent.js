@@ -1,6 +1,5 @@
 'use client'
 
-import { Form } from 'react-bootstrap';
 import { RadioSelectModeComponent } from './RadioSelectModeComponent';
 import { SelectionOption } from './SelectionOptionComponent';
 import { useEffect, useState } from 'react';
@@ -107,7 +106,7 @@ export const SelectSettings = (props) => {
             </div>
 
             {selectedSet == 'select-level' ?
-                <>
+                <div>
                     <RadioSelectModeComponent title="Select Quiz Set:">
                         <SelectModeButton key="kanji-set" id="kanji-set"
                             onClickHander={() => { setKanjiSetSelected(!kanjiSetSelected) }}
@@ -120,58 +119,56 @@ export const SelectSettings = (props) => {
                             Vocab
                         </SelectModeButton>
                     </RadioSelectModeComponent>
-                    <div>
-                        <Form id="meaning-reading-form" onSubmit={onMeaningReadingFormSubmit} data-option={'level'}
-                            data-guess-meaning-selected={guessMeaningSelected}
-                            data-guess-reading-selected={guessReadingSelected}
-                            data-guess-kanji-selected={guessKanjiSelected}
-                            data-kanjiset-selected={kanjiSetSelected}
-                            data-vocabularyset-selected={vocabularySetSelected}
-                            data-selected-level={selectedLevel}>
-                            <div className='flex flex-row justify-center items-center gap-x-2'>
-                                <div>
-                                    Level:
-                                </div>
-                                <div>
-                                    <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
-                                </div>
+                    <form id="meaning-reading-form" onSubmit={onMeaningReadingFormSubmit} data-option={'level'}
+                        data-guess-meaning-selected={guessMeaningSelected}
+                        data-guess-reading-selected={guessReadingSelected}
+                        data-guess-kanji-selected={guessKanjiSelected}
+                        data-kanjiset-selected={kanjiSetSelected}
+                        data-vocabularyset-selected={vocabularySetSelected}
+                        data-selected-level={selectedLevel}>
+                        <div className='flex flex-row justify-center items-center gap-x-2'>
+                            <div>
+                                Level:
                             </div>
-                            <div className='flex flex-row justify-center items-center gap-x-2'>
-                                <div>
-                                    Practice Mode:
-                                </div>
-                                <div>
-                                    <div className="inline-flex items-center justify-center">
-                                        <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
-                                            <div className="relative">
-                                                <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
-                                                    checked={practiceMode ? 'checked' : ''}
-                                                    type="checkbox" onChange={() => { setPracticeMode(!practiceMode) }} name="switch" />
-                                                {/* Toggle background */}
-                                                <div className="block cursor-pointer rounded-full 
+                            <div>
+                                <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
+                            </div>
+                        </div>
+                        <div className='flex flex-row justify-center items-center gap-x-2'>
+                            <div>
+                                Practice Mode:
+                            </div>
+                            <div>
+                                <div className="inline-flex items-center justify-center">
+                                    <label className="font-medium transition-colors duration-300 ease-in-out peer-disabled:opacity-70 text-xs flex items-center">
+                                        <div className="relative">
+                                            <input role="switch" id="switch-1" className="peer sr-only" aria-label="Checked" aria-checked="true"
+                                                checked={practiceMode ? 'checked' : ''}
+                                                type="checkbox" onChange={() => { setPracticeMode(!practiceMode) }} name="switch" />
+                                            {/* Toggle background */}
+                                            <div className="block cursor-pointer rounded-full 
                                                             border-1 border-slate-300 bg-slate-800 
                                                             transition duration-300 
                                                             peer-checked:bg-blue-600 peer-checked:border-blue-600 
                                                             h-6 w-12">
-                                                </div>
-                                                {/* Toggle ball */}
-                                                <div className="absolute top-0.5 z-10 cursor-pointer rounded-full 
+                                            </div>
+                                            {/* Toggle ball */}
+                                            <div className="absolute top-0.5 z-10 cursor-pointer rounded-full 
                                                             bg-slate-900 transition duration-300 
                                                             peer-checked:translate-x-5 peer-checked:bg-white 
                                                             left-[3px] size-5 peer-checked:left-[5px]">
-                                                </div>
                                             </div>
-                                            {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
-                                        </label>
-                                    </div>
+                                        </div>
+                                        {/* <span className="ml-2 cursor-pointer whitespace-nowrap text-xs font-medium leading-none text-black">Checked</span> */}
+                                    </label>
                                 </div>
                             </div>
-                            <div>
-                                <StartQuizButton loading={loading} disabled={isStartQuizButtonDisabled()} />
-                            </div>
-                        </Form>
-                    </div>
-                </>
+                        </div>
+                        <div>
+                            <StartQuizButton loading={loading} disabled={isStartQuizButtonDisabled()} />
+                        </div>
+                    </form>
+                </div>
                 :
                 <div className='flex flex-col mt-4'>
                     <SelectionOption handleSetSelectionCallback={props.handleSetSelection} dataOption={'jlpt5'}>JLPT N5</SelectionOption>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
 import { updateSrsWrongAnswer, updateSrsAfterReview, updateSingleSrsAfterReview } from '../services/SrsService';
@@ -374,11 +373,11 @@ export const QuestionAnswerComponent = (props) => {
                 {answerState !== AnswerState.FINISHED && (
                     <>
                         <div>
-                            <Form onSubmit={handleSubmit} autoComplete="off">
+                            <form onSubmit={handleSubmit} autoComplete="off">
                                 <input type="text" id={ANSWER_INPUT_ID}
                                     className={answerState === AnswerState.ANSWERED ? answerResult === Result.CORRECT ? 'correct' : 'wrong' : ''}
                                     onKeyDown={handleKeyDown} />
-                            </Form>
+                            </form>
                         </div>
                         <div>
                             <AnswerResult currentState={answerState} result={answerResult} />

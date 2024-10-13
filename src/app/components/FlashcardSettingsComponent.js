@@ -1,6 +1,5 @@
 'use client'
 
-import { Form } from 'react-bootstrap';
 import { SelectionOption } from './SelectionOptionComponent';
 import { useEffect, useState } from 'react';
 import { SelectLevel } from './SelectLevelComponent';
@@ -68,7 +67,7 @@ export const FlashcardSettings = (props) => {
 
             {selectedSet == 'select-level' ?
                 <div>
-                    <Form id="flashcard-form" onSubmit={onFlashcardFormSubmit} data-selected-level={selectedLevel}>
+                    <form id="flashcard-form" onSubmit={onFlashcardFormSubmit} data-selected-level={selectedLevel}>
                         <div className='flex flex-row justify-center items-center gap-x-2'>
                             <div>
                                 Level:
@@ -80,7 +79,7 @@ export const FlashcardSettings = (props) => {
                         <div>
                             <StartQuizButton loading={loading} disabled={isStartQuizButtonDisabled()} />
                         </div>
-                    </Form>
+                    </form>
                 </div>
                 :
                 <div className='flex flex-col mt-4'>

@@ -1,6 +1,5 @@
 'use client'
 
-import { Form } from 'react-bootstrap';
 import MultiRangeSliderComponent from './MultiRangeSlider/MultiRangeSliderComponent';
 import { useState, useEffect } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
@@ -39,7 +38,7 @@ export const VisuallySimilarKanji = (props) => {
         <div className='p-4 rounded-md border-2 border-blue-600'>
             <h4>Visually Similar Kanjis</h4>
 
-            <Form id="vis-sim-form" onSubmit={onVisSimFormSubmit}>
+            <form id="vis-sim-form" onSubmit={onVisSimFormSubmit}>
                 <div className='flex flex-row flex-wrap gap-4 items-center'>
                     <div>Level Range:</div>
                     <div>
@@ -54,7 +53,7 @@ export const VisuallySimilarKanji = (props) => {
                     </div>
                     <StartQuizButton loading={loading} disabled={loading} />
                 </div>
-            </Form>
+            </form>
         </div>
     );
 }
