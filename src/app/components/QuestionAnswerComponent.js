@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
 import { updateSrsWrongAnswer, updateSrsAfterReview, updateSingleSrsAfterReview } from '../services/SrsService';
@@ -256,7 +256,7 @@ export const QuestionAnswerComponent = (props) => {
 
     function GuessModeInstructions() {
         return (
-            <div className={`min-w-24 col-1 p-2 border-2 ${kanjiPrompt["object"] === "kanji" ? 'border-[#f500a3]' : 'border-[#a135bb]'}`}>
+            <div className={`min-w-24 col-1 p-2 border-2 ${kanjiPrompt["object"] === "kanji" ? 'border-[#a135bb]' : 'border-[#f500a3]'}`}>
                 <GuessModeText />
             </div>
         );
@@ -291,7 +291,7 @@ export const QuestionAnswerComponent = (props) => {
     }
 
     function AnswerResult(props) {
-        return <div className={(kanjiPrompt && kanjiPrompt["promptMode"] === "kanji") ? 'answer-result-guessKanji' : 'answer-result'}>
+        return <div className={(kanjiPrompt && kanjiPrompt["promptMode"] === "kanji") ? 'text-2xl' : 'py-2 text-2xl'}>
             {props.currentState === AnswerState.ANSWERED ?
                 props.result === Result.CORRECT
                     ? getSuccessText()
@@ -345,20 +345,12 @@ export const QuestionAnswerComponent = (props) => {
 
     function FinalResult() {
         return (
-            <Row>
-                <Col>
-                    <Row>
-                        <Col>
-                            {wrongAnswers.length === 0 ? "Congratulations!" : <WrongAnswersRecap />}
-                        </Col>
-                    </Row>
-                    <Row className="justify-content-center m-3">
-                        <Col className='col-1 p-2 position-relative linkButton'>
-                            <Link className='stretched-link linkButton' href="/dashboard">Go back</Link>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
+            <div>
+                <div className='mb-4'>
+                    {wrongAnswers.length === 0 ? "Congratulations!" : <WrongAnswersRecap />}
+                </div>
+                <Link className='p-2 bg-blue-600 no-underline text-white' href="/dashboard">Go back</Link>
+            </div>
         );
     }
 
@@ -375,36 +367,28 @@ export const QuestionAnswerComponent = (props) => {
                     {kanjiPrompt && <KanjiPrompt />}
                 </div>
                 {kanjiPrompt && kanjiPrompt["promptMode"] === "kanji" && kanjiPrompt["data"].hasOwnProperty("parts_of_speech") && (
-                    <Row>
-                        <Col className='mb-3'>
-                            {kanjiPrompt["data"]["parts_of_speech"].join(', ')}
-                        </Col>
-                    </Row>
+                    <div className='mb-3'>
+                        {kanjiPrompt["data"]["parts_of_speech"].join(', ')}
+                    </div>
                 )}
                 {answerState !== AnswerState.FINISHED && (
                     <>
-                        <Row>
-                            <Col>
-                                <Form onSubmit={handleSubmit} autoComplete="off">
-                                    <input type="text" id={ANSWER_INPUT_ID}
-                                        className={answerState === AnswerState.ANSWERED ? answerResult === Result.CORRECT ? 'correct' : 'wrong' : ''}
-                                        onKeyDown={handleKeyDown} />
-                                </Form>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <AnswerResult currentState={answerState} result={answerResult} />
-                            </Col>
-                        </Row>
+                        <div>
+                            <Form onSubmit={handleSubmit} autoComplete="off">
+                                <input type="text" id={ANSWER_INPUT_ID}
+                                    className={answerState === AnswerState.ANSWERED ? answerResult === Result.CORRECT ? 'correct' : 'wrong' : ''}
+                                    onKeyDown={handleKeyDown} />
+                            </Form>
+                        </div>
+                        <div>
+                            <AnswerResult currentState={answerState} result={answerResult} />
+                        </div>
                     </>
                 )}
                 {answerState === AnswerState.FINISHED && <FinalResult />}
-                <Row className="justify-content-center">
-                    <Col className="col-1">
-                        <Confetti active={isExploding} config={confettiConfig} />
-                    </Col>
-                </Row>
+                <div>
+                    <Confetti active={isExploding} config={confettiConfig} />
+                </div>
             </div>
         </div>
     );

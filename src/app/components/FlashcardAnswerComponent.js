@@ -1,10 +1,6 @@
-'use client'
-
 import { useCallback, useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
-import styles from '../page.module.css'
 import Link from 'next/link';
 import { useQuizContext } from '@/app/context/quizContext';
 var wanakana = require('wanakana');
@@ -121,39 +117,29 @@ export const FlashcardAnswerComponent = (props) => {
         const readingsOn = readings.filter(reading => reading['type'] === 'onyomi');
         const readingsNames = readings.filter(reading => reading['type'] === 'nanori');
 
-        return <div className={'flashcard-result'}>
-            <Row className='flashcard-result-section p-2'>
-                <Col>
-                    {getMeanings(kanjiPrompt).map(meaning => meaning['meaning']).join(', ')}
-                </Col>
-            </Row>
+        return <div className="max-w-lg text-2xl p-2 text-left">
+            <div className='border-t-2 last:border-b-2 p-2'>
+                {getMeanings(kanjiPrompt).map(meaning => meaning['meaning']).join(', ')}
+            </div>
             {whitelistedMeanings.length > 0 &&
-                <Row className='flashcard-result-section p-2'>
-                    <Col>
-                        {whitelistedMeanings.map(meaning => meaning['meaning']).join(', ')}
-                    </Col>
-                </Row>
+                <div className='border-t-2 last:border-b-2 p-2'>
+                    {whitelistedMeanings.map(meaning => meaning['meaning']).join(', ')}
+                </div>
             }
             {readingsKun.length > 0 &&
-                <Row className='flashcard-result-section p-2'>
-                    <Col>
-                        {readingsKun.map(reading => reading['reading']).join(', ')}
-                    </Col>
-                </Row>
+                <div className='border-t-2 last:border-b-2 p-2'>
+                    {readingsKun.map(reading => reading['reading']).join(', ')}
+                </div>
             }
             {readingsOn.length > 0 &&
-                <Row className='flashcard-result-section p-2'>
-                    <Col>
-                        {readingsOn.map(reading => wanakana.toKatakana(reading['reading'])).join(', ')}
-                    </Col>
-                </Row>
+                <div className='border-t-2 last:border-b-2 p-2'>
+                    {readingsOn.map(reading => wanakana.toKatakana(reading['reading'])).join(', ')}
+                </div>
             }
             {readingsNames.length > 0 &&
-                <Row className='flashcard-result-section p-2'>
-                    <Col>
-                        Nanori: {readingsNames.map(reading => reading['reading']).join(', ')}
-                    </Col>
-                </Row>
+                <div className='border-t-2 last:border-b-2 p-2'>
+                    Nanori: {readingsNames.map(reading => reading['reading']).join(', ')}
+                </div>
             }
         </div>
     }
@@ -218,70 +204,49 @@ export const FlashcardAnswerComponent = (props) => {
 
     function FinalResult() {
         return (
-            <Row>
-                <Col>
-                    <Row>
-                        <Col>
-                            {wrongAnswers.length === 0 ? "Congratulations!" : <WrongAnswersRecap />}
-                        </Col>
-                    </Row>
-                    <Row className="justify-content-center m-3">
-                        <Col className='col-1 p-2 position-relative linkButton'>
-                            <Link className='stretched-link linkButton' href="/dashboard">Go back</Link>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
+            <div>
+                <div className='mb-4'>
+                    {wrongAnswers.length === 0 ? "Congratulations!" : <WrongAnswersRecap />}
+                </div>
+                <Link className='p-2 bg-blue-600 no-underline text-white' href="/dashboard">Go back</Link>
+            </div>
         );
     }
 
     return (
-        <Row>
-            <Col>
-                <HeaderMenu endSessionHandler={endSession}
-                    totalAnswers={totalAnswers} totalCorrect={totalCorrect}
-                    totalReviews={promptSet.length} />
-                <Row>
-                    <Col className='AppBody'>
-                        <Row>
-                            <Col>
-                                {kanjiPrompt && <KanjiPrompt />}
-                            </Col>
-                        </Row>
-                        {answerState === AnswerState.WAITING_RESPONSE && (
-                            <Row>
-                                <Col>
-                                    <Button id={FLIP_BUTTON_ID} className='flip-button' onClick={flipFlashcard}>Flip</Button>
-                                </Col>
-                            </Row>
-                        )}
-                        {answerState === AnswerState.ANSWERED && (
-                            <>
-                                <Row className='justify-content-center'>
-                                    <Col className='col-4'>
-                                        <AnswerResult />
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <Button id={WRONG_ANSWER_BUTTON_ID} className='wrong-button' onClick={markAnswerWrong}>Wrong</Button>
-                                    </Col>
-                                    <Col>
-                                        <Button id={CORRECT_ANSWER_BUTTON_ID} className='correct-button' onClick={markAnswerCorrect}>Correct</Button>
-                                    </Col>
-                                </Row>
-                            </>
-                        )}
-                        {answerState === AnswerState.FINISHED && <FinalResult />}
-                        <Row className="justify-content-center">
-                            <Col className="col-1">
-                                <Confetti active={isExploding} config={confettiConfig} />
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-            </Col>
-        </Row>
+        <div>
+            <HeaderMenu endSessionHandler={endSession}
+                totalAnswers={totalAnswers} totalCorrect={totalCorrect}
+                totalReviews={promptSet.length} />
+            <div className='min-h-screen'>
+                <div className='flex justify-center mb-10'>
+                    {kanjiPrompt && <KanjiPrompt />}
+                </div>
+                {answerState === AnswerState.WAITING_RESPONSE && (
+                    <div>
+                        <button className='bg-blue-600 text-3xl p-10 rounded-lg'
+                            id={FLIP_BUTTON_ID} onClick={flipFlashcard}>Flip</button>
+                    </div>
+                )}
+                {answerState === AnswerState.ANSWERED && (
+                    <div className='flex flex-col gap-y-12 justify-center'>
+                        <div className='flex justify-center'>
+                            <AnswerResult />
+                        </div>
+                        <div className='flex flex-row justify-center gap-x-36'>
+                            <button className='bg-red-600 text-3xl p-10 rounded-lg'
+                                id={WRONG_ANSWER_BUTTON_ID} onClick={markAnswerWrong}>Wrong</button>
+                            <button className='bg-green-500 text-3xl p-10 rounded-lg'
+                                id={CORRECT_ANSWER_BUTTON_ID} onClick={markAnswerCorrect}>Correct</button>
+                        </div>
+                    </div>
+                )}
+                {answerState === AnswerState.FINISHED && <FinalResult />}
+                <div>
+                    <Confetti active={isExploding} config={confettiConfig} />
+                </div>
+            </div>
+        </div>
     );
 };
 
