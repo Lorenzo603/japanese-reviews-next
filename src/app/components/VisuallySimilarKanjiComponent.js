@@ -5,6 +5,7 @@ import MultiRangeSliderComponent from './MultiRangeSlider/MultiRangeSliderCompon
 import { LoadingSpinner } from './LoadingSpinner';
 import { useState, useEffect } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
+import StartQuizButton from '../(dashboard)/components/StartQuizButton';
 
 export const VisuallySimilarKanji = (props) => {
 
@@ -36,37 +37,33 @@ export const VisuallySimilarKanji = (props) => {
     }
 
     return (
-        <Row className='quiz-settings'>
-            <Col>
-                <Row><Col><h4 className='quiz-type-title'>Visually Similar Kanjis</h4></Col></Row>
+        <div>
+            <h4>Visually Similar Kanjis</h4>
 
-                <Form id="vis-sim-form" onSubmit={onVisSimFormSubmit}>
-                    <Row className='align-items-center p-3'>
-                        <Col className="col-2 level-label">
-                            Level Range:
-                        </Col>
-                        <Col className="col-8">
-                            {(!Number.isNaN(visMinValue) && !Number.isNaN(visMaxValue)) &&
-                                <MultiRangeSliderComponent
-                                    min={1}
-                                    max={60}
-                                    onChange={handleMultiRangeSliderChange}
-                                    minStartValue={visMinValue}
-                                    maxStartValue={visMaxValue}
-                                />}
-                        </Col>
-                        <Col className='col-2 p-2 d-flex flex-column'>
+            <Form id="vis-sim-form" onSubmit={onVisSimFormSubmit}>
+                <Row className='align-items-center p-3'>
+                    <Col className="col-2 level-label">
+                        Level Range:
+                    </Col>
+                    <Col className="col-8">
+                        {(!Number.isNaN(visMinValue) && !Number.isNaN(visMaxValue)) &&
+                            <MultiRangeSliderComponent
+                                min={1}
+                                max={60}
+                                onChange={handleMultiRangeSliderChange}
+                                minStartValue={visMinValue}
+                                maxStartValue={visMaxValue}
+                            />}
+                    </Col>
+                    <Col className='col-2 p-2 d-flex flex-column'>
 
-                            <Button type='submit' className='start-quiz-button'
-                                disabled={loading}>
-                                {loading ? <LoadingSpinner className="loading-spinner" /> : 'Start Quiz'}
-                            </Button>
+                        <StartQuizButton loading={loading} disabled={loading} />
 
-                        </Col>
-                    </Row>
-                </Form>
-            </Col>
-        </Row>
+
+                    </Col>
+                </Row>
+            </Form>
+        </div>
     );
 }
 
