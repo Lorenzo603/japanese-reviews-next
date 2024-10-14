@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }) {
     return (
         <html lang="en">
             <SuperTokensProvider>
-                <body>
+                <body className='bg-dashboardBackgroundDark'>
                     <SessionAuth
                         accessDeniedScreen={AccessDeniedScreen}
                         overrideGlobalClaimValidators={(globalValidators) => [

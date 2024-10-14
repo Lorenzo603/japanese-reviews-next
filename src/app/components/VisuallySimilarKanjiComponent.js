@@ -36,7 +36,7 @@ export const VisuallySimilarKanji = (props) => {
 
     return (
         <div className='p-4 rounded-md border-2 border-blue-600'>
-            <h4>Visually Similar Kanjis</h4>
+            <h4 className='text-xl pb-4'>Visually Similar Kanjis</h4>
 
             <form id="vis-sim-form" onSubmit={onVisSimFormSubmit}>
                 <div className='flex flex-row flex-wrap gap-4 items-center'>

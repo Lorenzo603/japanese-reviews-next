@@ -104,9 +104,9 @@ export default function Dashboard() {
 
     return (
 
-        <div className='min-h-screen bg-[#282c34] text-white text-center'>
-            <div className='flex flex-row flex-wrap gap-x-12 justify-center'>
-                <div className='max-w-4xl'>
+        <div className='min-h-screen text-white text-center '>
+            <div className='flex flex-row flex-wrap gap-x-12 justify-center py-8'>
+                <div className='max-w-4xl flex flex-col gap-y-8'>
                     <SelectSettings handleSetSelection={handleSetSelection} />
                     <VisuallySimilarKanji handleLevelSelection={handleLevelSelection} />
                     <FlashcardSettings handleFlashcardFormSubmission={handleFlashcardFormSubmission} />

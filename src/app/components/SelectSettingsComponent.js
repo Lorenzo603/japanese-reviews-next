@@ -77,7 +77,7 @@ export const SelectSettings = (props) => {
 
     return (
         <div className='p-4 rounded-md border-2 border-blue-600'>
-            <h4>Meaning and Reading</h4>
+            <h4 className='text-xl pb-4'>Quiz Settings</h4>
             <RadioSelectModeComponent title="Select Mode:">
                 <SelectModeButton key="guess-meaning" id="guess-meaning"
                     onClickHander={() => { setGuessMeaningSelected(!guessMeaningSelected) }}
@@ -95,8 +95,8 @@ export const SelectSettings = (props) => {
                     Guess Kanji
                 </SelectModeButton>
             </RadioSelectModeComponent>
-            <div className='flex flex-row gap-x-4 items-center'>
-                <div className='text-lg'>
+            <div className='flex flex-row gap-x-4 items-center pb-6'>
+                <div className='w-32 text-lg text-right'>
                     Select Set:
                 </div>
                 <button className={`p-2 ${selectedSet === 'select-level' ? 'bg-blue-600' : ''} hover:bg-blue-700`}
@@ -126,16 +126,16 @@ export const SelectSettings = (props) => {
                         data-kanjiset-selected={kanjiSetSelected}
                         data-vocabularyset-selected={vocabularySetSelected}
                         data-selected-level={selectedLevel}>
-                        <div className='flex flex-row justify-center items-center gap-x-2'>
-                            <div>
+                        <div className='flex flex-row items-center gap-x-4'>
+                            <div className='w-32 text-lg text-right'>
                                 Level:
                             </div>
                             <div>
                                 <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
                             </div>
                         </div>
-                        <div className='flex flex-row justify-center items-center gap-x-2'>
-                            <div>
+                        <div className='flex flex-row items-center gap-x-4 py-4'>
+                            <div className='w-32 text-lg text-right'>
                                 Practice Mode:
                             </div>
                             <div>
@@ -147,7 +147,7 @@ export const SelectSettings = (props) => {
                                                 type="checkbox" onChange={() => { setPracticeMode(!practiceMode) }} name="switch" />
                                             {/* Toggle background */}
                                             <div className="block cursor-pointer rounded-full 
-                                                            border-1 border-slate-300 bg-slate-800 
+                                                            border border-slate-300 bg-slate-800 
                                                             transition duration-300 
                                                             peer-checked:bg-blue-600 peer-checked:border-blue-600 
                                                             h-6 w-12">
@@ -164,7 +164,7 @@ export const SelectSettings = (props) => {
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div className='flex flex-row justify-center py-4'>
                             <StartQuizButton loading={loading} disabled={isStartQuizButtonDisabled()} />
                         </div>
                     </form>

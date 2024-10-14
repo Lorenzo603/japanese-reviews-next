@@ -63,12 +63,12 @@ export const FlashcardSettings = (props) => {
 
     return (
         <div className='p-4 rounded-md border-2 border-blue-600'>
-            <h4>Flashcards</h4>
+            <h4 className='text-xl pb-4'>Flashcards</h4>
 
             {selectedSet == 'select-level' ?
                 <div>
                     <form id="flashcard-form" onSubmit={onFlashcardFormSubmit} data-selected-level={selectedLevel}>
-                        <div className='flex flex-row justify-center items-center gap-x-2'>
+                        <div className='flex flex-row justify-center items-center gap-x-2 pb-4'>
                             <div>
                                 Level:
                             </div>
@@ -76,7 +76,7 @@ export const FlashcardSettings = (props) => {
                                 <SelectLevel level={selectedLevel} handleLevelSelect={handleLevelSelect} />
                             </div>
                         </div>
-                        <div>
+                        <div className='flex justify-center'>
                             <StartQuizButton loading={loading} disabled={isStartQuizButtonDisabled()} />
                         </div>
                     </form>

@@ -38,7 +38,7 @@ export const SelectLevel = (props) => {
             {isPopoverOpen && (
                 <div
                     ref={popoverRef}
-                    className="absolute w-80 mt-2 left-0 bg-slate-800 shadow-lg z-50"
+                    className="absolute w-80 mt-2 -top-10 left-8 bg-slate-800 shadow-lg z-50"
                 >
                     <div className="grid grid-cols-6">
                         {Array.from({ length: 61 }, (_, i) => i + 1).map((index) => (

@@ -18,7 +18,7 @@ export const ScoreComponent = (props) => {
         <div className='flex flex-row gap-x-4 text-2xl text-right'>
             <div><Tally /></div>
             <div><Percentage /></div>
-            <div className="w-10 text-center bg-blue-400"><TotalReviews /></div>
+            <div className="w-20 text-center border border-blue-400"><TotalReviews /></div>
         </div>
     );
 }

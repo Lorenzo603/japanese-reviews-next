@@ -38,7 +38,7 @@ export const HeaderMenu = (props) => {
                 {/* Dropdown Toggle Button */}
                 <button
                     onClick={toggleDropdown}
-                    className="bg-slate-800 hover:bg-blue-600 text-white px-4 py-2"
+                    className="hover:bg-blue-600 text-white px-4"
                 >
                     <span className='flex gap-x-2 items-center'>
                         {!focusModeEnabled && <span>Settings</span>}
@@ -71,7 +71,7 @@ export const HeaderMenu = (props) => {
     };
 
     return (
-        <div className="flex flex-row justify-between gap-x-4">
+        <div className="flex flex-row justify-between items-center gap-x-4 py-2 px-2">
             <div className="text-left">
                 <SessionMenu endSessionHandler={props.endSessionHandler} />
             </div>
