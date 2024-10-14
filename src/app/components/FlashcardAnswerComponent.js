@@ -161,7 +161,7 @@ export const FlashcardAnswerComponent = (props) => {
 
     function WrongAnswersRecap() {
         return (
-            <ul className='wrongAnswerRecap'>
+            <ul className='list-none'>
                 {wrongAnswers.map(wrongAnswer =>
                     <li key={wrongAnswer['id'] + '-' + wrongAnswer['promptMode']}>{wrongAnswer['data']['slug']}</li>
                 )}

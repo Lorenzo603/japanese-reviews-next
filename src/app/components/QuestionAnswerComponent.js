@@ -280,9 +280,9 @@ export const QuestionAnswerComponent = (props) => {
                 .filter(acceptedMeaning => acceptedMeaning.accepted_answer)
                 .map(acceptedMeaning => acceptedMeaning["meaning"])
                 .join(', ');
-            return <KanjiPromptStyled promptText={acceptedMeaningPrompt} cssClass="kanjiPrompt-guessKanji" />;
+            return <KanjiPromptStyled promptText={acceptedMeaningPrompt} cssClass="p-4 text-3xl" />;
         }
-        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} cssClass="p-3 text-8xl" />;
+        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} cssClass="p-4 text-8xl" />;
     }
 
     function KanjiPromptStyled(props) {
@@ -319,7 +319,7 @@ export const QuestionAnswerComponent = (props) => {
 
     function WrongAnswersRecap() {
         return (
-            <ul className='wrongAnswerRecap'>
+            <ul className='list-none'>
                 {wrongAnswers.map(wrongAnswer =>
                     <li key={wrongAnswer['id'] + '-' + wrongAnswer['promptMode']}>{wrongAnswer['data']['slug']}&nbsp;:&nbsp;
                         {getAcceptedAnswers(wrongAnswer).map(answer => answer[getCurrentModeSingle(wrongAnswer)]).join(', ')}</li>
