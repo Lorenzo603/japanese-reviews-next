@@ -1,5 +1,3 @@
-'use client'
-
 export const LoadingSpinner = (props) => (
     <svg
     className={props.className}
