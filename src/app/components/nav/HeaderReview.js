@@ -64,7 +64,8 @@ const HeaderReview = () => {
         <header className="sticky top-0 z-50 w-full bg-pink-200">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-x-6 p-6">
                 <button name="Settings"
-                    className={`flex ${answerState === AnswerState.FINISHED ? "bg-gray-300 cursor-default" : "bg-pink-500"} text-slate-50 p-2 rounded-full`}
+                    className="flex bg-pink-500 text-slate-50 p-2 rounded-full disabled:bg-gray-300"
+                    disabled={answerState === AnswerState.FINISHED}
                     onClick={() => {
                         if (answerState !== AnswerState.FINISHED) {
                             toggleMenu();

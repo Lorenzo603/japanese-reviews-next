@@ -537,13 +537,11 @@ export default function VisuallySimilarReviewSettings() {
                                                             })
                                                     }
                                                     <li key="jlpt1" >
-                                                        <button className={`
+                                                        <button className="
                                                         bg-gray-300 border border-gray-400 
                                                         text-white rounded-md p-2 w-full h-full
-                                                        flex justify-center items-center
-                                                        cursor-default
-                                                        `}
-                                                            onClick={() => { }}>
+                                                        flex justify-center items-center"
+                                                            onClick={() => { }} disabled>
                                                             {`JLPT N1 (Coming Soon!)`}
                                                         </button>
                                                     </li>

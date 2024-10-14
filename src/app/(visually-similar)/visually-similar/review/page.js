@@ -317,12 +317,10 @@ export default function VisuallySimilarReview() {
                                             (!quickMode || (quickMode && answerState === AnswerState.ANSWERED)) &&
                                             <div className="flex flex-col items-center p-10">
                                                 <button
-                                                    className={`
-                                                    w-20 text-white p-2 rounded-md border-2 
-                                                    ${answerState === AnswerState.WAITING_RESPONSE
-                                                            ? "bg-gray-300 border-gray-400 cursor-default"
-                                                            : "bg-pink-500 border-pink-700 hover:bg-pink-700 hover:text-white"}
-                                                    `}
+                                                    className="w-20 text-white p-2 rounded-md border-2
+                                                    bg-pink-500 border-pink-700 hover:bg-pink-700 hover:text-white 
+                                                    disabled:bg-gray-300 disabled:border-gray-400"
+                                                    disabled={answerState === AnswerState.WAITING_RESPONSE}
                                                     onClick={() => {
                                                         if (answerState === AnswerState.ANSWERED) {
                                                             moveToNextPrompt()
