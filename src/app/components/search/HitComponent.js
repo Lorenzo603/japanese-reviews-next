@@ -3,9 +3,31 @@ import { Highlight } from "react-instantsearch";
 
 const HitComponent = ({ hit }) => {
 
+
+    function highlightKanaBasedOnRomajiMatch(hit) {
+        for (let i = 0; i < hit._highlightResult.readingsKunRomaji.length; i++) {
+            if (hit._highlightResult.readingsKunRomaji[i].matchLevel === 'full') {
+                hit._highlightResult.readingsKun[i].value = `<mark>${hit._highlightResult.readingsKun[i].value}</mark>`
+            }
+        }
+        for (let i = 0; i < hit._highlightResult.readingsOnRomaji.length; i++) {
+            if (hit._highlightResult.readingsOnRomaji[i].matchLevel === 'full') {
+                hit._highlightResult.readingsOn[i].value = `<mark>${hit._highlightResult.readingsOn[i].value}</mark>`
+            }
+        }
+        for (let i = 0; i < hit._highlightResult.readingsNamesRomaji.length; i++) {
+            if (hit._highlightResult.readingsNamesRomaji[i].matchLevel === 'full') {
+                hit._highlightResult.readingsNames[i].value = `<mark>${hit._highlightResult.readingsNames[i].value}</mark>`
+            }
+        }
+    }
+
+    highlightKanaBasedOnRomajiMatch(hit);
+
     return (
         <Link className="no-underline text-slate-900"
             href={`/visually-similar/kanji/${hit.slug}`} >
+
             <div className="flex gap-4">
                 <div className="japanese-font text-5xl">
                     {hit.slug}
