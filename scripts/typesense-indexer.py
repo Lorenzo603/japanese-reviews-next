@@ -54,7 +54,7 @@ client = typesense.Client({
 #             "slug": kanji["data"]["slug"],
 #             "meanings": list(map(lambda meaning: meaning["meaning"], kanji["data"]["meanings"])),
 #             "readingsKun": readingsKun,
-#             "readingsOn": readingsOn,
+#             "readingsOn": list(map(lambda reading: wanakana.to_katakana(reading), readingsOn)),
 #             "readingsNames": readingsNames,
 #             "readingsKunRomaji": list(map(lambda reading: wanakana.to_romaji(reading), readingsKun)),
 #             "readingsOnRomaji":  list(map(lambda reading: wanakana.to_romaji(reading), readingsOn)),

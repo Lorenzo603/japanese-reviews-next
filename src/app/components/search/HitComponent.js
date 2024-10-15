@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Highlight } from "react-instantsearch";
-var wanakana = require('wanakana');
 
 const HitComponent = ({ hit }) => {
 
@@ -13,25 +12,43 @@ const HitComponent = ({ hit }) => {
                 </div>
                 <div className="flex-col">
                     <div className="font-bold pb-2">
-                        <Highlight hit={hit} attribute="meanings" tagname="mark"
+                        <Highlight hit={hit} attribute="meanings"
                             classNames={{
                                 highlighted: 'bg-pink-200 p-0',
                             }}
                         />
                     </div>
                     {hit.readingsKun.length > 0 &&
-                        <div className="japanese-font">
-                            Kun:&nbsp;{hit.readingsKun.join("、")}
+                        <div className="japanese-font flex gap-x-2">
+                            <span>Kun:</span>
+                            <Highlight hit={hit} attribute="readingsKun"
+                                separator="、"
+                                classNames={{
+                                    highlighted: 'bg-pink-200 p-0',
+                                }}
+                            />
                         </div>
                     }
                     {hit.readingsOn.length > 0 &&
-                        <div className="japanese-font">
-                            On:&nbsp;{hit.readingsOn.map(reading => wanakana.toKatakana(reading)).join("、")}
+                        <div className="japanese-font flex gap-x-2">
+                            <span>On:</span>
+                            <Highlight hit={hit} attribute="readingsOn"
+                                separator="、"
+                                classNames={{
+                                    highlighted: 'bg-pink-200 p-0',
+                                }}
+                            />
                         </div>
                     }
                     {hit.readingsNames.length > 0 &&
-                        <div className="japanese-font">
-                            Name:&nbsp;{hit.readingsNames.join("、")}
+                        <div className="japanese-font flex gap-x-2">
+                            <span>Name:</span>
+                            <Highlight hit={hit} attribute="readingsNames"
+                                separator="、"
+                                classNames={{
+                                    highlighted: 'bg-pink-200 p-0',
+                                }}
+                            />
                         </div>
                     }
                 </div>
