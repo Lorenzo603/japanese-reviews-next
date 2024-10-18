@@ -91,7 +91,7 @@ export const QuestionAnswerComponent = (props) => {
 
     useEffect(() => {
         if (kanjiPrompt) {
-            if (kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji") {
+            if (isKanaInput()) {
                 enableKanaInput();
             } else {
                 disableKanaInput();
@@ -99,6 +99,10 @@ export const QuestionAnswerComponent = (props) => {
         }
 
     }, [kanjiPrompt]);
+
+    function isKanaInput() {
+        return kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji";
+    }
 
     function enableKanaInput() {
         const element = getAnswerInputElement();
@@ -160,7 +164,7 @@ export const QuestionAnswerComponent = (props) => {
             return;
         }
 
-        const answerContainsRomaji = (kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
+        const answerContainsRomaji = isKanaInput()
             && userAnswer.length > 0
             && !wanakana.isKana(userAnswer);
         const similarAnswerExists = acceptedAnswers.some((element) => {
@@ -190,7 +194,7 @@ export const QuestionAnswerComponent = (props) => {
     }
 
     function convertLastNCharacter(userAnswer) {
-        if ((kanjiPrompt["promptMode"] === "reading" || kanjiPrompt["promptMode"] === "kanji")
+        if (isKanaInput()
             && userAnswer.length > 0
             && userAnswer.slice(-1) === 'n') {
             userAnswer = userAnswer.substring(0, userAnswer.length - 1) + 'ん';
@@ -282,7 +286,7 @@ export const QuestionAnswerComponent = (props) => {
                 .join(', ');
             return <KanjiPromptStyled promptText={acceptedMeaningPrompt} cssClass="p-4 text-3xl" />;
         }
-        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} cssClass="p-4 text-8xl" />;
+        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} cssClass="font-japanese p-4 text-8xl" />;
     }
 
     function KanjiPromptStyled(props) {

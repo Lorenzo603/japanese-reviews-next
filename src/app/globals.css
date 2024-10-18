@@ -221,9 +221,6 @@ button.btn-primary {
   width: 10px;
   height: 10px;
 } */
-.japanese-font {
-  font-family: var(--noto-sans-jp);
-}
 
 /**********/
 /* Search Bar animation

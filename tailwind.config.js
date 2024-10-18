@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        japanese: ['var(--font-noto-sans-jp)'],
+      },
       colors: {
         dashboardBackgroundDark: '#282c34',
       },

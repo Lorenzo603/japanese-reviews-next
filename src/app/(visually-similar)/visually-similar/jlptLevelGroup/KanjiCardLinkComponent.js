@@ -9,7 +9,7 @@ export const KanjiCardLinkComponent = async (props) => {
                 href={`/visually-similar/kanji/${props.kanjiSlug}`}
             >
                 <div className='flex flex-col w-24'>
-                    <div className='japanese-font text-5xl flex justify-center text-center'>
+                    <div className='font-japanese text-5xl flex justify-center text-center'>
                         {props.kanjiSlug}
                     </div>
                     <div className='flex justify-center text-center pt-2'>

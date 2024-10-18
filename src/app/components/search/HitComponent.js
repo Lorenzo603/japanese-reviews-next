@@ -29,7 +29,7 @@ const HitComponent = ({ hit }) => {
             href={`/visually-similar/kanji/${hit.slug}`} >
 
             <div className="flex gap-4">
-                <div className="japanese-font text-5xl">
+                <div className="font-japanese text-5xl">
                     {hit.slug}
                 </div>
                 <div className="flex-col">
@@ -41,7 +41,7 @@ const HitComponent = ({ hit }) => {
                         />
                     </div>
                     {hit.readingsKun.length > 0 &&
-                        <div className="japanese-font flex gap-x-2">
+                        <div className="font-japanese flex gap-x-2">
                             <span>Kun:</span>
                             <Highlight hit={hit} attribute="readingsKun"
                                 separator="、"
@@ -52,7 +52,7 @@ const HitComponent = ({ hit }) => {
                         </div>
                     }
                     {hit.readingsOn.length > 0 &&
-                        <div className="japanese-font flex gap-x-2">
+                        <div className="font-japanese flex gap-x-2">
                             <span>On:</span>
                             <Highlight hit={hit} attribute="readingsOn"
                                 separator="、"
@@ -63,7 +63,7 @@ const HitComponent = ({ hit }) => {
                         </div>
                     }
                     {hit.readingsNames.length > 0 &&
-                        <div className="japanese-font flex gap-x-2">
+                        <div className="font-japanese flex gap-x-2">
                             <span>Name:</span>
                             <Highlight hit={hit} attribute="readingsNames"
                                 separator="、"

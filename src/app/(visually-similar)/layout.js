@@ -6,14 +6,19 @@ import FooterComponent from '../components/nav/FooterComponent';
 import { VisuallySimilarQuizContextProvider } from '../context/visuallySimilarQuizContext';
 import { UserContextProvider } from '../context/userContext';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  preload: true,
+ })
 const notoSansJp = Noto_Sans_JP({
-  weight: ['400', '500', '700'],
-  style: ['normal'],
-  preload: false,
-  display: 'swap',
-  variable: '--noto-sans-jp',
+  // weight: ['400', '500', '700'],
+  // style: ['normal'],
+  subsets: ['latin'],
+  preload: true,
+  display: 'block',
+  variable: '--font-noto-sans-jp',
 })
+
 
 export const metadata = {
   title: 'Visually Similar Kanji Japanese Reviews',
@@ -22,9 +27,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${notoSansJp.variable}`}>
       <SuperTokensProvider>
-        <body className={`${inter.className} ${notoSansJp.variable} h-screen bg-slate-50 text-slate-900`}>
+        <body className={`${inter.className} h-screen bg-slate-50 text-slate-900`}>
           <UserContextProvider>
           <VisuallySimilarQuizContextProvider>
             <div className="relative flex flex-col h-full">

@@ -105,7 +105,7 @@ export const FlashcardAnswerComponent = (props) => {
     }
 
     function KanjiPrompt() {
-        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} cssClass="p-3 text-8xl" />;
+        return <KanjiPromptStyled promptText={kanjiPrompt['data']['slug']} cssClass="font-japanese p-3 text-8xl" />;
     }
 
     function KanjiPromptStyled(props) {

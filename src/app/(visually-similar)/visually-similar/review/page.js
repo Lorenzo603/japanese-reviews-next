@@ -277,9 +277,9 @@ export default function VisuallySimilarReview() {
                                                 <ul>
                                                     {wrongAnswers.map(wrongAnswer =>
                                                         <li key={wrongAnswer['prompt']}>
-                                                            <span className={guessKanji ? "" : "japanese-font"}>{wrongAnswer['prompt']}</span>
+                                                            <span className={guessKanji ? "" : "font-japanese"}>{wrongAnswer['prompt']}</span>
                                                             &nbsp;:&nbsp;
-                                                            <span className={guessKanji ? "japanese-font" : ""}>{wrongAnswer['correctAnswer']}</span>
+                                                            <span className={guessKanji ? "font-japanese" : ""}>{wrongAnswer['correctAnswer']}</span>
                                                         </li>
                                                     )}
                                                 </ul>
@@ -297,7 +297,7 @@ export default function VisuallySimilarReview() {
                                 ) : (
                                     <div>
                                         <div className="text-4xl pb-6">
-                                            <span className={guessKanji ? "" : "japanese-font"}>{currentPrompt["prompt"]}</span>
+                                            <span className={guessKanji ? "" : "font-japanese"}>{currentPrompt["prompt"]}</span>
                                         </div>
                                         <ul id="answers-list" className="flex flex-col gap-4">
                                             {

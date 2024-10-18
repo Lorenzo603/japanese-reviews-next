@@ -51,7 +51,7 @@ export default async function VisuallySimilarKanji({ params }) {
                     <div className="flex shrink">
                         <section>
                             <h1 className="sr-only">Kanji</h1>
-                            <div className="japanese-font text-9xl pb-4">{kanji['slug']}</div>
+                            <div className="font-japanese text-9xl pb-4">{kanji['slug']}</div>
                         </section>
                     </div>
                     <div className="flex shrink py-4">
@@ -74,7 +74,7 @@ export default async function VisuallySimilarKanji({ params }) {
                                 <section>
                                     <div className="flex items-center py-2">
                                         <h3 className="text-2xl font-bold">Kun:</h3>
-                                        <ul className="japanese-font text-2xl px-2">
+                                        <ul className="font-japanese text-2xl px-2">
                                             {
                                                 readingsKun
                                                     .map(reading => reading['reading'])
@@ -90,7 +90,7 @@ export default async function VisuallySimilarKanji({ params }) {
                                 <section>
                                     <div className="flex items-center py-2">
                                         <h3 className="text-2xl font-bold">On:</h3>
-                                        <ul className="japanese-font text-2xl px-2">
+                                        <ul className="font-japanese text-2xl px-2">
                                             {
                                                 readingsOn
                                                     .map(reading => reading['reading'])
@@ -106,7 +106,7 @@ export default async function VisuallySimilarKanji({ params }) {
                                 <section>
                                     <div className="flex items-center py-2">
                                         <h3 className="text-2xl font-bold">Nanori:</h3>
-                                        <ul className="japanese-font text-2xl px-2">
+                                        <ul className="font-japanese text-2xl px-2">
                                             {
                                                 readingsNames
                                                     .map(reading => reading['reading'])

@@ -8,7 +8,7 @@ export const AnswerButton = (props) => {
                 ${props.colorClass}
             `}
             onClick={props.handleUserAnswer}>
-            <span className={`${props.guessKanji ? "japanese-font text-4xl" : "text-2xl"}`}>{props.answer}</span>
+            <span className={`${props.guessKanji ? "font-japanese text-4xl" : "text-2xl"}`}>{props.answer}</span>
         </button>
 
     )
