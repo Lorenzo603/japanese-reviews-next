@@ -5,7 +5,7 @@ export default function VisuallySimilarJlptLevel5() {
 
     return (
         <div className='w-full mx-auto max-w-7xl px-6 pb-6'>
-            <Breadcrumb />
+            <Breadcrumb isKanjiPage={false} />
             <JlptLevelGroupComponent jlptLevelNumber={5} medal="bronze" />
         </div>
     )

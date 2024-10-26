@@ -1,20 +1,37 @@
-'use client'
+import ArrowChevronRightSvg from "./ArrowChevronRightSvg";
+import HomeIconSvg from "./HomeIconSvg";
+import Link from "next/link";
 
-import { usePathname, useRouter } from "next/navigation";
+export const Breadcrumb = (props) => {
 
-export const Breadcrumb = () => {
-  const router = useRouter();
+  if (!props.isKanjiPage) {
+    return (
+      <ul className="flex items-center py-4">
+        <li className="flex flex-row items-center">
+          <Link href="/" className="flex items-center gap-x-1">
+            <HomeIconSvg />
+            <span>Home</span>
+          </Link>
+        </li>
+      </ul>
+    )
+  }
 
   return (
-    <div className="py-4">
-      <button className="flex inline items-center" 
-        onClick={() => router.back()}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-4">
-        <path fillRule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clipRule="evenodd" />
-      </svg> 
-      <span>Back</span>
-      </button>
-    </div>
+    <ul className="flex items-center py-4">
+      <li className="flex flex-row items-center">
+        <Link href="/" className="flex items-center gap-x-1">
+          <HomeIconSvg />
+          <span>Home</span>
+        </Link>
+      </li>
+      <li className="flex flex-row items-center">
+        <Link href={`/visually-similar/jlpt-level-${props.jlptLevel}`} className="flex items-center">
+          <ArrowChevronRightSvg />
+          <span>JLPT {props.jlptLevel}</span>
+        </Link>
+      </li>
+    </ul>
   )
 };
 

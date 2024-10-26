@@ -44,7 +44,7 @@ export default async function VisuallySimilarKanji({ params }) {
 
     return (
         <div className="w-full mx-auto max-w-7xl px-6 pb-6">
-            <Breadcrumb />
+            <Breadcrumb isKanjiPage={true} jlptLevel={jlptLevel}/>
             <main>
                 <div className="min-w-64 inline-block
                         rounded-md bg-slate-50 p-8 border-2 border-slate-300 shadow">

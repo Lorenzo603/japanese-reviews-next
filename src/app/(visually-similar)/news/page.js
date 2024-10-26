@@ -9,7 +9,7 @@ export default function NewsPage() {
     return (
         <div className="w-full">
             <div className="mx-auto max-w-7xl px-6 pb-6">
-                <Breadcrumb />
+                <Breadcrumb isKanjiPage={false} />
                 <main>
                     <div className="max-w-2xl">
                         <section>
