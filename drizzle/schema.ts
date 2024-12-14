@@ -1,4 +1,4 @@
-import { pgTable, varchar, bigint, serial, char, boolean, timestamp, integer, index, foreignKey, primaryKey, text, unique } from "drizzle-orm/pg-core"
+import { pgTable, varchar, bigint, serial, char, boolean, timestamp, integer, bigserial, index, foreignKey, primaryKey, text, unique } from "drizzle-orm/pg-core"
   import { sql } from "drizzle-orm"
 
 
@@ -35,6 +35,24 @@ export const userReviewsActive = pgTable("user_reviews_active", {
 export const users = pgTable("users", {
 	userId: char("user_id", { length: 36 }).primaryKey().notNull(),
 	username: varchar("username", { length: 50 }).notNull(),
+	lastSelectedLevel: integer("last_selected_level").default(1),
+});
+
+export const reviews = pgTable("reviews", {
+	id: char("id", { length: 36 }).primaryKey().notNull(),
+	userId: char("user_id", { length: 36 }).notNull(),
+	elementId: char("element_id", { length: 36 }).notNull(),
+	currentSrsStage: integer("current_srs_stage").default(1).notNull(),
+	unlockDate: timestamp("unlock_date", { mode: 'string' }),
+	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const prompts = pgTable("prompts", {
+	id: bigserial("id", { mode: "bigint" }).primaryKey().notNull(),
+	reviewId: char("review_id", { length: 36 }).notNull(),
+	mode: char("mode", { length: 36 }),
+	answered: boolean("answered").default(false),
+	correct: boolean("correct"),
 });
 
 export const supertokensRoles = pgTable("supertokens_roles", {

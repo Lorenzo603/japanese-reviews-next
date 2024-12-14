@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server'
-import clientPromise from "../../../lib/mongodb";
-import { ObjectId } from 'mongodb';
+// import clientPromise from "../../../lib/mongodb";
+// import { ObjectId } from 'mongodb';
+import { withSession } from 'supertokens-node/nextjs/index.js';
+import { reviews } from '../../../../drizzle/schema.ts';
+import { and, eq } from 'drizzle-orm';
+import { ensureSuperTokensInit } from '@/app/(auth)/sign-in/config/backend.js';
+import db from '../../../lib/drizzleOrmDb.js';
+const crypto = require("crypto");
 
 const NEXT_WEEK_MILLIS = 7 * 24 * 60 * 60 * 1000;
 
@@ -16,6 +22,8 @@ const srsLevelToWaitingTimeMap = {
     9: (100 * 12 * 4 * 7 * 24 * 60 * 60 * 1000), // Forever
 };
 
+ensureSuperTokensInit();
+
 function calculateUnlockDate(srsLevel) {
     const now = new Date();
     now.setMinutes(0);
@@ -24,38 +32,55 @@ function calculateUnlockDate(srsLevel) {
     return new Date(now.getTime() + srsLevelToWaitingTimeMap[srsLevel]);
 }
 
-export async function GET() {
-    console.log("Getting all reviews...");
-    const client = await clientPromise;
-    const db = client.db("japanese-reviews");
-    const account = await db.collection("accounts").findOne({ "username": "Lorenzo" });
-    // console.log("Account info DB response:", account);
+export async function GET(request) {
+    return withSession(request, async (err, session) => {
+        if (err) {
+            console.error(err);
+            return NextResponse.json(err, { status: 500 });
+        }
+        if (!session) {
+            return new NextResponse("Authentication required", { status: 401 });
+        }
 
-    const accountReviews = await db.collection("reviews").find({ "account_id": account._id }).toArray();
-    const reviews = convertDateStringToDate(accountReviews.filter(review => review.current_srs_stage < 9));
+        const userId = session.getUserId();
+        console.log("Getting all reviews for user:", userId);
 
-    const now = new Date();
-    const pendingReviews = reviews.filter((review) => review.full_unlock_date <= now);
-    const allUpcomingReviews = reviews.filter((review) => review.full_unlock_date > now);
+        const allUserReviews = await db
+            .select()
+            .from(reviews)
+            .where(eq(reviews.userId, userId));
 
-    const nextWeek = new Date(now.getTime() + NEXT_WEEK_MILLIS)
-    const imminentUpcomingReviews = allUpcomingReviews.filter(review => review.full_unlock_date < nextWeek);
-    const groupedReviews = groupReviewsByUnlockDate(imminentUpcomingReviews);
-    const sortedGroupedReviews = sortReviewsByUnlockDate(groupedReviews);
-    const updatedGroupedReviews = addCumulativeSum(sortedGroupedReviews);
+        // const accountReviews = await db.collection("reviews").find({ "account_id": account._id }).toArray();
+        const transformedReviews = convertDateStringToDate(allUserReviews.filter(review => review.currentSrsStage < 9));
+        // for (const review of reviews) {
+        //     const prompts = await db.collection("prompts").find({ "review_id": review._id }).toArray();
+        //     review["prompts"] = prompts;
+        // }
 
-    const response = {
-        "reviews": reviews,
-        "pendingReviews": pendingReviews,
-        "upcomingReviews": updatedGroupedReviews,
-    }
-    return NextResponse.json(response);
+        const now = new Date();
+        const pendingReviews = transformedReviews.filter((review) => review.fullUnlockDate <= now);
+        const allUpcomingReviews = transformedReviews.filter((review) => review.fullUnlockDate > now);
+
+        const nextWeek = new Date(now.getTime() + NEXT_WEEK_MILLIS)
+        const imminentUpcomingReviews = allUpcomingReviews.filter(review => review.fullUnlockDate < nextWeek);
+        const groupedReviews = groupReviewsByUnlockDate(imminentUpcomingReviews);
+        const sortedGroupedReviews = sortReviewsByUnlockDate(groupedReviews);
+        const updatedGroupedReviews = addCumulativeSum(sortedGroupedReviews);
+
+        const response = {
+            "reviews": transformedReviews, // TODO: check if used, maybe only include total review count, in order to reduce response size 
+            "pendingReviews": pendingReviews,
+            "upcomingReviews": updatedGroupedReviews,
+        }
+        return NextResponse.json(response);
+    });
+
 }
 
 function convertDateStringToDate(array) {
     const convertedArray = array.map(obj => {
-        const full_unlock_date = new Date(obj.unlock_date);
-        return { ...obj, full_unlock_date };
+        const fullUnlockDate = new Date(obj.unlockDate);
+        return { ...obj, fullUnlockDate };
     });
 
     return convertedArray;
@@ -63,12 +88,12 @@ function convertDateStringToDate(array) {
 
 function groupReviewsByUnlockDate(reviews) {
     return reviews.reduce((group, review) => {
-        const { unlock_date } = review;
-        if (!group.has(unlock_date)) {
-            group.set(unlock_date, 1);
+        const { unlockDate } = review;
+        if (!group.has(unlockDate)) {
+            group.set(unlockDate, 1);
             return group;
         }
-        group.set(unlock_date, group.get(unlock_date) + 1);
+        group.set(unlockDate, group.get(unlockDate) + 1);
         return group;
     }, new Map());
 }
@@ -93,34 +118,80 @@ function addCumulativeSum(reviews) {
 }
 
 export async function POST(request) {
-    const reqJson = await request.json();
-    console.log("Add review payload:", reqJson);
+    return withSession(request, async (err, session) => {
+        if (err) {
+            console.error(err);
+            return NextResponse.json(err, { status: 500 });
+        }
+        if (!session) {
+            return new NextResponse("Authentication required", { status: 401 });
+        }
 
-    const client = await clientPromise;
-    const db = client.db("japanese-reviews");
-    const response = await db.collection("reviews")
-        .insertOne({
-            account_id: new ObjectId("6487929695ecece4fa568835"),
-            element_id: reqJson.element_id,
-            current_srs_stage: reqJson.current_srs_stage,
-            unlock_date: JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
-        });
-    return NextResponse.json(response);
+        const userId = session.getUserId();
+        const reqJson = await request.json();
+        console.log("Adding review payload:", reqJson);
+
+        await db.insert(reviews)
+            .values(
+                {
+                    id: crypto.randomUUID(),
+                    userId: userId,
+                    elementId: reqJson.element_id,
+                    currentSrsStage: reqJson.current_srs_stage,
+                    unlockDate: JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
+                }
+            );
+
+        // const response = await db.collection("reviews")
+        //     .insertOne({
+        //         account_id: new ObjectId("6487929695ecece4fa568835"),
+        //         element_id: reqJson.element_id,
+        //         current_srs_stage: reqJson.current_srs_stage,
+        //         unlock_date: JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
+        //     });
+        return NextResponse.json(response);
+    });
 }
 
 export async function PUT(request) {
-    const reqJson = await request.json();
-    console.log("Update review payload:", reqJson)
+    return withSession(request, async (err, session) => {
+        if (err) {
+            console.error(err);
+            return NextResponse.json(err, { status: 500 });
+        }
+        if (!session) {
+            return new NextResponse("Authentication required", { status: 401 });
+        }
+        const userId = session.getUserId();
 
-    const client = await clientPromise;
-    const db = client.db("japanese-reviews");
-    const response = await db.collection("reviews")
-        .updateOne(
-            { "account_id": new ObjectId("6487929695ecece4fa568835"), "element_id": reqJson.element_id }, {
-            $set: {
-                "current_srs_stage": reqJson.current_srs_stage,
-                "unlock_date": JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
-            }
-        });
-    return NextResponse.json(response);
+        const reqJson = await request.json();
+        console.log("Update review payload:", reqJson)
+
+        const result = await db.update(reviews)
+        .set({
+            currentSrsStage: reqJson.current_srs_stage,
+            unlockDate: JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
+        })
+        .where(and(
+            eq(reviews.userId, userId),
+            eq(reviews.elementId, reqJson.element_id)
+        ))
+            
+        // updateOne(
+        //         { "account_id": new ObjectId("6487929695ecece4fa568835"), "element_id": reqJson.element_id }, {
+        //         $set: {
+        //             "current_srs_stage": reqJson.current_srs_stage,
+        //             "unlock_date": JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
+        //         }
+        //     });
+
+        if (result.rowCount === 0) {
+            console.warn('Record not found');
+            return NextResponse.json({ error: 'Bad request' }, { status: 400 })
+        }
+        return NextResponse.json({ message: 'OK' }, { status: 200 })
+    });
+
+
+
 }

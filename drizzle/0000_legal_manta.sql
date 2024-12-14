@@ -8,7 +8,25 @@ CREATE TABLE IF NOT EXISTS "supertokens_apps" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
 	"user_id" char(36) PRIMARY KEY NOT NULL,
-	"username" char(50) NOT NULL
+	"username" char(50) NOT NULL,
+	"last_selected_level" integer DEFAULT 1
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "reviews" (
+	"id" char(36) PRIMARY KEY NOT NULL,
+	"user_id" char(36) NOT NULL,
+	"element_id" char(36) NOT NULL,
+	"current_srs_stage" integer DEFAULT 1 NOT NULL,
+	"unlock_date" TIMESTAMP,
+	"created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "prompts" (
+	"id" bigserial PRIMARY KEY NOT NULL,
+	"review_id" char(36) NOT NULL,
+	"mode" char(36),
+	"answered" boolean DEFAULT false,
+	"correct" boolean
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_settings" (
