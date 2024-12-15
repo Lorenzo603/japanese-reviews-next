@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
-import db from "../../../../lib/drizzleOrmDb.js";
-import { reviews } from '../../../../../drizzle/schema.ts';
-import { and, eq } from 'drizzle-orm';
 import { ensureSuperTokensInit } from '@/app/(auth)/sign-in/config/backend.js';
 import { withSession } from 'supertokens-node/nextjs/index.js';
-import { calculateUnlockDate, DEFAULT_PROMPTS_JSON } from '@/app/components/backend/srs/SrsService.js';
+import { calculateUnlockDate, clampSrsStage, DEFAULT_PROMPTS_JSON } from '@/app/components/backend/srs/SrsService.js';
+import db from '@/lib/drizzleOrmDb';
+import { and, eq } from 'drizzle-orm';
+import { reviews } from '../../../../../../drizzle/schema.ts';
 
 ensureSuperTokensInit();
 
@@ -23,7 +23,7 @@ export async function PUT(request, { params }) {
         const elementId = params.elementId;
         console.log(`Decreasing SRS review for user ${userId} with element id ${elementId}...`);
 
-        const reviewByElementId = await db
+        const reviewsByElementId = await db
             .select()
             .from(reviews)
             .where(
@@ -31,9 +31,9 @@ export async function PUT(request, { params }) {
                     eq(reviews.userId, userId),
                     eq(reviews.elementId, elementId),
                 )
-            )[0];
-        const newSrsStage = reviewByElementId.currentSrsStage - 2;
+            );
 
+        const newSrsStage =  clampSrsStage(reviewsByElementId[0].currentSrsStage - 2);
         const updateObj = {
             prompts: DEFAULT_PROMPTS_JSON,
             currentSrsStage: newSrsStage,

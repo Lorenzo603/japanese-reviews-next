@@ -22,7 +22,7 @@ export function calculateNewSrsStage(currentSrsStage, prompts) {
     return clampSrsStage(currentSrsStage + score);
 }
 
-function clampSrsStage(score) {
+export function clampSrsStage(score) {
     return Math.max(1, Math.min(9, score));
 }
 

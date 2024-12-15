@@ -216,7 +216,7 @@ export const QuestionAnswerComponent = (props) => {
                 }
             })
                 .then((res) => {
-                    console.log(`Resetted SRS for element with id ${elementId}`, res.status);
+                    console.log(`Reset SRS for element with id ${elementId}`, res.status);
                     res.json();
                 })
         } else {
