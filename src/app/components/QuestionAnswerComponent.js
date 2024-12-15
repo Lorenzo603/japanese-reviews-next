@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
-import { updateSrsWrongAnswer, updateReviewPrompt } from '../services/SrsService';
 import Link from 'next/link';
 import { useQuizContext } from '@/app/context/quizContext';
 var wanakana = require('wanakana');
@@ -206,6 +205,34 @@ export const QuestionAnswerComponent = (props) => {
         }
     }
 
+    async function updateSrsWrongAnswer(elementId) {
+        const reviewsByElemId = await (await fetch(`/api/reviews/${elementId}`)).json();
+        const isReviewExisting = reviewsByElemId.length > 0;
+        if (isReviewExisting) {
+            fetch(`/api/reviews/${elementId}/decreaseSrs`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then((res) => {
+                    console.log(`Resetted SRS for element with id ${elementId}`, res.status);
+                    res.json();
+                })
+        } else {
+            fetch(`/api/reviews/${elementId}`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then((res) => {
+                    console.log(`Created review for element with id ${elementId}`, res.status);
+                    res.json();
+                })
+        }
+    }
+
     function moveToNextPrompt() {
         setAnswerState(AnswerState.WAITING_RESPONSE);
         getAnswerInputElement().value = "";
@@ -225,7 +252,20 @@ export const QuestionAnswerComponent = (props) => {
 
     function updatePromptStatus(result) {
         if (reviewMode === true) {
-            updateReviewPrompt(kanjiPrompt["id"], kanjiPrompt["promptMode"], result === Result.CORRECT);
+            fetch(`/api/reviews/${kanjiPrompt["id"]}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    mode: kanjiPrompt["promptMode"],
+                    correct: result === Result.CORRECT
+                })
+            })
+                .then((res) => {
+                    console.log(`Updating review prompt ${kanjiPrompt["id"]}, result:`, res.status);
+                    res.json();
+                })
         }
     }
 
