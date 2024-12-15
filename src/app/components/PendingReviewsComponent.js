@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
 export const PendingReviewsComponent = (props) => {
 
@@ -6,6 +7,7 @@ export const PendingReviewsComponent = (props) => {
     const [totalReviewsCount, setTotalReviewsCount] = useState(0);
     const [upcomingReviewsCountArray, setUpcomingReviewsCountArray] = useState([]);
 
+    const [pendingReviewsLoading, setPendingReviewsLoading] = useState(false);
 
     function formatDate(dateString) {
         const parsedDate = new Date(dateString);
@@ -76,13 +78,16 @@ export const PendingReviewsComponent = (props) => {
     return (
         <div className='flex flex-col gap-y-4 items-center'>
             <div>
-                <button className="flex justify-center items-center p-2 
+                <button className="flex justify-center items-center w-48 h-10 p-2 
                     rounded-md border-1 border-blue-600 bg-blue-600 
                     disabled:bg-gray-500 disabled:border-gray-500 disabled:text-gray-300"
-                    disabled={pendingReviewsCount === 0}
+                    disabled={pendingReviewsLoading || pendingReviewsCount === 0}
                     data-option='review'
-                    onClick={props.handleSetSelection}>
-                    Pending reviews: {pendingReviewsCount}
+                    onClick={(e) => {
+                        setPendingReviewsLoading(true);
+                        props.handleSetSelection(e);
+                    }}>
+                    {pendingReviewsLoading ? <LoadingSpinner className="loading-spinner" /> : `Pending reviews: ${pendingReviewsCount}` }
                 </button>
             </div>
             <div>
