@@ -1,5 +1,10 @@
 import { getDictionary } from '@/app/components/backend/DictionaryLoaderComponent';
 import { NextResponse } from 'next/server'
+import { getPendingReviews } from '@/app/components/backend/reviews/ReviewService';
+import { withSession } from 'supertokens-node/nextjs';
+import { ensureSuperTokensInit } from '@/app/(auth)/sign-in/config/backend';
+
+ensureSuperTokensInit();
 
 export async function POST(request) {
     console.log("Calculating PromptSet...");
@@ -36,12 +41,25 @@ export async function POST(request) {
             }
             break;
         case "review":
-            const elementIds = reqJson.reviewSetElementIds;
-            console.log("Review element ids:", elementIds);
-            const selectedKanji = fullKanjiDictionary.filter(kanji => elementIds.includes(kanji['id']));
-            const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
-            selectedSet = selectedKanji.concat(selectedVocabulary);
-            break;
+            return withSession(request, async (err, session) => {
+                if (err) {
+                    console.error(err);
+                    return NextResponse.json(err, { status: 500 });
+                }
+                if (!session) {
+                    return new NextResponse("Authentication required", { status: 401 });
+                }
+                const userId = session.getUserId();
+                const pendingReviews = await getPendingReviews(userId);
+                const elementIds = pendingReviews.map(review => review.elementId);
+                const selectedKanji = fullKanjiDictionary.filter(kanji => elementIds.includes(kanji['id']));
+                const selectedVocabulary = fullVocabularyDictionary.filter(vocab => elementIds.includes(vocab['id']));
+                selectedSet = selectedKanji.concat(selectedVocabulary);
+                
+                const promptSet = expandPromptSet(reqJson, dataOption, selectedSet, pendingReviews);
+                return NextResponse.json(promptSet);
+
+            });
         default:
             selectedSet = fullKanjiDictionary
                 .filter(kanji => kanji['data'].hasOwnProperty('categories'))
@@ -49,15 +67,30 @@ export async function POST(request) {
             break;
     }
 
+    const promptSet = expandPromptSet(reqJson, dataOption, selectedSet, null);
+    return NextResponse.json(promptSet);
+}
+
+function expandPromptSet(reqJson, dataOption, selectedSet, pendingReviews) {
     const promptSet = []
     if (reqJson.guessMeaningSelected === true || dataOption === "review") {
-        const cloneSet = structuredClone(selectedSet);
+        let cloneSet = structuredClone(selectedSet);
+        if (dataOption === "review") {
+            const meaningPromptsIds = pendingReviews.filter(review => review.prompts.filter(prompt => prompt["mode"] === "meaning")[0]["answered"] === false)
+                .map(review => review.elementId);
+            cloneSet = cloneSet.filter(prompt => meaningPromptsIds.includes(prompt["id"]));
+        }
         cloneSet.forEach(prompt => { prompt.promptMode = "meaning" });
         promptSet.push(...cloneSet);
     }
 
     if (reqJson.guessReadingSelected === true || dataOption === "review") {
-        const cloneSet = structuredClone(selectedSet);
+        let cloneSet = structuredClone(selectedSet);
+        if (dataOption === "review") {
+            const readingPromptsIds = pendingReviews.filter(review => review.prompts.filter(prompt => prompt["mode"] === "reading")[0]["answered"] === false)
+                .map(review => review.elementId);
+            cloneSet = cloneSet.filter(prompt => readingPromptsIds.includes(prompt["id"]));
+        }
         cloneSet
             .filter(prompt => prompt.data.hasOwnProperty('readings'))
             .forEach((prompt) => { prompt.promptMode = "reading" });
@@ -69,6 +102,5 @@ export async function POST(request) {
         cloneSet.forEach((prompt) => { prompt.promptMode = "kanji" });
         promptSet.push(...cloneSet);
     }
-
-    return NextResponse.json(promptSet);
+    return promptSet;
 }

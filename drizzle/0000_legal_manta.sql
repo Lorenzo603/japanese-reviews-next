@@ -15,18 +15,11 @@ CREATE TABLE IF NOT EXISTS "users" (
 CREATE TABLE IF NOT EXISTS "reviews" (
 	"id" char(36) PRIMARY KEY NOT NULL,
 	"user_id" char(36) NOT NULL,
-	"element_id" char(36) NOT NULL,
+	"element_id" integer NOT NULL,
 	"current_srs_stage" integer DEFAULT 1 NOT NULL,
 	"unlock_date" TIMESTAMP,
-	"created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "prompts" (
-	"id" bigserial PRIMARY KEY NOT NULL,
-	"review_id" char(36) NOT NULL,
-	"mode" char(36),
-	"answered" boolean DEFAULT false,
-	"correct" boolean
+	"created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	"prompts" jsonb
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_settings" (
@@ -43,12 +36,12 @@ CREATE TABLE IF NOT EXISTS "user_reviews_active" (
 	"user_id" char(36) NOT NULL,
 	"active" boolean DEFAULT true NOT NULL,
 	"created_at" TIMESTAMP,
-	"prompt_ids" VARCHAR(24)[],
+	"prompt_ids" varchar(24)[],
 	"guess_kanji" boolean,
 	"multichoice_input" boolean,
 	"total_correct" integer DEFAULT 0,
 	"total_answers" integer DEFAULT 0,
-	"wrong_answers_ids" VARCHAR(24)[]
+	"wrong_answers_ids" varchar(24)[]
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supertokens_roles" (

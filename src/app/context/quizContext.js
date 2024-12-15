@@ -18,7 +18,6 @@ export const QuizContextProvider = ({ children }) => {
 
     const [reviewMode, setReviewMode] = useState(false);
     const [practiceMode, setPracticeMode] = useState(false);
-    const [reviewSet, setReviewSet] = useState([]);
 
     function loadInitialValue(localStorageKey, defaultvalue, setterCallback) {
         const storedValue = JSON.parse(localStorage.getItem(localStorageKey));
@@ -72,12 +71,11 @@ export const QuizContextProvider = ({ children }) => {
         vocabularySetSelected, setVocabularySetSelected,
 
         reviewMode, setReviewMode,
-        practiceMode, setPracticeMode,
+        practiceMode, setPracticeMode
 
-        reviewSet, setReviewSet
     }), [promptSet, guessMeaningSelected, guessReadingSelected, guessKanjiSelected,
         kanjiSetSelected, vocabularySetSelected,
-        reviewMode, practiceMode, reviewSet]);
+        reviewMode, practiceMode]);
 
     return (
         <QuizContext.Provider value={providerValue}>

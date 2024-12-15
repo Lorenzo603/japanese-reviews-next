@@ -6,6 +6,7 @@ import { reviews } from '../../../../drizzle/schema.ts';
 import { and, eq } from 'drizzle-orm';
 import { ensureSuperTokensInit } from '@/app/(auth)/sign-in/config/backend.js';
 import db from '../../../lib/drizzleOrmDb.js';
+import { getPendingReviews } from '@/app/components/backend/reviews/ReviewService.js';
 const crypto = require("crypto");
 
 const NEXT_WEEK_MILLIS = 7 * 24 * 60 * 60 * 1000;
@@ -50,12 +51,7 @@ export async function GET(request) {
             .from(reviews)
             .where(eq(reviews.userId, userId));
 
-        // const accountReviews = await db.collection("reviews").find({ "account_id": account._id }).toArray();
         const transformedReviews = convertDateStringToDate(allUserReviews.filter(review => review.currentSrsStage < 9));
-        // for (const review of reviews) {
-        //     const prompts = await db.collection("prompts").find({ "review_id": review._id }).toArray();
-        //     review["prompts"] = prompts;
-        // }
 
         const now = new Date();
         const pendingReviews = transformedReviews.filter((review) => review.fullUnlockDate <= now);
@@ -72,6 +68,7 @@ export async function GET(request) {
             "pendingReviews": pendingReviews,
             "upcomingReviews": updatedGroupedReviews,
         }
+
         return NextResponse.json(response);
     });
 
@@ -129,7 +126,7 @@ export async function POST(request) {
 
         const userId = session.getUserId();
         const reqJson = await request.json();
-        console.log("Adding review payload:", reqJson);
+        console.log("Adding review for user:", userId, "payload:", reqJson);
 
         await db.insert(reviews)
             .values(
@@ -165,18 +162,49 @@ export async function PUT(request) {
         const userId = session.getUserId();
 
         const reqJson = await request.json();
-        console.log("Update review payload:", reqJson)
+        console.log("Update review for user:", userId, "payload:", reqJson)
+        // reqJson payload:
+        // {
+        //     element_id: 10001,
+        //     mode: "meaning",
+        //     correct: true
+        // }
+
+        // TODO: maybe fetch directly the single review with a query instead of iterating the pendingreviews, but be careful not to include "finished" reviews
+        const pendingReviews = await getPendingReviews(userId);
+        const reviewToUpdate = pendingReviews.filter(review => review.elementId === reqJson.element_id)[0];
+        const prompts = reviewToUpdate.prompts;
+        const currentPrompt = prompts.filter(prompt => prompt.mode === reqJson.mode)[0];
+        currentPrompt.answered = true;
+        currentPrompt.correct = reqJson.correct;
+
+        const updateObj = {};
+        if (prompts.every(prompt => prompt.answered === true)) {
+            updateObj["prompts"] = [
+                {
+                    "mode": "meaning",
+                    "correct": null,
+                    "answered": false
+                },
+                {
+                    "mode": "reading",
+                    "correct": null,
+                    "answered": false
+                }
+            ]
+            updateObj["currentSrsStage"] = calculateNewSrsStage(reviewToUpdate.currentSrsStage, prompts);
+            updateObj["unlockDate"] = calculateUnlockDate(updateObj["currentSrsStage"]);
+        } else {
+            updateObj["prompts"] = prompts;
+        }
 
         const result = await db.update(reviews)
-        .set({
-            currentSrsStage: reqJson.current_srs_stage,
-            unlockDate: JSON.stringify(calculateUnlockDate(reqJson.current_srs_stage)).replaceAll("\"", "")
-        })
-        .where(and(
-            eq(reviews.userId, userId),
-            eq(reviews.elementId, reqJson.element_id)
-        ))
-            
+            .set(updateObj)
+            .where(and(
+                eq(reviews.userId, userId),
+                eq(reviews.elementId, reqJson.element_id)
+            ))
+
         // updateOne(
         //         { "account_id": new ObjectId("6487929695ecece4fa568835"), "element_id": reqJson.element_id }, {
         //         $set: {
@@ -192,6 +220,18 @@ export async function PUT(request) {
         return NextResponse.json({ message: 'OK' }, { status: 200 })
     });
 
+}
 
+// C C // avoid double correct answer if I already responded correctly once
+// C W // this should still result in srs -2
+// W C // avoid adding correct answer if I already responded wrongly once
+// W W // -4
+function calculateNewSrsStage(currentSrsStage, prompts) {
+    const numWrongAnswers = prompts.filter(prompt => prompt.correct === false).length;
+    const score = numWrongAnswers === 0 ? 1 : numWrongAnswers === 1 ? -2 : -4;
+    return clampSrsStage(currentSrsStage + score);
+}
 
+function clampSrsStage(score) {
+    return Math.max(1, Math.min(9, score));
 }

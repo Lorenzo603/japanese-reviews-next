@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useQuizContext } from '@/app/context/quizContext';
 
 export const PendingReviewsComponent = (props) => {
 
     const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
     const [totalReviewsCount, setTotalReviewsCount] = useState(0);
     const [upcomingReviewsCountArray, setUpcomingReviewsCountArray] = useState([]);
-    const { setReviewSet } = useQuizContext();
 
 
     function formatDate(dateString) {
@@ -55,6 +53,7 @@ export const PendingReviewsComponent = (props) => {
             .then((data) => {
                 // console.log('GET pending reviews:', data);
 
+                // TODO: do not pass full pending review list, only count
                 const reviews = data.reviews;
                 const pendingReviews = data.pendingReviews;
                 const upcomingReviews = data.upcomingReviews;
@@ -65,8 +64,6 @@ export const PendingReviewsComponent = (props) => {
                 const dayGroupedReviews = groupByDay(upcomingReviews);
                 // console.log(dayGroupedReviews);
                 setUpcomingReviewsCountArray(sortReviews(dayGroupedReviews));
-
-                setReviewSet(pendingReviews);
             })
             .catch(error => {
                 console.log('ERROR getting pending reviews:', error);

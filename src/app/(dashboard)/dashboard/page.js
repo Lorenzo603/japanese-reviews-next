@@ -10,7 +10,7 @@ import FlashcardSettings from '@/app/components/FlashcardSettingsComponent';
 
 export default function Dashboard() {
 
-    const { setPromptSet, setReviewMode, reviewSet } = useQuizContext();
+    const { setPromptSet, setReviewMode } = useQuizContext();
 
     const router = useRouter();
 
@@ -38,7 +38,6 @@ export default function Dashboard() {
                 guessMeaningSelected: guessMeaningSelected,
                 guessReadingSelected: guessReadingSelected,
                 guessKanjiSelected: guessKanjiSelected,
-                reviewSetElementIds: reviewSet.map(review => review.element_id)
             })
         })).json();
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { HeaderMenu } from './HeaderMenuComponent';
 import Confetti from 'react-dom-confetti';
-import { updateSrsWrongAnswer, updateSrsAfterReview, updateSingleSrsAfterReview } from '../services/SrsService';
+import { updateSrsWrongAnswer, updateReviewPrompt } from '../services/SrsService';
 import Link from 'next/link';
 import { useQuizContext } from '@/app/context/quizContext';
 var wanakana = require('wanakana');
@@ -30,9 +30,8 @@ export const QuestionAnswerComponent = (props) => {
     const [remainingPrompts] = useState([]);
     const [wrongAnswers] = useState([]);
     const [isExploding, setIsExploding] = useState(false);
-    const [scoreMap, setScoreMap] = useState(new Map());
 
-    const { promptSet, reviewMode, practiceMode, reviewSet } = useQuizContext();
+    const { promptSet, reviewMode, practiceMode } = useQuizContext();
 
     const ANSWER_INPUT_ID = 'answer-input';
 
@@ -42,29 +41,15 @@ export const QuestionAnswerComponent = (props) => {
 
     const updatePrompt = () => {
         console.log("Prompts pool length:", remainingPrompts.length);
-
-        if (reviewMode === true && kanjiPrompt !== null) {
-            const kanjiId = kanjiPrompt["id"];
-            if (scoreMap.has(kanjiId)) {
-                if (scoreMap.get(kanjiId).numPromptsAlreadyAnswered == 2) {
-                    updateSingleSrsAfterReview(scoreMap.get(kanjiId).score, kanjiId, reviewSet);
-                    scoreMap.delete(kanjiId);
-                }
-            }
-        }
-
         if (remainingPrompts.length === 0) {
             setAnswerState(AnswerState.FINISHED);
             if (totalCorrect === totalAnswers) {
                 setIsExploding(true);
             }
-
-            if (reviewMode === true) {
-                updateSrsAfterReview(scoreMap, reviewSet);
-            }
-
         } else {
-            setKanjiPrompt(getNextKanjiPrompt());
+            const k = getNextKanjiPrompt();
+            console.log("K:", k["id"]);
+            setKanjiPrompt(k);
         }
     };
 
@@ -207,14 +192,14 @@ export const QuestionAnswerComponent = (props) => {
         setAnswerResult(Result.CORRECT);
         setTotalCorrect(totalCorrect + 1);
         updateAnswerCount();
-        updateScoreMap(Result.CORRECT);
+        updatePromptStatus(Result.CORRECT);
     }
 
     function handleWrongAnswer() {
         setAnswerResult(Result.WRONG);
         wrongAnswers.push(kanjiPrompt);
         updateAnswerCount();
-        updateScoreMap(Result.WRONG);
+        updatePromptStatus(Result.WRONG);
 
         if (reviewMode === false && practiceMode === false) {
             updateSrsWrongAnswer(kanjiPrompt["id"]);
@@ -238,16 +223,10 @@ export const QuestionAnswerComponent = (props) => {
         setTotalAnswers(totalAnswers + 1);
     }
 
-    function updateScoreMap(result) {
-        const isElementAlreadyInMap = scoreMap.has(kanjiPrompt["id"]);
-        const currentScore = isElementAlreadyInMap ? scoreMap.get(kanjiPrompt["id"]).score : 0;
-        const numPromptsAlreadyAnswered = isElementAlreadyInMap ? scoreMap.get(kanjiPrompt["id"]).numPromptsAlreadyAnswered : 0;
-        setScoreMap(scoreMap.set(
-            kanjiPrompt["id"], {
-            score: result === Result.CORRECT ? currentScore + 1 : currentScore - 2,
-            numPromptsAlreadyAnswered: numPromptsAlreadyAnswered + 1
+    function updatePromptStatus(result) {
+        if (reviewMode === true) {
+            updateReviewPrompt(kanjiPrompt["id"], kanjiPrompt["promptMode"], result === Result.CORRECT);
         }
-        ));
     }
 
     function shakeInputField() {
