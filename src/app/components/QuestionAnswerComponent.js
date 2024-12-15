@@ -48,7 +48,7 @@ export const QuestionAnswerComponent = (props) => {
             }
         } else {
             const k = getNextKanjiPrompt();
-            console.log("K:", k["id"]);
+            console.log("K:", k["id"], "object:", k["object"]);
             setKanjiPrompt(k);
         }
     };
@@ -238,7 +238,7 @@ export const QuestionAnswerComponent = (props) => {
 
     function GuessModeInstructions() {
         return (
-            <div className={`min-w-24 col-1 p-2 border-2 ${kanjiPrompt["object"] === "kanji" ? 'border-[#a135bb]' : 'border-[#f500a3]'}`}>
+            <div className={`min-w-24 col-1 p-2 border-2 ${kanjiPrompt["object"] === "kanji" ? 'border-[#f500a3]' : 'border-[#a135bb]'}`}>
                 <GuessModeText />
             </div>
         );
