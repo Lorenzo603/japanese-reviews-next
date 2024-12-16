@@ -11,8 +11,12 @@ source $SCRIPTS_DIR/scripts-config.txt
 
 remote_directory="$REMOTE_SERVER:/opt/configs/japanese-reviews-next"
 
-echo "Copy .env file..."
+echo "Copy .env LOCAL file..."
 sshpass -p "$password" scp $SCRIPTS_DIR/../.env.local "$remote_directory"
+
+echo "Copy .env PRODUCTION file..."
+sshpass -p "$password" scp $SCRIPTS_DIR/../.env.production "$remote_directory"
+
 
 echo "Finished!"
 

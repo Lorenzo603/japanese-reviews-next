@@ -22,6 +22,7 @@ set WINSCP_SCRIPT=%SCRIPTS_DIR%winscp-script.txt
 echo open sftp://%REMOTE_SERVER% -password="%password%"
 echo cd /opt/configs/japanese-reviews-next
 echo put "%SCRIPTS_DIR%..\.env.local"
+echo put "%SCRIPTS_DIR%..\.env.production"
 echo exit
 ) > "%WINSCP_SCRIPT%"
 
