@@ -7,19 +7,19 @@ const Logo = () => {
         <div className="flex">
             <Link className="no-underline" href="/">
                 <div className="flex items-center gap-x-2">
-                    <Image src="/img/logos/tomomoji-logo.png" alt=""
-                        width={48}
-                        height={48}
-                        style={{ width: 48, height: 48 }}
+                    <Image src="/img/logos/tomomoji-logo.svg" alt=""
+                        width={128}
+                        height={128}
+                        style={{ width: 128, height: 128 }}
                     />
-                    <h1 className="relative flex flex-row select-none items-baseline text-2xl font-bold mb-0">
+                    {/* <h1 className="relative flex flex-row select-none items-baseline text-2xl font-bold mb-0">
                         <span className="tracking-tight text-pink-500 cursor-pointer">
                             To
                             <span className="text-pink-600">mo</span>
                             <span className="text-pink-700">mo</span>
                             <span className="text-pink-800">ji</span>
                         </span>
-                    </h1>
+                    </h1> */}
                 </div>
             </Link>
         </div>
