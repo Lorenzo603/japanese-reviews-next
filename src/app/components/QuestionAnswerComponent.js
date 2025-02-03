@@ -344,8 +344,13 @@ export const QuestionAnswerComponent = (props) => {
         return (
             <ul className='list-none'>
                 {wrongAnswers.map(wrongAnswer =>
-                    <li key={wrongAnswer['id'] + '-' + wrongAnswer['promptMode']}>{wrongAnswer['data']['slug']}&nbsp;:&nbsp;
-                        {getAcceptedAnswers(wrongAnswer).map(answer => answer[getCurrentModeSingle(wrongAnswer)]).join(', ')}</li>
+                    <li key={wrongAnswer['id'] + '-' + wrongAnswer['promptMode']}>
+                        <span className="font-japanese">{wrongAnswer['data']['slug']}</span>
+                        &nbsp;:&nbsp;
+                        <span className={wrongAnswer['promptMode'] == 'reading' ? 'font-japanese' : ''}>
+                            {getAcceptedAnswers(wrongAnswer).map(answer => answer[getCurrentModeSingle(wrongAnswer)]).join(', ')}
+                        </span>
+                    </li>
                 )}
             </ul>
         );
