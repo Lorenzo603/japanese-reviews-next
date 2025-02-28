@@ -219,6 +219,10 @@ export const QuestionAnswerComponent = (props) => {
                     console.log(`Reset SRS for element with id ${elementId}`, res.status);
                     res.json();
                 })
+                .catch((error) => {
+                    console.error('Error:', error);
+                }
+                );
         } else {
             fetch(`/api/reviews/${elementId}`, {
                 method: 'POST',
@@ -230,6 +234,10 @@ export const QuestionAnswerComponent = (props) => {
                     console.log(`Created review for element with id ${elementId}`, res.status);
                     res.json();
                 })
+                .catch((error) => {
+                    console.error('Error:', error);
+                }
+                );
         }
     }
 
@@ -266,6 +274,10 @@ export const QuestionAnswerComponent = (props) => {
                     console.log(`Updating review prompt ${kanjiPrompt["id"]}, result:`, res.status);
                     res.json();
                 })
+                .catch((error) => {
+                    console.error('Error:', error);
+                }
+                );
         }
     }
 

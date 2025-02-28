@@ -1,7 +1,6 @@
 export const ScoreComponent = (props) => {
 
-    const percentage = props.totalAnswers === 0 ? 0 : Math.round(props.totalCorrect / props.totalAnswers * 100, 2);
-
+    const percentage = props.totalAnswers === 0 ? 0 : (props.totalCorrect / props.totalAnswers * 100).toFixed(2);
     function Tally() {
         return <span>{props.totalCorrect}/{props.totalAnswers}</span>
     }

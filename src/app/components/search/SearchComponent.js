@@ -14,12 +14,12 @@ export const SearchComponent = () => {
     const { results } = useInstantSearch();
 
     if (results === undefined) {
-      return;
+      return null;
     }
 
     const searchSubmitButton = document.getElementsByClassName("ais-SearchBox-submit")[0];
     if (searchSubmitButton === undefined) {
-      return;
+      return null;
     }
 
     if (results.query === '') {

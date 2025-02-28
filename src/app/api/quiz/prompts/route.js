@@ -75,7 +75,7 @@ function expandPromptSet(reqJson, dataOption, selectedSet, pendingReviews) {
     const promptSet = []
     if (reqJson.guessMeaningSelected === true || dataOption === "review") {
         let cloneSet = structuredClone(selectedSet);
-        if (dataOption === "review") {
+        if (dataOption === "review" && pendingReviews !== null) {
             const meaningPromptsIds = pendingReviews.filter(review => review.prompts.filter(prompt => prompt["mode"] === "meaning")[0]["answered"] === false)
                 .map(review => review.elementId);
             cloneSet = cloneSet.filter(prompt => meaningPromptsIds.includes(prompt["id"]));
@@ -86,7 +86,7 @@ function expandPromptSet(reqJson, dataOption, selectedSet, pendingReviews) {
 
     if (reqJson.guessReadingSelected === true || dataOption === "review") {
         let cloneSet = structuredClone(selectedSet);
-        if (dataOption === "review") {
+        if (dataOption === "review" && pendingReviews !== null) {
             const readingPromptsIds = pendingReviews.filter(review => review.prompts.filter(prompt => prompt["mode"] === "reading")[0]["answered"] === false)
                 .map(review => review.elementId);
             cloneSet = cloneSet.filter(prompt => readingPromptsIds.includes(prompt["id"]));

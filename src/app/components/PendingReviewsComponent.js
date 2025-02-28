@@ -36,7 +36,7 @@ export const PendingReviewsComponent = (props) => {
             return groups;
         }, {});
 
-        return Object.values(groupedItems);;
+        return Object.values(groupedItems);
     }
 
     function sortReviews(reviews) {

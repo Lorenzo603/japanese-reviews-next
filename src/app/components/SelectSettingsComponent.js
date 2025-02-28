@@ -41,6 +41,10 @@ export const SelectSettings = (props) => {
                 console.log('POST update last selected level response status:', res.status);
                 res.json();
             })
+            .catch(error => {
+                console.log('ERROR updating last selected level:', error);
+            })
+            
     }
 
     const isStartQuizButtonDisabled = () => {
