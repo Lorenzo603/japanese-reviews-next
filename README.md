@@ -44,3 +44,6 @@ Check application logs
 
 Empty logs
 ```pm2 flush 0```
+
+## Run Drizzle Studio
+```npx drizzle-kit studio --port 3001```
