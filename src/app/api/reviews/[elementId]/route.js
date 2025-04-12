@@ -12,7 +12,8 @@ const crypto = require("crypto");
 
 ensureSuperTokensInit();
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+    const params = await props.params;
 
     return withSession(request, async (err, session) => {
         if (err) {
@@ -41,7 +42,8 @@ export async function GET(request, { params }) {
     });
 }
 
-export async function POST(request, { params }) {
+export async function POST(request, props) {
+    const params = await props.params;
     return withSession(request, async (err, session) => {
         if (err) {
             console.error(err);
@@ -75,7 +77,8 @@ export async function POST(request, { params }) {
 }
 
 
-export async function PUT(request, { params }) {
+export async function PUT(request, props) {
+    const params = await props.params;
     return withSession(request, async (err, session) => {
         if (err) {
             console.error(err);
@@ -124,5 +127,4 @@ export async function PUT(request, { params }) {
         }
         return NextResponse.json({ message: 'OK' }, { status: 200 })
     });
-
 }

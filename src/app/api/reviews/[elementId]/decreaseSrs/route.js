@@ -8,7 +8,8 @@ import { reviews } from '../../../../../../drizzle/schema.ts';
 
 ensureSuperTokensInit();
 
-export async function PUT(request, { params }) {
+export async function PUT(request, props) {
+    const params = await props.params;
 
     return withSession(request, async (err, session) => {
         if (err) {

@@ -1,45 +1,44 @@
 {
-  "name": "japanese-reviews-next",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "boring-avatars": "^1.11.2",
-    "cache-manager": "^5.2.3",
-    "classnames": "^2.5.1",
-    "cookies-next": "^2.1.2",
-    "drizzle-orm": "^0.33.0",
-    "eslint": "8.56.0",
-    "eslint-config-next": "^14.2.6",
-    "luxon": "^3.6.1",
-    "mailgun.js": "^10.2.3",
-    "mongodb": "^5.6.0",
-    "next": "^14.2.6",
-    "nextjs-cors": "^2.2.0",
-    "pg": "^8.12.0",
-    "react": "^18.3.1",
-    "react-aria": "^3.25.0",
-    "react-dom": "^18.3.1",
-    "react-dom-confetti": "^0.2.0",
-    "react-instantsearch": "^7.12.4",
-    "string-similarity": "^4.0.4",
-    "supertokens-auth-react": "^0.45.1",
-    "supertokens-node": "^20.0.3",
-    "supertokens-web-js": "^0.13.0",
-    "typesense-instantsearch-adapter": "^2.8.0",
-    "wanakana": "^5.1.0"
-  },
-  "devDependencies": {
-    "@types/pg": "^8.11.8",
-    "autoprefixer": "^10.4.20",
-    "drizzle-kit": "^0.24.2",
-    "encoding": "^0.1.13",
-    "postcss": "^8.4.41",
-    "tailwindcss": "^3.4.10"
-  }
+	"name": "japanese-reviews-next",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"boring-avatars": "^1.11.2",
+		"cache-manager": "^5.2.3",
+		"classnames": "^2.5.1",
+		"cookies-next": "^2.1.2",
+		"drizzle-orm": "^0.33.0",
+		"eslint": "^9.24.0",
+		"eslint-config-next": "15.3.0",
+		"luxon": "^3.6.1",
+		"mailgun.js": "^10.2.3",
+		"mongodb": "^5.6.0",
+		"next": "15.3.0",
+		"pg": "^8.12.0",
+		"react": "19.1.0",
+		"react-aria": "^3.25.0",
+		"react-dom": "19.1.0",
+		"react-dom-confetti": "^0.2.0",
+		"react-instantsearch": "^7.15.5",
+		"string-similarity": "^4.0.4",
+		"supertokens-auth-react": "^0.45.1",
+		"supertokens-node": "^20.0.3",
+		"supertokens-web-js": "^0.13.0",
+		"typesense-instantsearch-adapter": "^2.8.0",
+		"wanakana": "^5.1.0"
+	},
+	"devDependencies": {
+		"@types/pg": "^8.11.8",
+		"autoprefixer": "^10.4.20",
+		"drizzle-kit": "^0.24.2",
+		"encoding": "^0.1.13",
+		"postcss": "^8.4.41",
+		"tailwindcss": "^3.4.10"
+	}
 }
