@@ -9,6 +9,7 @@ export const PendingReviewsComponent = (props) => {
 	const [upcomingReviewsCountArray, setUpcomingReviewsCountArray] = useState([]);
 
 	const [pendingReviewsLoading, setPendingReviewsLoading] = useState(false);
+	const [earliestUnlockDateAfterUpcoming, setEarliestUnlockDateAfterUpcoming] = useState(null);
 
 	function formatDate(dateString) {
 		const parsedDate = new Date(dateString);
@@ -25,12 +26,15 @@ export const PendingReviewsComponent = (props) => {
 		return `${formattedDate} ${formattedTime}`;
 	}
 
-	function convertUTCtoLocalTimezone(review) {
-		// make sure date coming from API is read as UTC, then convert it to local time
-		const parsedDate = DateTime.fromISO(review[0].replace(' ', 'T'), { zone: "UTC" });
-		const localTimezoneDate = parsedDate.toLocal().toJSDate();
-		review[0] = localTimezoneDate;
+	function convertReviewDateFromUTCtoLocalTimezone(review) {
+		review[0] = convertDateFromUTCtoLocalTimezone(review[0]);
 		return review;
+	}
+
+	function convertDateFromUTCtoLocalTimezone(date) {
+		// make sure date coming from API is read as UTC, then convert it to local time
+		const parsedDate = DateTime.fromISO(date.replace(' ', 'T'), { zone: "UTC" });
+		return parsedDate.toLocal().toJSDate();
 	}
 
 	function groupByDay(reviews) {
@@ -70,10 +74,12 @@ export const PendingReviewsComponent = (props) => {
 				setPendingReviewsCount(pendingReviews.length);
 
 				const upcomingReviews = data.upcomingReviews;
-				const localTimezoneReviews = upcomingReviews.map(review => convertUTCtoLocalTimezone(review));
+				const localTimezoneReviews = upcomingReviews.map(review => convertReviewDateFromUTCtoLocalTimezone(review));
 				const dayGroupedReviews = groupByDay(localTimezoneReviews);
 				console.log(dayGroupedReviews);
 				setUpcomingReviewsCountArray(sortReviews(dayGroupedReviews));
+
+				setEarliestUnlockDateAfterUpcoming(data.earliestUnlockDateAfterUpcoming);
 			})
 			.catch(error => {
 				console.log('ERROR getting pending reviews:', error);
@@ -132,6 +138,12 @@ export const PendingReviewsComponent = (props) => {
 			<div>
 				Total reviews: {totalReviewsCount}
 			</div>
+			{
+				earliestUnlockDateAfterUpcoming &&
+				<div>
+					Next review at: {formatDate(convertDateFromUTCtoLocalTimezone(earliestUnlockDateAfterUpcoming).toString())}
+				</div>
+			}
 		</div>
 	);
 }
