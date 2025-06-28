@@ -36,8 +36,8 @@ export const SearchComponent = () => {
         {
           host: process.env.NEXT_PUBLIC_TYPESENSE_HOST, //localhost
           port: process.env.NEXT_PUBLIC_TYPESENSE_PORT, //8108
-          path: "/typesense", // Optional. Example: If you have your typesense mounted in localhost:8108/typesense, path should be equal to '/typesense'
-          protocol: "http",
+          path: process.env.NEXT_PUBLIC_TYPESENSE_PATH || '', // Optional. Example: If you have your typesense mounted in localhost:8108/typesense, path should be equal to '/typesense'
+          protocol: process.env.NEXT_PUBLIC_TYPESENSE_PROTOCOL || "http",
         },
       ],
       cacheSearchResultsForSeconds: 2 * 60, // Cache search results from server. Defaults to 2 minutes. Set to 0 to disable caching.
