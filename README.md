@@ -16,6 +16,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Run Drizzle Studio
+```npx drizzle-kit studio --port 3001```
+
 ## Steps to deploy on server
 On local, run:
 ```./scripts/deploy.sh```
@@ -24,7 +27,7 @@ On remote installation folder, run:
 ```npm i```
 ```npm run build```
 
-## Start/Stop app on server 
+## Using pm2
 Use pm2 tool
 
 Installing pm2 (only once)
@@ -45,5 +48,29 @@ Check application logs
 Empty logs
 ```pm2 flush 0```
 
-## Run Drizzle Studio
-```npx drizzle-kit studio --port 3001```
+
+## Docker deployment
+
+On Macos, make sure Colima is started
+
+```bash
+colima status
+colima start -f
+```
+
+```bash
+docker build --platform=linux/amd64 -t tomomoji .
+docker save -o tomomoji.tar tomomoji
+scp tomomoji.tar user@your-vps-ip:/path/on/vps/
+```
+
+on VPS:
+```bash
+docker load -i tomomoji.tar
+docker run -d -p 3000:3000 tomomoji
+```
+
+Inspect container from inside :
+```bash
+docker exec -it <ID> sh
+```
