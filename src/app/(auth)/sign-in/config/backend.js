@@ -19,7 +19,7 @@ export const backendConfig = () => {
     supertokens: {
       // https://try.supertokens.com is for demo purposes. Replace this with the address of your core instance (sign up on supertokens.com), or self host a core.
       // connectionURI: "https://try.supertokens.com",
-      connectionURI: "http://localhost:3567",
+      connectionURI: process.env.SUPERTOKENS_URI || "http://localhost:3567",
       apiKey: process.env.SUPERTOKENS_API_KEY,
     },
     appInfo,
