@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 // ensureSuperTokensInit();
 
-export async function middleware(request) {
+export async function proxy(request) {
     // NOTE: Secure API route via middleware. Must be paired with:
     // export const config = {
     //     matcher: '/api/:path*',
